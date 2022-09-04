@@ -19,7 +19,7 @@ const enemyData = [
     'suits': 'Spade',
     "name": "Jack Of Spade",
     "isDead": false,
-    "isSelected": false,
+    "isSelected": true,
     "imgPath": JackSpade,
   },
   {

@@ -40,8 +40,8 @@ function ContextProvider({ children }) {
 		return (
 			{
 				...enemyDB,
-				maxJackHealth: JACK_HEALTH,
-	 			jackAttack: JACK_ATTACK,
+				health: JACK_HEALTH,
+	 			attack: JACK_ATTACK,
 			}
 		)
 	}));
@@ -50,8 +50,8 @@ function ContextProvider({ children }) {
 		return (
 			{
 				...enemyDB,
-				maxQueenHealth: QUEEN_HEALTH,
-	 			queenAttack: QUEEN_ATTACK,
+				health: QUEEN_HEALTH,
+	 			attack: QUEEN_ATTACK,
 			}
 		)
 	}));
@@ -60,8 +60,8 @@ function ContextProvider({ children }) {
 		return (
 			{
 				...enemyDB,
-				maxKingHealth: KING_HEALTH,
-	 			kingAttack: KING_ATTACK,
+				health: KING_HEALTH,
+	 			attack: KING_ATTACK,
 			}
 		)
 	}));
@@ -74,8 +74,8 @@ function ContextProvider({ children }) {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					maxJackHealth: isHealthDefault ? JACK_HEALTH : JACK_HEALTH + options[0].enemyHealthBoost,
-					jackAttack: isAttackDefault ? JACK_ATTACK : JACK_ATTACK + options[0].enemyAttackBoost,
+					health: isHealthDefault ? JACK_HEALTH : JACK_HEALTH + options[0].enemyHealthBoost,
+					attack: isAttackDefault ? JACK_ATTACK : JACK_ATTACK + options[0].enemyAttackBoost,
 				};
 			});
 		});
@@ -84,8 +84,8 @@ function ContextProvider({ children }) {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					maxQueenHealth: isHealthDefault ? QUEEN_HEALTH : QUEEN_HEALTH + options[0].enemyHealthBoost,
-					queenAttack: isAttackDefault ? QUEEN_ATTACK : QUEEN_ATTACK + options[0].enemyAttackBoost,
+					health: isHealthDefault ? QUEEN_HEALTH : QUEEN_HEALTH + options[0].enemyHealthBoost,
+					attack: isAttackDefault ? QUEEN_ATTACK : QUEEN_ATTACK + options[0].enemyAttackBoost,
 				};
 			});
 		});
@@ -94,8 +94,8 @@ function ContextProvider({ children }) {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					maxKingHealth: isHealthDefault ? KING_HEALTH : KING_HEALTH + options[0].enemyHealthBoost,
-					kingAttack: isAttackDefault ? KING_ATTACK : KING_ATTACK + options[0].enemyAttackBoost,
+					health: isHealthDefault ? KING_HEALTH : KING_HEALTH + options[0].enemyHealthBoost,
+					attack: isAttackDefault ? KING_ATTACK : KING_ATTACK + options[0].enemyAttackBoost,
 				};
 			});
 		});

@@ -13,6 +13,8 @@ const fonts = {
 	},
 };
 
+// #94b4b0 green regicide
+
 // // 3. extend the theme
 const theme = extendTheme({ config }, fonts);
 
