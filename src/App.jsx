@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import {
   Box
 } from '@chakra-ui/react'
@@ -7,6 +7,7 @@ import { Context } from './OptionsContext'
 import SelectOptions from './Components/SelectOptions'
 import SelectCurrentEnemy from './Components/SelectCurrentEnemy'
 
+
 function App() {
  
   const {options} = useContext(Context)
@@ -14,7 +15,7 @@ function App() {
   return (
     <Box maxW='97%' mx='auto' p='4'>
       <SelectOptions />
-      <SelectCurrentEnemy />
+   <SelectCurrentEnemy />
     </Box>
   )
 }

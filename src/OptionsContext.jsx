@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import enemyData from './assets/EnemyData.cjs';
 
 const Context = createContext();
 
@@ -22,58 +23,6 @@ function ContextProvider({ children }) {
 		},
 	]);
 
-	const [jack, setJack] = useState([
-		{
-			maxJackHealth: JACK_HEALTH,
-			jackAttack: JACK_ATTACK,
-		},
-	]);
-
-	const [queen, setQueen] = useState([
-		{
-			maxQueenHealth: QUEEN_HEALTH,
-			queenAttack: QUEEN_ATTACK,
-		},
-	]);
-
-	const [king, setKing] = useState([
-		{
-			maxKingHealth: KING_HEALTH,
-			kingAttack: KING_ATTACK,
-		},
-	]);
-
-	useEffect(() => {
-		const isHealthDefault = options[0].enemyHealthBoost === 'OFF' ? true : false;
-		const isAttackDefault = options[0].enemyAttackBoost === 'OFF' ? true : false;
-
-		setJack((prev) => {
-			return prev.map((prev) => {
-				return {
-					...prev,
-					maxJackHealth: isHealthDefault ? JACK_HEALTH : JACK_HEALTH + options[0].enemyHealthBoost,
-					jackAttack: isAttackDefault ? JACK_ATTACK : JACK_ATTACK + options[0].enemyAttackBoost,
-				};
-			});
-		});
-
-		setQueen((prev) => {
-			return prev.map((prev) => {
-				return {
-					...prev,
-					maxQueenHealth: isHealthDefault ? QUEEN_HEALTH : QUEEN_HEALTH + options[0].enemyHealthBoost,
-					queenAttack: isAttackDefault ? QUEEN_ATTACK : QUEEN_ATTACK + options[0].enemyAttackBoost,
-				};
-			});
-		});
-
-		setKing({
-			maxKingHealth: isHealthDefault ? KING_HEALTH : KING_HEALTH + options[0].enemyHealthBoost,
-			kingAttack: isAttackDefault ? KING_ATTACK : KING_ATTACK + options[0].enemyAttackBoost,
-		});
-
-	}, [options]);
-
 	function handleChange(e) {
 		const { name, value } = e.target;
 
@@ -87,7 +36,75 @@ function ContextProvider({ children }) {
 		});
 	}
 
-	return <Context.Provider value={{ handleChange, options }}>{children}</Context.Provider>;
+	const [jackEnemies, setJackEnemies] = useState(enemyData.filter(el => el.rank === 'Jack').map(enemyDB => {
+		return (
+			{
+				...enemyDB,
+				maxJackHealth: JACK_HEALTH,
+	 			jackAttack: JACK_ATTACK,
+			}
+		)
+	}));
+
+	const [queenEnemies, setQueenEnemies] = useState(enemyData.filter(el => el.rank === 'Queen').map(enemyDB => {
+		return (
+			{
+				...enemyDB,
+				maxQueenHealth: QUEEN_HEALTH,
+	 			queenAttack: QUEEN_ATTACK,
+			}
+		)
+	}));
+
+	const [kingEnemies, setKingEnemies] = useState(enemyData.filter(el => el.rank === 'King').map(enemyDB => {
+		return (
+			{
+				...enemyDB,
+				maxKingHealth: KING_HEALTH,
+	 			kingAttack: KING_ATTACK,
+			}
+		)
+	}));
+
+	useEffect(() => {
+		const isHealthDefault = options[0].enemyHealthBoost === 'OFF' ? true : false;
+		const isAttackDefault = options[0].enemyAttackBoost === 'OFF' ? true : false;
+
+		setJackEnemies((prev) => {
+			return prev.map((prev) => {
+				return {
+					...prev,
+					maxJackHealth: isHealthDefault ? JACK_HEALTH : JACK_HEALTH + options[0].enemyHealthBoost,
+					jackAttack: isAttackDefault ? JACK_ATTACK : JACK_ATTACK + options[0].enemyAttackBoost,
+				};
+			});
+		});
+
+		setQueenEnemies((prev) => {
+			return prev.map((prev) => {
+				return {
+					...prev,
+					maxQueenHealth: isHealthDefault ? QUEEN_HEALTH : QUEEN_HEALTH + options[0].enemyHealthBoost,
+					queenAttack: isAttackDefault ? QUEEN_ATTACK : QUEEN_ATTACK + options[0].enemyAttackBoost,
+				};
+			});
+		});
+
+		setKingEnemies((prev) => {
+			return prev.map((prev) => {
+				return {
+					...prev,
+					maxKingHealth: isHealthDefault ? KING_HEALTH : KING_HEALTH + options[0].enemyHealthBoost,
+					kingAttack: isAttackDefault ? KING_ATTACK : KING_ATTACK + options[0].enemyAttackBoost,
+				};
+			});
+		});
+
+	}, [options]);
+
+
+
+	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies }}>{children}</Context.Provider>;
 }
 
 export { ContextProvider, Context };
