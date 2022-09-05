@@ -32,6 +32,7 @@ export default function SelectCurrentEnemy({ selectEnemy }) {
 						id={id}
 						suits={suits}
 						onClick={(e) => selectEnemy(e)}
+                        cursor='pointer'
 					/>
 				)}
 			</Box>
