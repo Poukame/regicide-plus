@@ -1,10 +1,9 @@
-import { Box, Image, HStack, VStack } from '@chakra-ui/react';
+import { Box, Image, HStack, VStack, Button } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
 export default function FightScreen({ currentEnemy, switchState }) {
 	const { health, attack, imgPath, id, isDead, isSelected, name, rank, suits } = currentEnemy[0];
-	console.log('file: FightScreen.jsx ~ line 4 ~ currentEnemy', currentEnemy);
-    const onClick = () => switchState() // hold the suit type 
+   
 
 	return (
 		<>
@@ -24,11 +23,11 @@ export default function FightScreen({ currentEnemy, switchState }) {
 				</Box>
 			</HStack>
 			<HStack gap='8'>
-				<Icon icon='emojione-v1:heart-suit' width='80' onClick={onClick} cursor='pointer' />
-				<Icon icon='emojione-v1:diamond-suit' width='80' onClick={onClick} cursor='pointer' />
-				<Icon icon='emojione-v1:club-suit' width='80' onClick={onClick} cursor='pointer' />
-				<Icon icon='emojione-monotone:spade-suit' width='80' onClick={onClick} cursor='pointer' />
-				<Icon icon='emojione-monotone:joker' color='#94b4b0' width='90' onClick={onClick} cursor='pointer' />
+				<Button p='2' bgColor='transparent' value='heart' onClick={(e) => switchState(e)} height='fit-content' ><Icon icon='emojione-v1:heart-suit' width='80' pointerEvents='none' /></Button>
+				<Button p='2' bgColor='transparent' value='diamond' onClick={(e) => switchState(e)} height='fit-content' ><Icon icon='emojione-v1:diamond-suit' width='80' pointerEvents='none'   /></Button>
+				<Button p='2' bgColor='transparent' value='club' onClick={(e) => switchState(e)} height='fit-content' ><Icon icon='emojione-v1:club-suit' width='80' pointerEvents='none'  /></Button>
+				<Button p='2' bgColor='transparent' value='spade' onClick={(e) => switchState(e)} height='fit-content' ><Icon icon='emojione-monotone:spade-suit' width='80' pointerEvents='none'  /></Button>
+				<Button p='2' bgColor='transparent' value='joker' onClick={(e) => switchState(e)} height='fit-content' ><Icon icon='emojione-monotone:joker' color='#DFFF00' width='90' pointerEvents='none' /></Button>
 			</HStack>
 		</>
 	);

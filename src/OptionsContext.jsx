@@ -19,9 +19,12 @@ function ContextProvider({ children }) {
 			enemyAttackBoost: 'OFF',
 			yield: 'ON',
 			maxComboLimit: 10,
-			maxAnimalCompanionLimit: 'ON',
+			maxAnimalCompanionLimit: 'K',
 		},
 	]);
+
+	const [maxComboCard, setMaxComboCard] = useState(options[0].maxComboLimit)
+	const [maxCompanionCard, setMaxCompanionCard] = useState(options[0].maxAnimalCompanionLimit)
 
 	function handleChange(e) {
 		const { name, value } = e.target;
@@ -36,7 +39,7 @@ function ContextProvider({ children }) {
 		});
 	}
 
-	const [jackEnemies, setJackEnemies] = useState(enemyData.filter(el => el.rank === 'Jack').map(enemyDB => {
+	const [jackEnemies, setJackEnemies] = useState(enemyData.filter(el => el.rank === 'jack').map(enemyDB => {
 		return (
 			{
 				...enemyDB,
@@ -46,7 +49,7 @@ function ContextProvider({ children }) {
 		)
 	}));
 
-	const [queenEnemies, setQueenEnemies] = useState(enemyData.filter(el => el.rank === 'Queen').map(enemyDB => {
+	const [queenEnemies, setQueenEnemies] = useState(enemyData.filter(el => el.rank === 'queen').map(enemyDB => {
 		return (
 			{
 				...enemyDB,
@@ -56,7 +59,7 @@ function ContextProvider({ children }) {
 		)
 	}));
 
-	const [kingEnemies, setKingEnemies] = useState(enemyData.filter(el => el.rank === 'King').map(enemyDB => {
+	const [kingEnemies, setKingEnemies] = useState(enemyData.filter(el => el.rank === 'king').map(enemyDB => {
 		return (
 			{
 				...enemyDB,
@@ -100,11 +103,14 @@ function ContextProvider({ children }) {
 			});
 		});
 
+		setMaxComboCard(options[0].maxComboLimit === 'OFF' ? 0 : Math.floor(options[0].maxComboLimit / 2))
+		setMaxCompanionCard(options[0].maxAnimalCompanionLimit === 'OFF' ? 'OFF' : options[0].maxAnimalCompanionLimit.toString())
+
 	}, [options]);
 
 
 
-	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies }}>{children}</Context.Provider>;
+	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard }}>{children}</Context.Provider>;
 }
 
 export { ContextProvider, Context };

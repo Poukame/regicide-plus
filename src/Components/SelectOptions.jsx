@@ -57,7 +57,7 @@ export default function SelectOptions({updateStatus}) {
 			</Select>
 			<Text>Max Animal Companion Limit</Text>
 			<Select size='md' name='maxAnimalCompanionLimit' onChange={(e) => handleChange(e)}>
-				<option value={'ON'}>Default</option>
+				<option value={'K'}>Default</option>
 				<option value={'Q'}>Q</option>
 				<option value={'J'}>J</option>
 				<option value={'10'}>10</option>
