@@ -7,12 +7,14 @@ import SelectCurrentEnemy from './Components/SelectCurrentEnemy';
 import FightScreen from './Components/FightScreen';
 import SelectCardValue from './Components/SelectCardValue';
 import SelectComboCard from './Components/SelectCardCombo';
+import damageConversion from './assets/DamageConversion.cjs';
 
 function App() {
 	const [gameStatus, setGameStatus] = useState('option'); // option, fight, selectEnemy, selectCard, selectCombo, endGame
 	const { jackEnemies, queenEnemies, kingEnemies } = useContext(Context);
 	const [selectedCards, setSelectedCards] = useState({
 		baseCard: null,
+		baseCardDmg: 0,
 		baseCardSuit: null,
 		companionSuit: null,
 		comboSum: 0,
@@ -60,6 +62,7 @@ function App() {
 				return {
 					...prev,
 					baseCard: value,
+					baseCardDmg: damageConversion[value]
 				};
 			});
 			setGameStatus('selectCombo');
@@ -75,8 +78,6 @@ function App() {
 				companionSuit: value,
 			};
 		});
-		setGameStatus('fight');
-		// calculation function
 	}
 
 	function switchStateFromComboToFightCombo(e) {
@@ -95,7 +96,15 @@ function App() {
 		// calculation function
 	}
 
+	let attackSum = 0
+	
 	function validateAttack() {
+		if(selectedCards.companionSuit != null) {
+			attackSum = damageConversion[selectedCards.baseCard] + 1
+		} else {
+			attackSum = damageConversion[selectedCards.baseCard] + selectedCards.comboSum
+		}
+		
 		setGameStatus('fight');
 	}
 

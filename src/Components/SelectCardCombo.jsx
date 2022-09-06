@@ -4,34 +4,39 @@ import { Icon } from '@iconify/react';
 import { Context } from '../OptionsContext';
 import { nanoid } from 'nanoid';
 
-export default function SelectComboCard({ selectedCards, switchStateCompanion, switchStateCombo, validateAttack }) {
-	const { maxComboCard, maxCompanionCard } = useContext(Context);
-	
+export default function SelectComboCard({
+	selectedCards,
+	switchStateCompanion,
+	switchStateCombo,
+	validateAttack,
+}) {
+	const { maxComboCard, maxCompanionCard, options } = useContext(Context);
+
 	const cardValue = ['A', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const suitsData = [
 		{
 			suitIcon: <Icon icon='emojione-v1:heart-suit' height='20px' pointerEvents='none' />,
 			suit: 'heart',
 			color: 'red.700',
-			isSelected: selectedCards.comboSuits.some(suit => suit === 'heart')
+			isSelected: selectedCards.comboSuits.some((suit) => suit === 'heart'),
 		},
 		{
 			suitIcon: <Icon icon='emojione-v1:diamond-suit' height='20px' pointerEvents='none' />,
 			suit: 'diamond',
 			color: 'red.700',
-			isSelected: selectedCards.comboSuits.some(suit => suit === 'diamond')
+			isSelected: selectedCards.comboSuits.some((suit) => suit === 'diamond'),
 		},
 		{
 			suitIcon: <Icon icon='emojione-v1:club-suit' height='20px' pointerEvents='none' />,
 			suit: 'club',
 			color: 'black',
-			isSelected: selectedCards.comboSuits.some(suit => suit === 'club')
+			isSelected: selectedCards.comboSuits.some((suit) => suit === 'club'),
 		},
 		{
 			suitIcon: <Icon icon='emojione-v1:spade-suit' height='20px' pointerEvents='none' />,
 			suit: 'spade',
 			color: 'black',
-			isSelected: selectedCards.comboSuits.some(suit => suit === 'spade')
+			isSelected: selectedCards.comboSuits.some((suit) => suit === 'spade'),
 		},
 	];
 
@@ -51,6 +56,9 @@ export default function SelectComboCard({ selectedCards, switchStateCompanion, s
 		companionHTML = <></>;
 	} else {
 		companionHTML = suitsData.map((el) => {
+
+			const isAceSuitSelected = el.suit != (selectedCards.baseCard === 'A' && selectedCards.baseCardSuit);
+
 			return (
 				<>
 					<Button
@@ -63,6 +71,8 @@ export default function SelectComboCard({ selectedCards, switchStateCompanion, s
 						fontWeight='700'
 						fontSize='3xl'
 						value={el.suit}
+						isDisabled={selectedCards.comboSum !== 0 ? true : false}
+						visibility={isAceSuitSelected ? 'visible' : 'hidden'}
 						onClick={(e) => switchStateCompanion(e)}
 					>
 						A{el.suitIcon}
@@ -73,27 +83,35 @@ export default function SelectComboCard({ selectedCards, switchStateCompanion, s
 	}
 
 	// calculatedCombo HTML
-	
+
 	if (calculatedComboCard === 0) {
 		comboCardsHTML = <></>;
 	} else {
+		const isMaxAtReach = options[0].maxComboLimit - selectedCards.comboSum <= selectedCards.baseCardDmg;
+
 		comboCardsHTML = suitsData.map((el) => {
+			const isBaseSuitSelected = el.suit != selectedCards.baseCardSuit;
+
 			return (
-				<Button
-					key={nanoid()}
-					bgColor={el.isSelected ? '#DFFF00' : 'whiteAlpha.800'}
-					colorScheme='white'
-					color={el.color}
-					outline={el.isSelected ? 'none' : 'solid'}
-					height='50px'
-					fontWeight='700'
-					fontSize='3xl'
-					value={[calculatedComboCard,el.suit]}
-					onClick={(e) => switchStateCombo(e)}
-				>
-					{calculatedComboCard}
-					{el.suitIcon}
-				</Button>
+				<>
+					<Button
+						key={nanoid()}
+						bgColor={el.isSelected ? '#DFFF00' : 'whiteAlpha.800'}
+						colorScheme='white'
+						color={el.color}
+						outline={el.isSelected ? 'none' : 'solid'}
+						height='50px'
+						visibility={isBaseSuitSelected ? 'visible' : 'hidden'}
+						fontWeight='700'
+						fontSize='3xl'
+						isDisabled={isMaxAtReach && !el.isSelected ? true : false}
+						value={el.isSelected ? [-calculatedComboCard, el.suit] : [calculatedComboCard, el.suit]}
+						onClick={(e) => switchStateCombo(e)}
+					>
+						{calculatedComboCard}
+						{el.suitIcon}
+					</Button>
+				</>
 			);
 		});
 	}
@@ -104,7 +122,9 @@ export default function SelectComboCard({ selectedCards, switchStateCompanion, s
 			<HStack flexWrap='wrap' mt='4'>
 				{comboCardsHTML}
 			</HStack>
-			<Button mt='4' onClick={validateAttack}>Validate Attack</Button>
+			<Button mt='4' onClick={validateAttack}>
+				Validate Attack
+			</Button>
 		</>
 	);
 }
