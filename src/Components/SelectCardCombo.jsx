@@ -6,11 +6,21 @@ import { nanoid } from 'nanoid';
 
 export default function SelectComboCard({
 	selectedCards,
-	switchStateCompanion,
-	switchStateCombo,
+	saveCompanionCards,
+	saveComboCards,
 	validateAttack,
 }) {
 	const { maxComboCard, maxCompanionCard, options } = useContext(Context);
+	const {
+		baseCard,
+		baseCardDmg,
+		baseCardSuit,
+		companionSuit,
+		comboSum,
+		comboSuits,
+		isJokerPlayed,
+		attackSum,
+	} = selectedCards;
 
 	const cardValue = ['A', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const suitsData = [
@@ -18,62 +28,68 @@ export default function SelectComboCard({
 			suitIcon: <Icon icon='emojione-v1:heart-suit' height='20px' pointerEvents='none' />,
 			suit: 'heart',
 			color: 'red.700',
-			isSelected: selectedCards.comboSuits.some((suit) => suit === 'heart'),
+			isSelected: comboSuits.some((suit) => suit === 'heart'),
+			isCompanionSelected: companionSuit.some((suit) => suit === 'heart'),
 		},
 		{
 			suitIcon: <Icon icon='emojione-v1:diamond-suit' height='20px' pointerEvents='none' />,
 			suit: 'diamond',
 			color: 'red.700',
-			isSelected: selectedCards.comboSuits.some((suit) => suit === 'diamond'),
+			isSelected: comboSuits.some((suit) => suit === 'diamond'),
+			isCompanionSelected: companionSuit.some((suit) => suit === 'diamond'),
 		},
 		{
 			suitIcon: <Icon icon='emojione-v1:club-suit' height='20px' pointerEvents='none' />,
 			suit: 'club',
 			color: 'black',
-			isSelected: selectedCards.comboSuits.some((suit) => suit === 'club'),
+			isSelected: comboSuits.some((suit) => suit === 'club'),
+			isCompanionSelected: companionSuit.some((suit) => suit === 'club'),
 		},
 		{
 			suitIcon: <Icon icon='emojione-v1:spade-suit' height='20px' pointerEvents='none' />,
 			suit: 'spade',
 			color: 'black',
-			isSelected: selectedCards.comboSuits.some((suit) => suit === 'spade'),
+			isSelected: comboSuits.some((suit) => suit === 'spade'),
+			isCompanionSelected: companionSuit.some((suit) => suit === 'spade'),
 		},
 	];
 
 	let comboCardsHTML;
 	let companionHTML;
 	const calculatedComboCard =
-		cardValue.indexOf(selectedCards.baseCard) >= maxComboCard + 1 || selectedCards.baseCard === 'A'
-			? 0
-			: selectedCards.baseCard;
+		cardValue.indexOf(baseCard) >= maxComboCard + 1 || baseCard === 'A' ? 0 : baseCard;
 
 	// Animal Companion HTML
+	const isCompanionPicked = companionSuit.length > 0;
+	const isComboCardPicked = companionSuit.length >= comboSuits.length;
 
 	if (
-		cardValue.indexOf(selectedCards.baseCard) > cardValue.indexOf(maxCompanionCard) ||
+		cardValue.indexOf(baseCard) > cardValue.indexOf(maxCompanionCard) ||
 		maxCompanionCard === 'OFF'
 	) {
 		companionHTML = <></>;
 	} else {
 		companionHTML = suitsData.map((el) => {
-
-			const isAceSuitSelected = el.suit != (selectedCards.baseCard === 'A' && selectedCards.baseCardSuit);
+			const isAceSuitSelected = baseCard !== 'A' && companionSuit.length >= 1;
+			const removeBaseAce = (baseCardSuit === el.suit) && (baseCard === 'A');
 
 			return (
 				<>
 					<Button
 						key={nanoid()}
-						bgColor='whiteAlpha.800'
+						bgColor={el.isCompanionSelected ? '#DFFF00' : 'whiteAlpha.800'}
 						colorScheme='white'
 						color={el.color}
-						border='solid'
+						outline={el.isCompanionSelected ? 'none' : 'solid'}
 						height='50px'
 						fontWeight='700'
 						fontSize='3xl'
-						value={el.suit}
-						isDisabled={selectedCards.comboSum !== 0 ? true : false}
-						visibility={isAceSuitSelected ? 'visible' : 'hidden'}
-						onClick={(e) => switchStateCompanion(e)}
+						value={el.isCompanionSelected ? [-1, el.suit] : [1, el.suit]}
+						isDisabled={isAceSuitSelected ? true : false}
+						visibility={isComboCardPicked && !removeBaseAce ? 'visible' : 'hidden'}
+						onClick={(e) => {
+							saveComboCards(e), saveCompanionCards(e);
+						}}
 					>
 						A{el.suitIcon}
 					</Button>
@@ -87,10 +103,10 @@ export default function SelectComboCard({
 	if (calculatedComboCard === 0) {
 		comboCardsHTML = <></>;
 	} else {
-		const isMaxAtReach = options[0].maxComboLimit - selectedCards.comboSum <= selectedCards.baseCardDmg;
+		const isMaxAtReach = options[0].maxComboLimit - comboSum < baseCardDmg * 2;
 
 		comboCardsHTML = suitsData.map((el) => {
-			const isBaseSuitSelected = el.suit != selectedCards.baseCardSuit;
+			const isBaseSuitSelected = el.suit != baseCardSuit;
 
 			return (
 				<>
@@ -101,12 +117,12 @@ export default function SelectComboCard({
 						color={el.color}
 						outline={el.isSelected ? 'none' : 'solid'}
 						height='50px'
-						visibility={isBaseSuitSelected ? 'visible' : 'hidden'}
+						visibility={isBaseSuitSelected && !isCompanionPicked ? 'visible' : 'hidden'}
 						fontWeight='700'
 						fontSize='3xl'
 						isDisabled={isMaxAtReach && !el.isSelected ? true : false}
 						value={el.isSelected ? [-calculatedComboCard, el.suit] : [calculatedComboCard, el.suit]}
-						onClick={(e) => switchStateCombo(e)}
+						onClick={(e) => saveComboCards(e)}
 					>
 						{calculatedComboCard}
 						{el.suitIcon}
