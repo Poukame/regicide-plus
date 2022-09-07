@@ -1,7 +1,7 @@
 import { Box, Flex, Button } from '@chakra-ui/react';
 
 export default function SelectCardValue({switchState, selectedCards}) {
-    const cardValue = ['A', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+    const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
 
     const cardHTML = cardValue.map(el => {
         const isBlack = selectedCards.baseCardSuit === 'club' || selectedCards.baseCardSuit === 'spade'
