@@ -46,7 +46,9 @@ function App() {
 	console.log('file: App.jsx ~ line 19 ~ selectedCards', selectedCards);
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
-
+	console.log('file: App.jsx ~ line 49 ~ allEnemies', allEnemies);
+	const currentEnemy = allEnemies.find((el) => el.isSelected);
+	
 	useEffect(() => setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies]), [jackEnemies]);
 
 	function selectEnemy(e) {
@@ -125,119 +127,44 @@ function App() {
 
 	function validateAttack() {
 		// save state to local storage here
-
 	
 		setSelectedCards({ ...selectedCards, attackSum: damageConversion[baseCard] + comboSum });
-		// do calculation with suits power
 		setGameStatus('fight');
 	}
+	
 
 	useEffect(() => {
 		if (gameStatus === 'fight') {
-			isJokerPlayed ? isJoker() : noJoker();
+			generateAttack(currentEnemy);
 		}
 	}, [attackSum]);
 
-	function isJoker() {
-		console.log('joker', selectedCards);
-	}
-
-	const currentEnemy = allEnemies.find((el) => el.isSelected);
 	console.log('file: App.jsx ~ line 134 ~ currentEnemy', currentEnemy);
 
-	let toastHeart
+	function generateAttack(currentEnemy) {
+		let allSuitsCards
 
-	function noJoker() {
-		// fn ennemy isHeart
-		// if (currentEnemy.suits === 'heart') {
-		// 	switch (baseCardSuit) {
-		// 		case 'heart':
-		// 			if (companionSuit != '') {
-		// 				console.log('HEART VS DIAMOND&COMPANION');
-		// 			} else {
-		// 				currentEnemy.health -= attackSum;
-		// 				setSelectedCards(resetSelectedCards)
-		// 			}
-		// 			break;
-		// 		case 'diamond':
-		// 			if (companionSuit != '') {
-		// 				console.log('HEART VS DIAMOND&COMPANION');
-		// 				currentEnemy.health -= attackSum;
-		// 			} else {
-		// 				currentEnemy.health -= attackSum;
-		// 				setSelectedCards(resetSelectedCards)
-		// 				const toastDiamond = `Draw ${attackSum} Cards`;
-		// 			}
-	
-		// 			break;
-		// 		case 'club':
-		// 			if (companionSuit != '') {
-		// 				console.log('HEART VS CLUB&COMPANION');
-		// 			} else {
-		// 				currentEnemy.health -= attackSum * 2;
-		// 				setSelectedCards(resetSelectedCards)
-		// 			}
-					
-		// 			break;
-		// 		case 'spade':
-		// 			if (companionSuit != '') {
-		// 				console.log('HEART VS SPADE&COMPANION');
-		// 			} else {
-		// 				currentEnemy.health -= attackSum;
-		// 				currentEnemy.attack -= attackSum
-		// 				setSelectedCards(resetSelectedCards)
-		// 			}
-	
-		// 			break;
-	
-		// 		default:
-		// 			break;
-		// 	}
-		// }
-		
-
-		
-			switch (baseCardSuit) {
-				case 'heart':
-					if (companionSuit === '' && comboSuits.length === 0) {
-						attackWithHeartBasic(currentEnemy)
-					} else {
-						attackWithHeartCombo(currentEnemy)
-					}
-					break;
-
-				case 'diamond':
-						currentEnemy.health -= attackSum;
-						setSelectedCards(resetSelectedCards)
-						const toastDiamond = `Draw ${attackSum} Cards`;
-					break;
-
-				case 'club':
-						currentEnemy.health -= attackSum * 2;
-						setSelectedCards(resetSelectedCards)
-					break;
-
-				case 'spade':
-						currentEnemy.health -= attackSum;
-						currentEnemy.attack -= attackSum
-						setSelectedCards(resetSelectedCards)
-					break;
-			}
+		if(companionSuit.length === 0 && comboSuits.length === 0) {
+			allSuitsCards = [baseCardSuit]
+		} else {
+			allSuitsCards = [...comboSuits, baseCardSuit].filter(el => el !== currentEnemy.suits)
 		}
 
-	
-
-	
-
-	function attackWithHeartBasic(currentEnemy) {
-		currentEnemy.health -= attackSum;
-		setSelectedCards(resetSelectedCards)
-		currentEnemy.suits !== 'heart' ? toastHeart = `Heal ${attackSum} Cards` : ''
+		currentEnemy.health = currentEnemy.suits === 'club' ? currentEnemy.health -= attackSum : currentEnemy.health -= attackSum * 2
+		if(allSuitsCards.some(el => el === 'spade')) {
+			currentEnemy.attack = currentEnemy.attack -= attackSum
+		}
+		if(allSuitsCards.some(el => el === 'heart')) {
+			// toastHeart = `Heal ${attackSum} Cards`
+			console.log('😀', 'TOAST HEART');
+		}
+		if(allSuitsCards.some(el => el === 'diamond')) {
+			// toastDiamond = `Draw ${attackSum} Cards`
+			console.log('😀', 'toast diamond');
+		}
+		// IsEnnemyDead check
+		setSelectedCards(resetSelectedCards)	
 	}
-
-	function attackWithHeartCombo(currentEnemy) {
-		
-		}
 	
 
 	return (
@@ -270,5 +197,6 @@ function App() {
 		</Box>
 	);
 }
+
 
 export default App
