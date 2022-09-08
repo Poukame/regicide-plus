@@ -1,7 +1,7 @@
 import { Box, Image, HStack, VStack, Button, Text } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
-export default function FightScreen({ currentEnemy, switchState, infoMessage }) {
+export default function FightScreen({ currentEnemy, switchState, infoMessage, isJokerPlayed }) {
 	const { health, attack, imgPath, id, isDead, isSelected, name, rank, suits } = currentEnemy[0];
 
 	return (
@@ -21,27 +21,32 @@ export default function FightScreen({ currentEnemy, switchState, infoMessage }) 
 					</VStack>
 				</Box>
 			</HStack>
-			
-			<Box bgColor='whiteAlpha.300' p='2'>
-			{infoMessage.displayPerfectKillMsg && (
-					<HStack fontSize='xl'>
-						<Icon icon="mdi:target-account" inline={true} />
-						<Text>{infoMessage.perfectKillMsg}</Text>
-					</HStack>
+
+			<HStack bgColor='whiteAlpha.300' p='2'>
+				{isJokerPlayed && (
+					<Icon icon='emojione-monotone:joker' color='#DFFF00' width='90' pointerEvents='none' />
 				)}
-				{infoMessage.displayDiamondMsg && (
-					<HStack fontSize='xl'>
-						<Icon icon='mdi:cards-playing' inline={true} />
-						<Text>{infoMessage.diamondMsg}</Text>
-					</HStack>
-				)}
-				{infoMessage.displayHeartMsg && (
-					<HStack fontSize='xl'>
-						<Icon icon='akar-icons:health' inline={true} />
-						<Text>{infoMessage.heartMsg}</Text>
-					</HStack>
-				)}
-			</Box>
+				<VStack>
+					{infoMessage.displayPerfectKillMsg && (
+						<HStack fontSize='xl'>
+							{/* <Icon icon="mdi:target-account" inline={true} /> */}
+							<Text>{infoMessage.perfectKillMsg}</Text>
+						</HStack>
+					)}
+					{infoMessage.displayDiamondMsg && (
+						<HStack fontSize='xl'>
+							<Icon icon='mdi:cards-playing' inline={true} />
+							<Text>{infoMessage.diamondMsg}</Text>
+						</HStack>
+					)}
+					{infoMessage.displayHeartMsg && (
+						<HStack fontSize='xl'>
+							{/* <Icon icon='akar-icons:health' inline={true} /> */}
+							<Text>{infoMessage.heartMsg}</Text>
+						</HStack>
+					)}
+				</VStack>
+			</HStack>
 			<HStack gap='8'>
 				<Button
 					p='2'

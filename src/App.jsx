@@ -10,8 +10,10 @@ import SelectComboCard from './Components/SelectCardCombo';
 import damageConversion from './assets/DamageConversion.cjs';
 
 function App() {
-	const [gameStatus, setGameStatus] = useState('option'); // option, fight, selectEnemy, selectCard, selectCombo, endGame
+	const [gameStatus, setGameStatus] = useState('option');
+	// option, fight, selectEnemy, selectCard, selectCombo, endGame
 	const { jackEnemies, queenEnemies, kingEnemies } = useContext(Context);
+	const [isJokerPlayed, setIsJokerPlayed] = useState(false)
 	const resetSelectedCards = {
 		baseCard: '',
 		baseCardDmg: 0,
@@ -20,7 +22,6 @@ function App() {
 		comboSum: 0,
 		comboSuits: [],
 		attackSum: 0,
-		isJokerPlayed: false,
 	};
 	const [selectedCards, setSelectedCards] = useState(resetSelectedCards);
 
@@ -31,10 +32,8 @@ function App() {
 		companionSuit,
 		comboSum,
 		comboSuits,
-		isJokerPlayed,
 		attackSum,
 	} = selectedCards;
-	console.log('file: App.jsx ~ line 19 ~ selectedCards', selectedCards);
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
 	const currentEnemy = allEnemies.find((el) => el.isSelected);
@@ -72,13 +71,19 @@ function App() {
 	function switchStateToSelectCard(e) {
 		const value = e.target.value;
 
-		setSelectedCards((prev) => {
-			return {
-				...prev,
-				baseCardSuit: value,
-			};
-		});
-		setGameStatus('selectCard');
+		if(value === 'joker') {
+			setIsJokerPlayed(!isJokerPlayed)
+		} else {
+
+			setSelectedCards((prev) => {
+				return {
+					...prev,
+					baseCardSuit: value,
+				};
+			});
+			setGameStatus('selectCard');
+
+		}
 		setInfoMessage(resetInfoMessage)
 	}
 
@@ -145,15 +150,20 @@ function App() {
 
 	console.log('file: App.jsx ~ line 134 ~ currentEnemy', currentEnemy);
 
+
 	function generateAttack(currentEnemy) {
 		let allSuitsCards
-		
-		if(companionSuit.length === 0 && comboSuits.length === 0) {
-			allSuitsCards = [baseCardSuit]
-		} else {
-			allSuitsCards = [...comboSuits, baseCardSuit].filter(el => el !== currentEnemy.suits)
-		}
 
+		if(companionSuit.length === 0 && comboSuits.length === 0) {
+			allSuitsCards = [baseCardSuit].filter(el => (
+				isJokerPlayed ? el : el !== currentEnemy.suits))
+
+		} else {
+			allSuitsCards = [...comboSuits, baseCardSuit].filter(el => (
+				isJokerPlayed ? el : el !== currentEnemy.suits))
+			}
+
+			
 		if(allSuitsCards.some(el => el === 'club')) {
 			currentEnemy.health -= attackSum * 2
 		} else {
@@ -164,22 +174,25 @@ function App() {
 			currentEnemy.attack -= attackSum
 		}
 		if(allSuitsCards.some(el => el === 'heart')) {
-			setInfoMessage(prev => ({...prev, heartMsg: `Add ${attackSum} Cards from the Discard to the Tavern`, displayHeartMsg: true}))
+			setInfoMessage(prev => ({...prev, heartMsg: `❤️‍🩹 Heal ${attackSum} Cards`, displayHeartMsg: true}))
 		}
 		if(allSuitsCards.some(el => el === 'diamond')) {
 			setInfoMessage(prev => ({...prev, diamondMsg: `Draw ${attackSum} Cards`, displayDiamondMsg: true}))
 		}
-		// IsEnnemyDead check
+		
 		setSelectedCards(resetSelectedCards)	
 		isEnnemyDead(currentEnemy)
 	}
 	
 	function isEnnemyDead(currentEnemy) {
 		if(currentEnemy.health === 0) {
-			setInfoMessage(prev => ({...prev, perfectKillMsg: `PERFECT KILL! Don't forget to put the enemy on top of the Tavern`, displayPerfectKillMsg: true}))
+			setInfoMessage(prev => ({...prev, perfectKillMsg: `🎯 PERFECT KILL! Put the enemy on top of the Tavern`, displayPerfectKillMsg: true}))
 			currentEnemy.isDead = true
+			setIsJokerPlayed(false)
+
 		} else if (currentEnemy.health < 0){
 			currentEnemy.isDead = true
+			setIsJokerPlayed(false)
 		}
 	}
 
@@ -196,6 +209,7 @@ function App() {
 					currentEnemy={allEnemies.filter((el) => el.isSelected === true)}
 					switchState={(e) => switchStateToSelectCard(e)}
 					infoMessage={infoMessage}
+					isJokerPlayed={isJokerPlayed}
 				/>
 			)}
 
