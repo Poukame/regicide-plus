@@ -52,7 +52,7 @@ export default function SelectCurrentEnemy({ selectEnemy, allEnemies }) {
 			<Heading textAlign='center' mb='8'>
 				Select Your Enemy
 			</Heading>
-			<HStack gap='8' justifyContent='center'>
+			<HStack gap='8' justifyContent='center' flexWrap='wrap'>
 				{enemyCardsHTML}
 			</HStack>
 		</>

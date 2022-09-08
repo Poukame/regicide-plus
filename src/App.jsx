@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import './App.css';
 import { Context } from './OptionsContext';
 import SelectOptions from './Components/SelectOptions';
@@ -136,8 +136,8 @@ function App() {
 			generateAttack(currentEnemy);
 		}
 	}, [attackSum]);
-
-	console.log('file: App.jsx ~ line 134 ~ currentEnemy', currentEnemy);
+	
+	console.log('file: App.jsx ~ line 137 ~ currentEnemy', currentEnemy);
 
 	function generateAttack(currentEnemy) {
 		let allSuitsCards;
@@ -210,7 +210,7 @@ function App() {
 	}
 
 	return (
-		<Box maxW='97%' mx='auto' p='4'>
+		<Flex maxW='800px' mx='auto' flexDirection='column'>
 			{gameStatus === 'option' && (
 				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')} />
 			)}
@@ -224,6 +224,7 @@ function App() {
 					infoMessage={infoMessage}
 					isJokerPlayed={isJokerPlayed}
 					instaKill={() => isEnemyDead(currentEnemy, true)}
+					gameStatus={gameStatus}
 				/>
 			)}
 
@@ -241,7 +242,7 @@ function App() {
 			)}
 
 			{gameStatus === 'endGame' && <EndGameScreen />}
-		</Box>
+		</Flex>
 	);
 }
 

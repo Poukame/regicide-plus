@@ -1,4 +1,4 @@
-import { Text, Select, Flex, HStack, Button } from '@chakra-ui/react';
+import { Text, Select, VStack, Button, Heading } from '@chakra-ui/react';
 import { Context } from '../OptionsContext';
 import { useContext } from 'react';
 
@@ -7,44 +7,46 @@ export default function SelectOptions({updateStatus}) {
 
 	return (
 		<>
-			<Text fontSize='2xl'>Select Your Options</Text>
-			<Text>Maximum Hand Size Change</Text>
-			<Select size='md' name='maxHandSize' onChange={(e) => handleChange(e)}>
+		<VStack maxW='600px' mx='auto' alignItems='flex-start'>
+
+			<Heading textAlign='center'>Select Your Options</Heading>
+			<Text fontWeight='bold' fontSize='lg'>Maximum Hand Size Change</Text>
+			<Select size='md' variant='filled' name='maxHandSize' onChange={(e) => handleChange(e)}>
 				<option value={'OFF'}>Default</option>
 				<option value={1}>+1</option>
 				<option value={2}>+2</option>
 				<option value={-1}>-1</option>
 				<option value={-2}>-2</option>
 			</Select>
-			<Text>Remove Jesters</Text>
-			<Select size='md' name='removeJesters' onChange={(e) => handleChange(e)}>
+			<Text fontWeight='bold' fontSize='lg'>Remove Jesters</Text>
+			<Select size='md' variant='filled' name='removeJesters' onChange={(e) => handleChange(e)}>
 				<option value={'OFF'}>Default</option>
 				<option value={1}>-1</option>
 				<option value={2}>-2</option>
 			</Select>
-			<Text>Enemy Health Boost</Text>
-			<Select size='md' name='enemyHealthBoost' onChange={(e) => handleChange(e)}>
+			<Text fontWeight='bold' fontSize='lg'>Enemy Health Boost</Text>
+			<Select size='md' variant='filled' name='enemyHealthBoost' onChange={(e) => handleChange(e)}>
 				<option value={'OFF'}>Default</option>
 				<option value={5}>+5</option>
 				<option value={10}>+10</option>
 				<option value={-5}>-5</option>
 				<option value={-10}>-10</option>
 			</Select>
-			<Text>Enemy Attack Boost</Text>
-			<Select size='md' name='enemyAttackBoost' onChange={(e) => handleChange(e)}>
+			<Text fontWeight='bold' fontSize='lg'>Enemy Attack Boost</Text>
+			<Select size='md' variant='filled' name='enemyAttackBoost' onChange={(e) => handleChange(e)}>
 				<option value={'OFF'}>Default</option>
 				<option value={2}>+2</option>
 				<option value={5}>+5</option>
 				<option value={-5}>-5</option>
 				<option value={-2}>-2</option>
 			</Select>
-			<Text>Yield</Text>
-			<Select size='md' name='yield' onChange={(e) => handleChange(e)}>
+			<Text fontWeight='bold' fontSize='lg'>Yield</Text>
+			<Select size='md' variant='filled' name='yield' onChange={(e) => handleChange(e)}>
 				<option value={'ON'}>On (Default)</option>
 				<option value={'OFF'}>Off</option>
 			</Select>
-			<Text>Max Combo Limit</Text>
-			<Select size='md' name='maxComboLimit' onChange={(e) => handleChange(e)}>
+			<Text fontWeight='bold' fontSize='lg'>Max Combo Limit</Text>
+			<Select size='md' variant='filled' name='maxComboLimit' onChange={(e) => handleChange(e)}>
 				<option value={10}>10 (Default)</option>
 				<option value={9}>9</option>
 				<option value={8}>8</option>
@@ -55,8 +57,8 @@ export default function SelectOptions({updateStatus}) {
 				<option value={15}>15</option>
 				<option value={12}>12</option>
 			</Select>
-			<Text>Max Animal Companion Limit</Text>
-			<Select size='md' name='maxAnimalCompanionLimit' onChange={(e) => handleChange(e)}>
+			<Text fontWeight='bold' fontSize='lg'>Max Animal Companion Limit</Text>
+			<Select size='md' variant='filled' name='maxAnimalCompanionLimit' onChange={(e) => handleChange(e)}>
 				<option value={'K'}>Default</option>
 				<option value={'Q'}>Q</option>
 				<option value={'J'}>J</option>
@@ -72,7 +74,8 @@ export default function SelectOptions({updateStatus}) {
 				<option value={'A'}>A</option>
 				<option value={'OFF'}>No Animal Companion</option>
 			</Select>
-			<Button colorScheme='green' variant='solid' onClick={() => updateStatus()}>Start the Game</Button>
+			<Button colorScheme='green' alignSelf='center' variant='solid' onClick={() => updateStatus()}>Start the Game</Button>
+		</VStack>
 		</>
 	);
 }
