@@ -7,6 +7,7 @@ import SelectCurrentEnemy from './Components/SelectCurrentEnemy';
 import FightScreen from './Components/FightScreen';
 import SelectCardValue from './Components/SelectCardValue';
 import SelectComboCard from './Components/SelectCardCombo';
+import EndGameScreen from './Components/EndGameScreen';
 import damageConversion from './assets/DamageConversion.cjs';
 
 function App() {
@@ -29,7 +30,6 @@ function App() {
 		selectedCards;
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
-	console.log('file: App.jsx ~ line 32 ~ allEnemies', allEnemies);
 	const currentEnemy = allEnemies.find((el) => el.isSelected);
 
 	const resetInfoMessage = {
@@ -177,10 +177,11 @@ function App() {
 		}
 
 		setSelectedCards(resetSelectedCards);
-		isEnnemyDead(currentEnemy);
+		isEnemyDead(currentEnemy);
 	}
 
-	function isEnnemyDead(currentEnemy) {
+	function isEnemyDead(currentEnemy, instaKill) {
+		
 		if (currentEnemy.health === 0) {
 			setInfoMessage((prev) => ({
 				...prev,
@@ -189,13 +190,23 @@ function App() {
 			}));
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
-			setGameStatus('selectEnemy')
+			isGameEnded()
 			
-		} else if (currentEnemy.health < 0) {
+		} else if (currentEnemy.health < 0 || instaKill) {
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
-			setGameStatus('selectEnemy')
+			isGameEnded()
 		}
+	}
+
+	function isGameEnded() {
+		const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (
+			cur.isDead ? acc += 1 : acc
+		), 0)
+
+		numberOfDeadFigure === 12
+		? setGameStatus('endGame')
+		: setGameStatus('selectEnemy')
 	}
 
 	return (
@@ -212,6 +223,7 @@ function App() {
 					switchState={(e) => switchStateToSelectCard(e)}
 					infoMessage={infoMessage}
 					isJokerPlayed={isJokerPlayed}
+					instaKill={() => isEnemyDead(currentEnemy, true)}
 				/>
 			)}
 
@@ -227,6 +239,8 @@ function App() {
 					validateAttack={() => validateAttack()}
 				/>
 			)}
+
+			{gameStatus === 'endGame' && <EndGameScreen />}
 		</Box>
 	);
 }

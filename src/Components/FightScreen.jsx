@@ -1,7 +1,7 @@
 import { Box, Image, HStack, VStack, Button, Text } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
-export default function FightScreen({ currentEnemy, switchState, infoMessage, isJokerPlayed }) {
+export default function FightScreen({ currentEnemy, switchState, infoMessage, isJokerPlayed, instaKill }) {
 	const { health, attack, imgPath, id, isDead, isSelected, name, rank, suits } = currentEnemy[0];
 
 	return (
@@ -93,6 +93,16 @@ export default function FightScreen({ currentEnemy, switchState, infoMessage, is
 				>
 					<Icon icon='emojione-monotone:joker' color='#DFFF00' width='90' pointerEvents='none' />
 				</Button>
+				<Button
+					p='2'
+					bgColor='transparent'
+					value='instaKill'
+					onDoubleClick={() => instaKill()}
+					height='fit-content'
+				>
+				<Icon icon="healthicons:death" color="red" width="80" inline={true} pointerEvents='none' />
+				</Button>
+
 			</HStack>
 		</>
 	);
