@@ -9,7 +9,8 @@ const config = {
 
 const fonts = {
 	fonts: {
-		body: `Nunito, sans-serif`,
+		body: `Vecna, sans-serif`,
+		heading: 'Vecna, sans-serif'
 	},
 };
 

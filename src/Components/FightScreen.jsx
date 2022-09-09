@@ -1,4 +1,4 @@
-import { Box, Image, HStack, VStack, Button, Text, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Image, HStack, VStack, Button, Text, Grid, GridItem, useToast } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Icon } from '@iconify/react';
 import { Context } from '../OptionsContext';
@@ -15,6 +15,18 @@ export default function FightScreen({
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
 	const isJokerRemoved = options[0].removeJesters === 2;
 	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true) || isJokerPlayed;
+
+	let lastTap = null;
+
+	function handleDoubleTap() {
+	  const now = Date.now();
+	  const DOUBLE_PRESS_DELAY = 600;
+	  if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+		instaKill()
+	  } else {
+		lastTap = now;
+	  }
+	}
 
 	return (
 		<>
@@ -48,7 +60,6 @@ export default function FightScreen({
 					</Box>
 				</GridItem>
 			</Grid>
-
 			{isMsgToBeDisplayed && (
 				<HStack bgColor='whiteAlpha.300' p='4' my='4'>
 					{isJokerPlayed && (
@@ -135,22 +146,25 @@ export default function FightScreen({
 						/>
 					</Button>
 				)}
+				
+						
 				<Button
 					p='2'
 					bgColor='transparent'
 					value='instaKill'
 					height='fit-content'
 					maxWidth={maxWidthBtn}
-					onClick={() => instaKill()}
-				>
+					onClick={(e) => handleDoubleTap(e)}
+					>
 					<Icon
 						icon='healthicons:death'
 						color='red'
 						width='100%'
 						inline={true}
 						pointerEvents='none'
-					/>
+						/>
 				</Button>
+					
 			</HStack>
 		</>
 	);

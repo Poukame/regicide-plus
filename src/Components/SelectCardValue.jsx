@@ -13,8 +13,8 @@ export default function SelectCardValue({ switchState, selectedCards }) {
 				colorScheme='whiteAlpha'
 				color={isBlack ? 'black' : 'red.700'}
 				border='solid'
-				width='70px'
-				height='50px'
+				width={maxWidthBtn}
+				height={maxHeightBtn}
 				fontWeight='700'
 				fontSize='3xl'
 				value={el}
@@ -52,3 +52,6 @@ export default function SelectCardValue({ switchState, selectedCards }) {
 		</>
 	);
 }
+
+const maxWidthBtn = ['85px', '100px', '120px'];
+const maxHeightBtn = ['53px', '60px', '60px']
