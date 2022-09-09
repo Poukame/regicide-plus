@@ -13,6 +13,7 @@ export default function FightScreen({
 	instaKill,
 	allEnemies,
 	numberOfDeadFigure,
+	progressPercentage
 }) {
 	const { options } = useContext(Context);
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
@@ -49,7 +50,7 @@ export default function FightScreen({
 					</Box>
 				</GridItem>
 				<GridItem justifySelf='end'>
-					<OptionsReminder />
+					<OptionsReminder progressPercentage={progressPercentage}/>
 				</GridItem>
 				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[2, 3, 3]} rowStart={[1, 1, 1]}>
 					<Image
@@ -191,5 +192,5 @@ export default function FightScreen({
 const templateColumns = ['repeat(4, 1fr)', '1fr min-content 1fr auto 1fr', '1fr auto min-content auto 1fr'];
 const templateRows = ['repeat(2, min-content)', 'repeat(1, 1fr)', 'repeat(1, 1fr)'];
 const fontSizeValue = ['6xl', '7xl', '8xl'];
-const imageSize = ['120px', '120px', '160px'];
+const imageSize = ['120px', '175px', '175px'];
 const maxWidthBtn = ['70px', '80px', '100px'];

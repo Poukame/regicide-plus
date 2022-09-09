@@ -36,7 +36,7 @@ export default function SelectOptions({ updateStatus }) {
 					name='enemyHealthBoost'
 					onChange={(e) => handleChange(e)}
 				>
-					<option value={'OFF'}>Default</option>
+					<option value={0}>Default</option>
 					<option value={5}>+5</option>
 					<option value={10}>+10</option>
 					<option value={-5}>-5</option>
@@ -51,7 +51,7 @@ export default function SelectOptions({ updateStatus }) {
 					name='enemyAttackBoost'
 					onChange={(e) => handleChange(e)}
 				>
-					<option value={'OFF'}>Default</option>
+					<option value={0}>Default</option>
 					<option value={2}>+2</option>
 					<option value={5}>+5</option>
 					<option value={-5}>-5</option>

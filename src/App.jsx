@@ -13,7 +13,7 @@ import damageConversion from './assets/DamageConversion.cjs';
 function App() {
 	const [gameStatus, setGameStatus] = useState('option');
 	// option, fight, selectEnemy, selectCard, selectCombo, endGame
-	const { jackEnemies, queenEnemies, kingEnemies } = useContext(Context);
+	const { jackEnemies, queenEnemies, kingEnemies, options } = useContext(Context);
 	const [isJokerPlayed, setIsJokerPlayed] = useState(false);
 	const resetSelectedCards = {
 		baseCard: '',
@@ -31,9 +31,7 @@ function App() {
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
 	const currentEnemy = allEnemies.find((el) => el.isSelected);
-	const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (
-		cur.isDead ? acc += 1 : acc
-	), 0)
+	const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (cur.isDead ? (acc += 1) : acc), 0);
 
 	const resetInfoMessage = {
 		heartMsg: '',
@@ -85,7 +83,7 @@ function App() {
 		const value = e.target.value;
 		if (value === 'return') {
 			setGameStatus('fight');
-			setSelectedCards(resetSelectedCards)
+			setSelectedCards(resetSelectedCards);
 		} else {
 			setSelectedCards((prev) => {
 				return {
@@ -139,7 +137,6 @@ function App() {
 			generateAttack(currentEnemy);
 		}
 	}, [attackSum]);
-	
 
 	function generateAttack(currentEnemy) {
 		let allSuitsCards;
@@ -183,7 +180,6 @@ function App() {
 	}
 
 	function isEnemyDead(currentEnemy, instaKill) {
-		
 		if (currentEnemy.health === 0) {
 			setInfoMessage((prev) => ({
 				...prev,
@@ -192,23 +188,54 @@ function App() {
 			}));
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
-			isGameEnded()
-			
+			isGameEnded();
 		} else if (currentEnemy.health < 0 || instaKill) {
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
-			isGameEnded()
+			isGameEnded();
 		}
 	}
 
 	function isGameEnded() {
-		const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (
-			cur.isDead ? acc += 1 : acc
-		), 0)
+		progressPercentage();
+		const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (cur.isDead ? (acc += 1) : acc), 0);
 
-		numberOfDeadFigure === 12
-		? setGameStatus('endGame')
-		: setGameStatus('selectEnemy')
+		numberOfDeadFigure === 12 ? setGameStatus('endGame') : setGameStatus('selectEnemy');
+	}
+
+	function progressPercentage() {
+		const enemyBoost = options[0].enemyHealthBoost;
+
+		const healthOfDeadEnemies = allEnemies.reduce((acc, cur) => {
+			if (cur.rank === 'jack' && cur.isDead) {
+				acc += 20 + enemyBoost;
+			} else if (cur.rank === 'queen' && cur.isDead) {
+				acc += 30 + enemyBoost;
+			} else if (cur.rank === 'king' && cur.isDead) {
+				acc += 40 + enemyBoost;
+			}
+			return acc;
+		}, 0);
+
+		let currentEnemyDmg;
+		switch (currentEnemy.rank) {
+			case 'jack':
+				currentEnemyDmg = 20 + enemyBoost - currentEnemy.health;
+				break;
+			case 'queen':
+				currentEnemyDmg = 30 + enemyBoost - currentEnemy.health;
+				break;
+			case 'king':
+				currentEnemyDmg = 40 + enemyBoost - currentEnemy.health;
+				break;
+			default:
+				break;
+		}
+
+		const totalLife = 4 * (20 + enemyBoost) + 4 * (30 + enemyBoost) + 4 * (40 + enemyBoost);
+		const progress = Math.round((100 / totalLife) * (healthOfDeadEnemies + currentEnemyDmg));
+
+		return progress;
 	}
 
 	return (
@@ -217,7 +244,13 @@ function App() {
 				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')} />
 			)}
 
-			{gameStatus === 'selectEnemy' && <SelectCurrentEnemy selectEnemy={(e) => selectEnemy(e)} allEnemies={allEnemies} numberOfDeadFigure={numberOfDeadFigure}/>}
+			{gameStatus === 'selectEnemy' && (
+				<SelectCurrentEnemy
+					selectEnemy={(e) => selectEnemy(e)}
+					allEnemies={allEnemies}
+					numberOfDeadFigure={numberOfDeadFigure}
+				/>
+			)}
 
 			{gameStatus === 'fight' && (
 				<FightScreen
@@ -229,11 +262,16 @@ function App() {
 					gameStatus={gameStatus}
 					allEnemies={allEnemies}
 					numberOfDeadFigure={numberOfDeadFigure}
+					progressPercentage={progressPercentage()}
 				/>
 			)}
 
 			{gameStatus === 'selectCard' && (
-				<SelectCardValue switchState={(e) => switchStateToCombo(e)} selectedCards={selectedCards} allEnemies={allEnemies}/>
+				<SelectCardValue
+					switchState={(e) => switchStateToCombo(e)}
+					selectedCards={selectedCards}
+					allEnemies={allEnemies}
+				/>
 			)}
 
 			{gameStatus === 'selectCombo' && (

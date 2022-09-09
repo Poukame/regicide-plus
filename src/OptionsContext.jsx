@@ -16,8 +16,8 @@ function ContextProvider({ children }) {
 		{
 			maxHandSize: 0,
 			removeJesters: 'OFF',
-			enemyHealthBoost: 'OFF',
-			enemyAttackBoost: 'OFF',
+			enemyHealthBoost: 0,
+			enemyAttackBoost: 0,
 			yieldTurn: 'ON',
 			maxComboLimit: 10,
 			maxAnimalCompanionLimit: 'K',
@@ -25,7 +25,6 @@ function ContextProvider({ children }) {
 	]);
 	const {maxHandSize, removeJesters, enemyHealthBoost, enemyAttackBoost, yieldTurn, maxComboLimit, maxAnimalCompanionLimit} = options[0]
 	
-	console.log('file: OptionsContext.jsx ~ line 26 ~ options', options);
 	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit)
 	const [maxCompanionCard, setMaxCompanionCard] = useState(maxAnimalCompanionLimit)
 
@@ -73,15 +72,15 @@ function ContextProvider({ children }) {
 	}));
 
 	useEffect(() => {
-		const isHealthDefault = enemyHealthBoost === 'OFF' ? true : false;
-		const isAttackDefault = enemyAttackBoost === 'OFF' ? true : false;
+		// const isHealthDefault = enemyHealthBoost === 'OFF' ? true : false;
+		// const isAttackDefault = enemyAttackBoost === 'OFF' ? true : false;
 
 		setJackEnemies((prev) => {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					health: isHealthDefault ? JACK_HEALTH : JACK_HEALTH + enemyHealthBoost,
-					attack: isAttackDefault ? JACK_ATTACK : JACK_ATTACK + enemyAttackBoost,
+					health: JACK_HEALTH + enemyHealthBoost,
+					attack: JACK_ATTACK + enemyAttackBoost,
 				};
 			});
 		});
@@ -90,8 +89,8 @@ function ContextProvider({ children }) {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					health: isHealthDefault ? QUEEN_HEALTH : QUEEN_HEALTH + enemyHealthBoost,
-					attack: isAttackDefault ? QUEEN_ATTACK : QUEEN_ATTACK + enemyAttackBoost,
+					health: QUEEN_HEALTH + enemyHealthBoost,
+					attack: QUEEN_ATTACK + enemyAttackBoost,
 				};
 			});
 		});
@@ -100,8 +99,8 @@ function ContextProvider({ children }) {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					health: isHealthDefault ? KING_HEALTH : KING_HEALTH + enemyHealthBoost,
-					attack: isAttackDefault ? KING_ATTACK : KING_ATTACK + enemyAttackBoost,
+					health: KING_HEALTH + enemyHealthBoost,
+					attack: KING_ATTACK + enemyAttackBoost,
 				};
 			});
 		});
