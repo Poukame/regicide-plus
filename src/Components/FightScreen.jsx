@@ -1,9 +1,20 @@
-import { Box, Image, HStack, VStack, Button, Text, Grid, GridItem, Tooltip } from '@chakra-ui/react';
+import {
+	Box,
+	Image,
+	HStack,
+	VStack,
+	Button,
+	Text,
+	Grid,
+	GridItem,
+	Tooltip,
+} from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Icon } from '@iconify/react';
 import { Context } from '../OptionsContext';
 import EnemiesToCome from './EnemiesToCome';
 import OptionsReminder from './OptionsReminder';
+import SettingsScreen from './SettingsScreen';
 
 export default function FightScreen({
 	currentEnemy,
@@ -13,7 +24,7 @@ export default function FightScreen({
 	instaKill,
 	allEnemies,
 	numberOfDeadFigure,
-	progressPercentage
+	progressPercentage,
 }) {
 	const { options } = useContext(Context);
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
@@ -42,25 +53,55 @@ export default function FightScreen({
 				justifyItems='center'
 			>
 				<GridItem colSpan={[2, 1, 1]} rowStart={[2, 1, 1]}>
-					<Box fontSize={fontSizeValue} color='red.700'>
+					<Box fontSize={fontSizeValue} color='red.700' height='min-content'>
 						<VStack>
 							<Box fontSize='3xl'>Health</Box>
+
 							<Box fontWeight='700'>{isDead ? '0' : health}</Box>
 						</VStack>
 					</Box>
 				</GridItem>
 				<GridItem justifySelf='end'>
-					<OptionsReminder progressPercentage={progressPercentage}/>
+					<OptionsReminder progressPercentage={progressPercentage} />
 				</GridItem>
 				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[2, 3, 3]} rowStart={[1, 1, 1]}>
-					<Image
-						src={imgPath}
-						maxW={imageSize}
-						filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
-					/>
+					<VStack>
+						<Image
+							src={imgPath}
+							maxW={imageSize}
+							filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
+						/>
+						<Tooltip
+							hasArrow
+							fontSize='lg'
+							placement='top'
+							label={`Double Click to Use Instant Kill`}
+							bgColor='#FFF'
+							maxW='25ch'
+							openDelay={800}
+						>
+							<Button
+								p='2'
+								bgColor='whiteAlpha.300'
+								value='instaKill'
+								border='dashed white 1px'
+								height='fit-content'
+								maxWidth='60px'
+								onClick={(e) => handleDoubleTap(e)}
+							>
+								<Icon
+									icon='healthicons:death'
+									color='red'
+									width='100%'
+									inline={false}
+									pointerEvents='none'
+								/>
+							</Button>
+						</Tooltip>
+					</VStack>
 				</GridItem>
 				<GridItem justifySelf='start'>
-					<EnemiesToCome allEnemies={allEnemies} numberOfDeadFigure={numberOfDeadFigure}/>
+					<EnemiesToCome allEnemies={allEnemies} numberOfDeadFigure={numberOfDeadFigure} />
 				</GridItem>
 				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[3, 5, 5]} rowStart={[2, 1, 1]}>
 					<Box fontSize={fontSizeValue}>
@@ -96,7 +137,7 @@ export default function FightScreen({
 					</VStack>
 				</HStack>
 			)}
-			<HStack gap='4' mx='auto' flexWrap='wrap' justifyContent='space-evenly' mt={['0', '6', '8']}>
+			<HStack gap='4' mx='auto' flexWrap='wrap' justifyContent='space-evenly' mt={['0', '4', '4']}>
 				<Button
 					p='2'
 					bgColor='transparent'
@@ -146,7 +187,7 @@ export default function FightScreen({
 						onClick={(e) => switchState(e)}
 						height='fit-content'
 						maxWidth={maxWidthBtn}
-					>
+						>
 						<Icon
 							icon='emojione-monotone:joker'
 							color='#DFFF00'
@@ -155,33 +196,7 @@ export default function FightScreen({
 						/>
 					</Button>
 				)}
-                <Tooltip
-					hasArrow
-                    fontSize='lg'
-                    placement='top'
-					label={`Double Click to Use Instant Kill`}
-                    bgColor='#FFF'
-                    maxW='25ch'
-					openDelay={800}
-				>
-
-				<Button
-					p='2'
-					bgColor='transparent'
-					value='instaKill'
-					height='fit-content'
-					maxWidth={maxWidthBtn}
-					onClick={(e) => handleDoubleTap(e)}
-					>
-					<Icon
-						icon='healthicons:death'
-						color='red'
-						width='100%'
-						inline={true}
-						pointerEvents='none'
-						/>
-				</Button>
-						</Tooltip>
+				<SettingsScreen width={maxWidthBtn} />
 			</HStack>
 		</>
 	);
@@ -189,8 +204,12 @@ export default function FightScreen({
 
 // STYLING
 
-const templateColumns = ['repeat(4, 1fr)', '1fr min-content 1fr auto 1fr', '1fr auto min-content auto 1fr'];
+const templateColumns = [
+	'repeat(4, 1fr)',
+	'1fr min-content 1fr auto 1fr',
+	'1fr auto min-content auto 1fr',
+];
 const templateRows = ['repeat(2, min-content)', 'repeat(1, 1fr)', 'repeat(1, 1fr)'];
 const fontSizeValue = ['6xl', '7xl', '8xl'];
-const imageSize = ['120px', '175px', '175px'];
+const imageSize = ['120px', '135px', '135px'];
 const maxWidthBtn = ['70px', '80px', '100px'];
