@@ -18,38 +18,29 @@ export default function FightScreen({
 	const isJokerRemoved = options[0].removeJesters === 2;
 	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true) || isJokerPlayed;
 
-	// render Dead enemies
-	const deadEnemiesHTML = allEnemies
-		.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure))
-		.filter((el) => el.isDead === true)
-		.map((cards) => {
-			return (
-				<Box key={cards.id}>
-					<Image
-						src={cards.imgPath}
-						maxW='60px'
-						filter={grayscaleDead}
-						opacity={opacityDead}
-					/>
-				</Box>
-			);
-		});
+	// // render Dead enemies
+	// const deadEnemiesHTML = allEnemies
+	// 	.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure))
+	// 	.filter((el) => el.isDead === true)
+	// 	.map((cards) => {
+	// 		return (
+	// 			<Box key={cards.id}>
+	// 				<Image src={cards.imgPath} maxW='50px' filter={grayscaleDead} opacity={opacityDead} />
+	// 			</Box>
+	// 		);
+	// 	});
 
 	// render enemies to come
 	const enemiesToCome = allEnemies
-	.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure))
-	.filter((el) => el.isDead === false && el.isSelected === false)
-	.map((cards) => {
-		return (
-			<Box key={cards.id}>
-				<Image
-					src={cards.imgPath}
-					maxW='60px'
-					opacity={opacityDead}
-				/>
-			</Box>
-		);
-	});
+		.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure))
+		.filter((el) => el.isDead === false && el.isSelected === false)
+		.map((cards) => {
+			return (
+				<Box key={cards.id}>
+					<Image src={cards.imgPath} maxW='50px' opacity={opacityDead} />
+				</Box>
+			);
+		});
 
 	// Handle double tap on instaKill Button
 	let lastTap = null;
@@ -72,7 +63,7 @@ export default function FightScreen({
 				templateRows={templateRows}
 				justifyItems='center'
 			>
-				<GridItem colSpan={[1, 1, 1]} rowStart={[2, 1, 1]}>
+				<GridItem colSpan={[2, 1, 1]} rowStart={[2, 1, 1]}>
 					<Box fontSize={fontSizeValue} color='red.700'>
 						<VStack>
 							<Box fontSize='3xl'>Health</Box>
@@ -80,14 +71,20 @@ export default function FightScreen({
 						</VStack>
 					</Box>
 				</GridItem>
-				<GridItem colSpan={[2, 1, 1]} rowStart={[1, 1, 1]}>
+				<GridItem justifySelf='end'>
+					{/* <VStack>{deadEnemiesHTML}</VStack> */}
+				</GridItem>
+				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[2, 3, 3]} rowStart={[1, 1, 1]}>
 					<Image
 						src={imgPath}
 						maxW={imageSize}
 						filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
 					/>
 				</GridItem>
-				<GridItem colSpan={[1, 1, 1]} rowStart={[2, 1, 1]}>
+				<GridItem justifySelf='start'>
+					<VStack>{enemiesToCome}</VStack>
+				</GridItem>
+				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[3, 5, 5]} rowStart={[2, 1, 1]}>
 					<Box fontSize={fontSizeValue}>
 						<VStack>
 							<Box fontSize='3xl'>Attack</Box>
@@ -96,8 +93,7 @@ export default function FightScreen({
 					</Box>
 				</GridItem>
 			</Grid>
-			<HStack>{deadEnemiesHTML}</HStack>
-			<HStack>{enemiesToCome}</HStack>
+
 			{isMsgToBeDisplayed && (
 				<HStack bgColor='whiteAlpha.300' p='4' my='4'>
 					{isJokerPlayed && (
@@ -106,19 +102,16 @@ export default function FightScreen({
 					<VStack>
 						{infoMessage.displayPerfectKillMsg && (
 							<HStack fontSize='xl'>
-								{/* <Icon icon="mdi:target-account" inline={true} /> */}
 								<Text>{infoMessage.perfectKillMsg}</Text>
 							</HStack>
 						)}
 						{infoMessage.displayDiamondMsg && (
 							<HStack fontSize='xl'>
-								{/* <Icon icon='mdi:cards-playing' inline={true} /> */}
 								<Text>{infoMessage.diamondMsg}</Text>
 							</HStack>
 						)}
 						{infoMessage.displayHeartMsg && (
 							<HStack fontSize='xl'>
-								{/* <Icon icon='akar-icons:health' inline={true} /> */}
 								<Text>{infoMessage.heartMsg}</Text>
 							</HStack>
 						)}
@@ -210,8 +203,8 @@ export default function FightScreen({
 
 const opacityDead = '.3';
 const grayscaleDead = 'grayscale(100%)';
-const templateColumns = ['repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)'];
+const templateColumns = ['repeat(4, 1fr)', '1fr min-content 1fr auto 1fr', '1fr auto min-content auto 1fr'];
 const templateRows = ['repeat(2, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)'];
 const fontSizeValue = ['6xl', '7xl', '8xl'];
-const imageSize = ['120px', '120px', '180px'];
+const imageSize = ['120px', '120px', '160px'];
 const maxWidthBtn = ['70px', '80px', '100px'];
