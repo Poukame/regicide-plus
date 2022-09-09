@@ -17,14 +17,15 @@ function ContextProvider({ children }) {
 			removeJesters: 'OFF',
 			enemyHealthBoost: 'OFF',
 			enemyAttackBoost: 'OFF',
-			yield: 'ON',
+			yieldTurn: 'ON',
 			maxComboLimit: 10,
 			maxAnimalCompanionLimit: 'K',
 		},
 	]);
+	const {maxHandSize, removeJesters, enemyHealthBoost, enemyAttackBoost, yieldTurn, maxComboLimit, maxAnimalCompanionLimit} = options[0]
 
-	const [maxComboCard, setMaxComboCard] = useState(options[0].maxComboLimit)
-	const [maxCompanionCard, setMaxCompanionCard] = useState(options[0].maxAnimalCompanionLimit)
+	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit)
+	const [maxCompanionCard, setMaxCompanionCard] = useState(maxAnimalCompanionLimit)
 
 	function handleChange(e) {
 		const { name, value } = e.target;
@@ -70,15 +71,15 @@ function ContextProvider({ children }) {
 	}));
 
 	useEffect(() => {
-		const isHealthDefault = options[0].enemyHealthBoost === 'OFF' ? true : false;
-		const isAttackDefault = options[0].enemyAttackBoost === 'OFF' ? true : false;
+		const isHealthDefault = enemyHealthBoost === 'OFF' ? true : false;
+		const isAttackDefault = enemyAttackBoost === 'OFF' ? true : false;
 
 		setJackEnemies((prev) => {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					health: isHealthDefault ? JACK_HEALTH : JACK_HEALTH + options[0].enemyHealthBoost,
-					attack: isAttackDefault ? JACK_ATTACK : JACK_ATTACK + options[0].enemyAttackBoost,
+					health: isHealthDefault ? JACK_HEALTH : JACK_HEALTH + enemyHealthBoost,
+					attack: isAttackDefault ? JACK_ATTACK : JACK_ATTACK + enemyAttackBoost,
 				};
 			});
 		});
@@ -87,8 +88,8 @@ function ContextProvider({ children }) {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					health: isHealthDefault ? QUEEN_HEALTH : QUEEN_HEALTH + options[0].enemyHealthBoost,
-					attack: isAttackDefault ? QUEEN_ATTACK : QUEEN_ATTACK + options[0].enemyAttackBoost,
+					health: isHealthDefault ? QUEEN_HEALTH : QUEEN_HEALTH + enemyHealthBoost,
+					attack: isAttackDefault ? QUEEN_ATTACK : QUEEN_ATTACK + enemyAttackBoost,
 				};
 			});
 		});
@@ -97,14 +98,14 @@ function ContextProvider({ children }) {
 			return prev.map((prev) => {
 				return {
 					...prev,
-					health: isHealthDefault ? KING_HEALTH : KING_HEALTH + options[0].enemyHealthBoost,
-					attack: isAttackDefault ? KING_ATTACK : KING_ATTACK + options[0].enemyAttackBoost,
+					health: isHealthDefault ? KING_HEALTH : KING_HEALTH + enemyHealthBoost,
+					attack: isAttackDefault ? KING_ATTACK : KING_ATTACK + enemyAttackBoost,
 				};
 			});
 		});
 
-		setMaxComboCard(options[0].maxComboLimit === 'OFF' ? 0 : Math.floor(options[0].maxComboLimit / 2))
-		setMaxCompanionCard(options[0].maxAnimalCompanionLimit === 'OFF' ? 'OFF' : options[0].maxAnimalCompanionLimit.toString())
+		setMaxComboCard(maxComboLimit === 'OFF' ? 0 : Math.floor(maxComboLimit / 2))
+		setMaxCompanionCard(maxAnimalCompanionLimit === 'OFF' ? 'OFF' : maxAnimalCompanionLimit.toString())
 
 	}, [options]);
 

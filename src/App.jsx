@@ -25,6 +25,7 @@ function App() {
 		attackSum: 0,
 	};
 	const [selectedCards, setSelectedCards] = useState(resetSelectedCards);
+	console.log('file: App.jsx ~ line 28 ~ selectedCards', selectedCards);
 
 	const { baseCard, baseCardDmg, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } =
 		selectedCards;
@@ -78,9 +79,11 @@ function App() {
 	}
 
 	function switchStateToCombo(e) {
+		console.log('file: App.jsx ~ line 82 ~ e', e);
 		const value = e.target.value;
 		if (value === 'return') {
 			setGameStatus('fight');
+			setSelectedCards(resetSelectedCards)
 		} else {
 			setSelectedCards((prev) => {
 				return {
@@ -120,8 +123,6 @@ function App() {
 					: [...prev.comboSuits, value[1]],
 			};
 		});
-
-		// calculation function
 	}
 
 	function validateAttack() {
@@ -171,7 +172,7 @@ function App() {
 		if (allSuitsCards.some((el) => el === 'diamond')) {
 			setInfoMessage((prev) => ({
 				...prev,
-				diamondMsg: `Draw ${attackSum} Cards`,
+				diamondMsg: `🤏 Draw ${attackSum} Cards`,
 				displayDiamondMsg: true,
 			}));
 		}
@@ -181,6 +182,8 @@ function App() {
 	}
 
 	function isEnemyDead(currentEnemy, instaKill) {
+		console.log('file: App.jsx ~ line 185 ~ instaKill', instaKill);
+		console.log('file: App.jsx ~ line 185 ~ currentEnemy', currentEnemy);
 		
 		if (currentEnemy.health === 0) {
 			setInfoMessage((prev) => ({
@@ -238,6 +241,7 @@ function App() {
 					saveCompanionCards={(e) => saveCompanionCards(e)}
 					saveComboCards={(e) => saveComboCards(e)}
 					validateAttack={() => validateAttack()}
+					switchState={(e) => switchStateToCombo(e)}
 				/>
 			)}
 

@@ -1,4 +1,4 @@
-import { Box, Flex, Button, HStack } from '@chakra-ui/react';
+import { Box, Flex, Button, HStack, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Icon } from '@iconify/react';
 import { Context } from '../OptionsContext';
@@ -9,44 +9,37 @@ export default function SelectComboCard({
 	saveCompanionCards,
 	saveComboCards,
 	validateAttack,
+	switchState,
 }) {
 	const { maxComboCard, maxCompanionCard, options } = useContext(Context);
-	const {
-		baseCard,
-		baseCardDmg,
-		baseCardSuit,
-		companionSuit,
-		comboSum,
-		comboSuits,
-		isJokerPlayed,
-		attackSum,
-	} = selectedCards;
+	const { baseCard, baseCardDmg, baseCardSuit, companionSuit, comboSum, comboSuits } =
+		selectedCards;
 
 	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const suitsData = [
 		{
-			suitIcon: <Icon icon='emojione-v1:heart-suit' height='20px' pointerEvents='none' />,
+			suitIcon: <Icon icon='emojione-v1:heart-suit' inline={true} style={iconMargin} pointerEvents='none' />,
 			suit: 'heart',
 			color: 'red.700',
 			isSelected: comboSuits.some((suit) => suit === 'heart'),
 			isCompanionSelected: companionSuit.some((suit) => suit === 'heart'),
 		},
 		{
-			suitIcon: <Icon icon='emojione-v1:diamond-suit' height='20px' pointerEvents='none' />,
+			suitIcon: <Icon icon='emojione-v1:diamond-suit'  inline={true} style={iconMargin} pointerEvents='none' />,
 			suit: 'diamond',
 			color: 'red.700',
 			isSelected: comboSuits.some((suit) => suit === 'diamond'),
 			isCompanionSelected: companionSuit.some((suit) => suit === 'diamond'),
 		},
 		{
-			suitIcon: <Icon icon='emojione-v1:club-suit' height='20px' pointerEvents='none' />,
+			suitIcon: <Icon icon='emojione-v1:club-suit'  inline={true} style={iconMargin} pointerEvents='none' />,
 			suit: 'club',
 			color: 'black',
 			isSelected: comboSuits.some((suit) => suit === 'club'),
 			isCompanionSelected: companionSuit.some((suit) => suit === 'club'),
 		},
 		{
-			suitIcon: <Icon icon='emojione-v1:spade-suit' height='20px' pointerEvents='none' />,
+			suitIcon: <Icon icon='emojione-v1:spade-suit'  inline={true} style={iconMargin} pointerEvents='none' />,
 			suit: 'spade',
 			color: 'black',
 			isSelected: comboSuits.some((suit) => suit === 'spade'),
@@ -71,7 +64,7 @@ export default function SelectComboCard({
 	} else {
 		companionHTML = suitsData.map((el) => {
 			const isAceSuitSelected = baseCard !== 'A' && companionSuit.length >= 1;
-			const removeBaseAce = (baseCardSuit === el.suit) && (baseCard === 'A');
+			const removeBaseAce = baseCardSuit === el.suit && baseCard === 'A';
 
 			return (
 				<>
@@ -81,7 +74,8 @@ export default function SelectComboCard({
 						colorScheme='white'
 						color={el.color}
 						outline={el.isCompanionSelected ? 'none' : 'solid'}
-						height='50px'
+						height={maxHeightBtn}
+						width={maxWidthBtn}
 						fontWeight='700'
 						fontSize='3xl'
 						value={el.isCompanionSelected ? [-1, el.suit] : [1, el.suit]}
@@ -91,7 +85,7 @@ export default function SelectComboCard({
 							saveComboCards(e), saveCompanionCards(e);
 						}}
 					>
-						A{el.suitIcon}
+						<Text pointerEvents='none'>A{el.suitIcon}</Text>
 					</Button>
 				</>
 			);
@@ -116,7 +110,8 @@ export default function SelectComboCard({
 						colorScheme='white'
 						color={el.color}
 						outline={el.isSelected ? 'none' : 'solid'}
-						height='50px'
+						height={maxHeightBtn}
+						width={maxWidthBtn}
 						visibility={isBaseSuitSelected && !isCompanionPicked ? 'visible' : 'hidden'}
 						fontWeight='700'
 						fontSize='3xl'
@@ -124,8 +119,8 @@ export default function SelectComboCard({
 						value={el.isSelected ? [-calculatedComboCard, el.suit] : [calculatedComboCard, el.suit]}
 						onClick={(e) => saveComboCards(e)}
 					>
-						{calculatedComboCard}
-						{el.suitIcon}
+						<Text pointerEvents='none'>{calculatedComboCard}{el.suitIcon}</Text>
+						
 					</Button>
 				</>
 			);
@@ -134,13 +129,62 @@ export default function SelectComboCard({
 
 	return (
 		<>
-			<HStack flexWrap='wrap'>{companionHTML}</HStack>
-			<HStack flexWrap='wrap' mt='4'>
+			<Grid
+				gridTemplateColumns={templateColumns}
+				gridTemplateRows={templateRows}
+				gap='4'
+				justifyItems='center'
+			>
+				{companionHTML}
+			</Grid>
+			<Grid
+				gridTemplateColumns={templateColumns}
+				gridTemplateRows={templateRows}
+				gap='4'
+				mt='8'
+				justifyItems='center'
+			>
 				{comboCardsHTML}
-			</HStack>
-			<Button mt='4' onClick={validateAttack}>
-				Validate Attack
+			</Grid>
+			<Flex mt='8' flexWrap='wrap' gap='8'>
+
+
+			<Button flex='4 1 auto' fontSize='2xl' height='70px' mx='auto' onClick={validateAttack}>
+				<Text>
+					Validate Attack
+					<Icon
+						icon='akar-icons:check'
+						style={{ display: 'inline', marginLeft: '8px' }}
+						inline={true}
+					/>
+				</Text>
 			</Button>
+			<Button
+				flex='auto'
+				fontSize='2xl'
+				height='70px'
+				mx='auto'
+		
+				value='return'
+				onClick={(e) => switchState(e)}
+			>
+				<Text pointerEvents='none'>
+					Cancel
+					<Icon
+						icon='icon-park:return'
+						style={{ display: 'inline', marginLeft: '8px' }}
+						inline={true}
+					/>
+				</Text>
+			</Button>
+			</Flex>
 		</>
 	);
 }
+
+// STYLING
+const templateColumns = ['repeat(2, 1fr)', 'repeat(4, 1fr)', 'repeat(4, 1fr)'];
+const templateRows = ['repeat(2, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)'];
+const iconMargin = { display: 'inline', marginLeft: '8px' };
+const maxWidthBtn = ['85px', '100px', '120px'];
+const maxHeightBtn = ['53px', '60px', '70px'];

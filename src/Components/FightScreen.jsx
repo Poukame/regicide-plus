@@ -50,7 +50,7 @@ export default function FightScreen({
 			</Grid>
 
 			{isMsgToBeDisplayed && (
-				<HStack bgColor='whiteAlpha.300' p='4' mb='4'>
+				<HStack bgColor='whiteAlpha.300' p='4' my='4'>
 					{isJokerPlayed && (
 						<Icon icon='emojione-monotone:joker' color='#DFFF00' width='90' pointerEvents='none' />
 					)}
@@ -63,7 +63,7 @@ export default function FightScreen({
 						)}
 						{infoMessage.displayDiamondMsg && (
 							<HStack fontSize='xl'>
-								<Icon icon='mdi:cards-playing' inline={true} />
+								{/* <Icon icon='mdi:cards-playing' inline={true} /> */}
 								<Text>{infoMessage.diamondMsg}</Text>
 							</HStack>
 						)}
@@ -141,7 +141,7 @@ export default function FightScreen({
 					value='instaKill'
 					height='fit-content'
 					maxWidth={maxWidthBtn}
-					onDoubleClick={() => instaKill()}
+					onClick={() => instaKill()}
 				>
 					<Icon
 						icon='healthicons:death'
