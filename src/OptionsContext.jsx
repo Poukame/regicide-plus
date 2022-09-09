@@ -14,7 +14,7 @@ function ContextProvider({ children }) {
 
 	const [options, setOptions] = useState([
 		{
-			maxHandSize: 7,
+			maxHandSize: 0,
 			removeJesters: 'OFF',
 			enemyHealthBoost: 'OFF',
 			enemyAttackBoost: 'OFF',
@@ -24,7 +24,8 @@ function ContextProvider({ children }) {
 		},
 	]);
 	const {maxHandSize, removeJesters, enemyHealthBoost, enemyAttackBoost, yieldTurn, maxComboLimit, maxAnimalCompanionLimit} = options[0]
-
+	
+	console.log('file: OptionsContext.jsx ~ line 26 ~ options', options);
 	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit)
 	const [maxCompanionCard, setMaxCompanionCard] = useState(maxAnimalCompanionLimit)
 

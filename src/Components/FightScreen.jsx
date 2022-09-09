@@ -1,8 +1,9 @@
-import { Box, Image, HStack, VStack, Button, Text, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Image, HStack, VStack, Button, Text, Grid, GridItem, Tooltip } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Icon } from '@iconify/react';
 import { Context } from '../OptionsContext';
-import { sliceIndex } from '../assets/DeadEnemies.cjs';
+import EnemiesToCome from './EnemiesToCome';
+import OptionsReminder from './OptionsReminder';
 
 export default function FightScreen({
 	currentEnemy,
@@ -17,30 +18,6 @@ export default function FightScreen({
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
 	const isJokerRemoved = options[0].removeJesters === 2;
 	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true) || isJokerPlayed;
-
-	// // render Dead enemies
-	// const deadEnemiesHTML = allEnemies
-	// 	.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure))
-	// 	.filter((el) => el.isDead === true)
-	// 	.map((cards) => {
-	// 		return (
-	// 			<Box key={cards.id}>
-	// 				<Image src={cards.imgPath} maxW='50px' filter={grayscaleDead} opacity={opacityDead} />
-	// 			</Box>
-	// 		);
-	// 	});
-
-	// render enemies to come
-	const enemiesToCome = allEnemies
-		.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure))
-		.filter((el) => el.isDead === false && el.isSelected === false)
-		.map((cards) => {
-			return (
-				<Box key={cards.id}>
-					<Image src={cards.imgPath} maxW='50px' opacity={opacityDead} />
-				</Box>
-			);
-		});
 
 	// Handle double tap on instaKill Button
 	let lastTap = null;
@@ -72,7 +49,7 @@ export default function FightScreen({
 					</Box>
 				</GridItem>
 				<GridItem justifySelf='end'>
-					{/* <VStack>{deadEnemiesHTML}</VStack> */}
+					<OptionsReminder />
 				</GridItem>
 				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[2, 3, 3]} rowStart={[1, 1, 1]}>
 					<Image
@@ -82,7 +59,7 @@ export default function FightScreen({
 					/>
 				</GridItem>
 				<GridItem justifySelf='start'>
-					<VStack>{enemiesToCome}</VStack>
+					<EnemiesToCome allEnemies={allEnemies} numberOfDeadFigure={numberOfDeadFigure}/>
 				</GridItem>
 				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[3, 5, 5]} rowStart={[2, 1, 1]}>
 					<Box fontSize={fontSizeValue}>
@@ -177,6 +154,15 @@ export default function FightScreen({
 						/>
 					</Button>
 				)}
+                <Tooltip
+					hasArrow
+                    fontSize='lg'
+                    placement='top'
+					label={`Double Click to Use Instant Kill`}
+                    bgColor='#FFF'
+                    maxW='25ch'
+					openDelay={800}
+				>
 
 				<Button
 					p='2'
@@ -185,15 +171,16 @@ export default function FightScreen({
 					height='fit-content'
 					maxWidth={maxWidthBtn}
 					onClick={(e) => handleDoubleTap(e)}
-				>
+					>
 					<Icon
 						icon='healthicons:death'
 						color='red'
 						width='100%'
 						inline={true}
 						pointerEvents='none'
-					/>
+						/>
 				</Button>
+						</Tooltip>
 			</HStack>
 		</>
 	);
@@ -201,10 +188,8 @@ export default function FightScreen({
 
 // STYLING
 
-const opacityDead = '.3';
-const grayscaleDead = 'grayscale(100%)';
 const templateColumns = ['repeat(4, 1fr)', '1fr min-content 1fr auto 1fr', '1fr auto min-content auto 1fr'];
-const templateRows = ['repeat(2, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)'];
+const templateRows = ['repeat(2, min-content)', 'repeat(1, 1fr)', 'repeat(1, 1fr)'];
 const fontSizeValue = ['6xl', '7xl', '8xl'];
 const imageSize = ['120px', '120px', '160px'];
 const maxWidthBtn = ['70px', '80px', '100px'];

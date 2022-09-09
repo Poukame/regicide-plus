@@ -13,7 +13,7 @@ export default function SelectOptions({ updateStatus }) {
 					Maximum Hand Size Change
 				</Text>
 				<Select size='md' variant='filled' name='maxHandSize' onChange={(e) => handleChange(e)}>
-					<option value={'OFF'}>Default</option>
+					<option value={0}>Default</option>
 					<option value={1}>+1</option>
 					<option value={2}>+2</option>
 					<option value={-1}>-1</option>
@@ -60,7 +60,7 @@ export default function SelectOptions({ updateStatus }) {
 				<Text fontWeight='bold' fontSize='lg'>
 					Yield
 				</Text>
-				<Select size='md' variant='filled' name='yield' onChange={(e) => handleChange(e)}>
+				<Select size='md' variant='filled' name='yieldTurn' onChange={(e) => handleChange(e)}>
 					<option value={'ON'}>On (Default)</option>
 					<option value={'OFF'}>Off</option>
 				</Select>
