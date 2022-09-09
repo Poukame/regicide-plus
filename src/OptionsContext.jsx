@@ -72,8 +72,6 @@ function ContextProvider({ children }) {
 	}));
 
 	useEffect(() => {
-		// const isHealthDefault = enemyHealthBoost === 'OFF' ? true : false;
-		// const isAttackDefault = enemyAttackBoost === 'OFF' ? true : false;
 
 		setJackEnemies((prev) => {
 			return prev.map((prev) => {

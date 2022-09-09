@@ -26,7 +26,7 @@ function App() {
 	};
 	const [selectedCards, setSelectedCards] = useState(resetSelectedCards);
 
-	const { baseCard, baseCardDmg, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } =
+	const { baseCard, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } =
 		selectedCards;
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
@@ -238,6 +238,13 @@ function App() {
 		return progress;
 	}
 
+	function restartGame(playerChoice) {
+		setInfoMessage(resetInfoMessage)
+		setSelectedCards(resetSelectedCards)
+		setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies])
+		playerChoice === 'retry' ? setGameStatus('selectEnemy') : setGameStatus('option')
+	}
+
 	return (
 		<Flex maxW='800px' mx='auto' flexDirection='column'>
 			{gameStatus === 'option' && (
@@ -284,7 +291,7 @@ function App() {
 				/>
 			)}
 
-			{gameStatus === 'endGame' && <EndGameScreen />}
+			{gameStatus === 'endGame' && <EndGameScreen restartGame={(playerChoice) => restartGame(playerChoice)} />}
 		</Flex>
 	);
 }
