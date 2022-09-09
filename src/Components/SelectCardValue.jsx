@@ -1,10 +1,27 @@
 import { Box, Flex, Button, Text, HStack } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
+import { useState, useEffect, useContext } from 'react';
+import { Context } from '../OptionsContext';
 
-export default function SelectCardValue({ switchState, selectedCards }) {
-	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+export default function SelectCardValue({ switchState, selectedCards, allEnemies }) {
+	
+	const {cardValue} = useContext(Context)
+	
+	const [cardValueArr, setCardValue] = useState(cardValue);
 
-	const cardHTML = cardValue.map((el) => {
+	useEffect(() => {
+		if (allEnemies.some((el) => el.rank === 'king' && el.isDead === true)) {
+			setCardValue(cardValue);
+		} else if (allEnemies.some((el) => el.rank === 'queen' && el.isDead === true)) {
+			setCardValue((prev) => prev.filter((el) => el !== 'K'));
+		} else if (allEnemies.some((el) => el.rank === 'jack' && el.isDead === true)) {
+			setCardValue((prev) => prev.filter((el) => el !== 'K' && el !== 'Q'));
+		} else {
+			setCardValue((prev) => prev.filter((el) => el !== 'K' && el !== 'Q' && el !== 'J'));
+		}
+	}, []);
+
+	const cardHTML = cardValueArr.map((el) => {
 		const isBlack = selectedCards.baseCardSuit === 'club' || selectedCards.baseCardSuit === 'spade';
 
 		return (
@@ -35,11 +52,10 @@ export default function SelectCardValue({ switchState, selectedCards }) {
 				fontSize='2xl'
 				height='70px'
 				mt='8'
-                mx='auto'
+				mx='auto'
 				value='return'
 				onClick={(e) => switchState(e)}
 			>
-				
 				<Text pointerEvents='none'>
 					Cancel
 					<Icon
@@ -54,4 +70,4 @@ export default function SelectCardValue({ switchState, selectedCards }) {
 }
 
 const maxWidthBtn = ['85px', '100px', '120px'];
-const maxHeightBtn = ['53px', '60px', '60px']
+const maxHeightBtn = ['53px', '60px', '60px'];

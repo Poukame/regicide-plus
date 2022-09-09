@@ -4,7 +4,8 @@ import enemyData from './assets/EnemyData.cjs';
 const Context = createContext();
 
 function ContextProvider({ children }) {
-    const JACK_HEALTH = 20
+	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+	const JACK_HEALTH = 20
     const JACK_ATTACK = 10
     const QUEEN_HEALTH = 30
     const QUEEN_ATTACK = 15
@@ -111,7 +112,7 @@ function ContextProvider({ children }) {
 
 
 
-	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard }}>{children}</Context.Provider>;
+	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue }}>{children}</Context.Provider>;
 }
 
 export { ContextProvider, Context };

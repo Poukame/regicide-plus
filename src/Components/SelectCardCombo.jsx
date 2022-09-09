@@ -11,11 +11,10 @@ export default function SelectComboCard({
 	validateAttack,
 	switchState,
 }) {
-	const { maxComboCard, maxCompanionCard, options } = useContext(Context);
+	const { maxComboCard, maxCompanionCard, options, cardValue } = useContext(Context);
 	const { baseCard, baseCardDmg, baseCardSuit, companionSuit, comboSum, comboSuits } =
 		selectedCards;
 
-	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const suitsData = [
 		{
 			suitIcon: <Icon icon='emojione-v1:heart-suit' inline={true} style={iconMargin} pointerEvents='none' />,
@@ -92,7 +91,7 @@ export default function SelectComboCard({
 		});
 	}
 
-	// calculatedCombo HTML
+	// ComboCards HTML
 
 	if (calculatedComboCard === 0) {
 		comboCardsHTML = <></>;

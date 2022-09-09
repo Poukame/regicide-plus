@@ -232,7 +232,7 @@ function App() {
 			)}
 
 			{gameStatus === 'selectCard' && (
-				<SelectCardValue switchState={(e) => switchStateToCombo(e)} selectedCards={selectedCards} />
+				<SelectCardValue switchState={(e) => switchStateToCombo(e)} selectedCards={selectedCards} allEnemies={allEnemies}/>
 			)}
 
 			{gameStatus === 'selectCombo' && (
