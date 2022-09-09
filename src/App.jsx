@@ -25,13 +25,15 @@ function App() {
 		attackSum: 0,
 	};
 	const [selectedCards, setSelectedCards] = useState(resetSelectedCards);
-	console.log('file: App.jsx ~ line 28 ~ selectedCards', selectedCards);
 
 	const { baseCard, baseCardDmg, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } =
 		selectedCards;
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
 	const currentEnemy = allEnemies.find((el) => el.isSelected);
+	const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (
+		cur.isDead ? acc += 1 : acc
+	), 0)
 
 	const resetInfoMessage = {
 		heartMsg: '',
@@ -138,7 +140,6 @@ function App() {
 		}
 	}, [attackSum]);
 	
-	console.log('file: App.jsx ~ line 137 ~ currentEnemy', currentEnemy);
 
 	function generateAttack(currentEnemy) {
 		let allSuitsCards;
@@ -182,8 +183,6 @@ function App() {
 	}
 
 	function isEnemyDead(currentEnemy, instaKill) {
-		console.log('file: App.jsx ~ line 185 ~ instaKill', instaKill);
-		console.log('file: App.jsx ~ line 185 ~ currentEnemy', currentEnemy);
 		
 		if (currentEnemy.health === 0) {
 			setInfoMessage((prev) => ({
@@ -218,7 +217,7 @@ function App() {
 				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')} />
 			)}
 
-			{gameStatus === 'selectEnemy' && <SelectCurrentEnemy selectEnemy={(e) => selectEnemy(e)} allEnemies={allEnemies} />}
+			{gameStatus === 'selectEnemy' && <SelectCurrentEnemy selectEnemy={(e) => selectEnemy(e)} allEnemies={allEnemies} numberOfDeadFigure={numberOfDeadFigure}/>}
 
 			{gameStatus === 'fight' && (
 				<FightScreen
@@ -228,6 +227,8 @@ function App() {
 					isJokerPlayed={isJokerPlayed}
 					instaKill={() => isEnemyDead(currentEnemy, true)}
 					gameStatus={gameStatus}
+					allEnemies={allEnemies}
+					numberOfDeadFigure={numberOfDeadFigure}
 				/>
 			)}
 

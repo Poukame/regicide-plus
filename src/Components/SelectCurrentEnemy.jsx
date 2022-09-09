@@ -1,29 +1,11 @@
 import { useState, useContext } from 'react';
 import { Box, Image, HStack, Heading } from '@chakra-ui/react';
 import { Context } from '../OptionsContext';
+import { sliceIndex } from '../assets/DeadEnemies.cjs';
 
-export default function SelectCurrentEnemy({ selectEnemy, allEnemies }) {
+export default function SelectCurrentEnemy({ selectEnemy, allEnemies, numberOfDeadFigure }) {
 
-	function sliceIndex(increment) {
-
-		const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (
-			cur.isDead ? acc += 1 : acc
-		), 0)
-		
-		let cardIndexToSlice
-		
-		if(numberOfDeadFigure < 4) {
-			cardIndexToSlice = 0 + increment
-		} else if (numberOfDeadFigure < 8) {
-			cardIndexToSlice = 4 + increment
-		} else {
-			cardIndexToSlice = 8 + increment
-		}
-
-		return cardIndexToSlice
-	}
-
-	const enemyCardsHTML = allEnemies.slice(sliceIndex(0), sliceIndex(4)).map((cards) => {
+	const enemyCardsHTML = allEnemies.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure)).map((cards) => {
 		const opacityDead = '.3';
 		const grayscaleDead = 'grayscale(100%)';
 		const cardHeight = '220px';
