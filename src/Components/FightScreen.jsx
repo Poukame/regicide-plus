@@ -26,7 +26,7 @@ export default function FightScreen({
 	numberOfDeadFigure,
 	progressPercentage,
 }) {
-	const { options } = useContext(Context);
+	const { options, playClick } = useContext(Context);
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
 	const isJokerRemoved = options[0].removeJesters === 2;
 	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true) || isJokerPlayed;
@@ -142,7 +142,7 @@ export default function FightScreen({
 					p='2'
 					bgColor='transparent'
 					value='heart'
-					onClick={(e) => switchState(e)}
+					onClick={(e) => (switchState(e), playClick())}
 					height='fit-content'
 					maxWidth={maxWidthBtn}
 					ml='9px'
@@ -153,7 +153,7 @@ export default function FightScreen({
 					p='2'
 					bgColor='transparent'
 					value='diamond'
-					onClick={(e) => switchState(e)}
+					onClick={(e) => (switchState(e), playClick())}
 					height='fit-content'
 					maxWidth={maxWidthBtn}
 				>
@@ -163,7 +163,7 @@ export default function FightScreen({
 					p='2'
 					bgColor='transparent'
 					value='club'
-					onClick={(e) => switchState(e)}
+					onClick={(e) => (switchState(e), playClick())}
 					height='fit-content'
 					maxWidth={maxWidthBtn}
 				>
@@ -173,7 +173,7 @@ export default function FightScreen({
 					p='2'
 					bgColor='transparent'
 					value='spade'
-					onClick={(e) => switchState(e)}
+					onClick={(e) => (switchState(e), playClick())}
 					height='fit-content'
 					maxWidth={maxWidthBtn}
 				>
@@ -184,7 +184,7 @@ export default function FightScreen({
 						p='2'
 						bgColor='transparent'
 						value='joker'
-						onClick={(e) => switchState(e)}
+						onClick={(e) => (switchState(e), playClick())}
 						height='fit-content'
 						maxWidth={maxWidthBtn}
 						>

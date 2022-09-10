@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
 import './App.css';
 import { Context } from './OptionsContext';
 import SelectOptions from './Components/SelectOptions';
@@ -13,7 +13,7 @@ import damageConversion from './assets/DamageConversion.cjs';
 function App() {
 	const [gameStatus, setGameStatus] = useState('option');
 	// option, fight, selectEnemy, selectCard, selectCombo, endGame
-	const { jackEnemies, queenEnemies, kingEnemies, options } = useContext(Context);
+	const { jackEnemies, queenEnemies, kingEnemies, options, playClick } = useContext(Context);
 	const [isJokerPlayed, setIsJokerPlayed] = useState(false);
 	const resetSelectedCards = {
 		baseCard: '',
@@ -248,7 +248,7 @@ function App() {
 	return (
 		<Flex maxW='800px' mx='auto' flexDirection='column'>
 			{gameStatus === 'option' && (
-				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')} />
+				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')}/>
 			)}
 
 			{gameStatus === 'selectEnemy' && (

@@ -5,7 +5,7 @@ import { Context } from '../OptionsContext';
 
 export default function SelectCardValue({ switchState, selectedCards, allEnemies }) {
 	
-	const {cardValue} = useContext(Context)
+	const {cardValue, playClick} = useContext(Context)
 	
 	const [cardValueArr, setCardValue] = useState(cardValue);
 
@@ -35,7 +35,7 @@ export default function SelectCardValue({ switchState, selectedCards, allEnemies
 				fontWeight='700'
 				fontSize='3xl'
 				value={el}
-				onClick={(e) => switchState(e)}
+				onClick={(e) => {switchState(e), playClick()}}
 			>
 				{el}
 			</Button>
@@ -54,7 +54,7 @@ export default function SelectCardValue({ switchState, selectedCards, allEnemies
 				mt='8'
 				mx='auto'
 				value='return'
-				onClick={(e) => switchState(e)}
+				onClick={(e) => {switchState(e), playClick('return')}}
 			>
 				<Text pointerEvents='none'>
 					Cancel

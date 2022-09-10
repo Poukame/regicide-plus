@@ -1,9 +1,11 @@
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { Box, Image, HStack, Heading } from '@chakra-ui/react';
 import { Context } from '../OptionsContext';
 import { sliceIndex } from '../assets/DeadEnemies.cjs';
 
 export default function SelectCurrentEnemy({ selectEnemy, allEnemies, numberOfDeadFigure }) {
+
+	const {playClick} = useContext(Context)
 
 	const enemyCardsHTML = allEnemies.slice(sliceIndex(0, numberOfDeadFigure), sliceIndex(4, numberOfDeadFigure)).map((cards) => {
 		const opacityDead = '.3';
@@ -23,7 +25,7 @@ export default function SelectCurrentEnemy({ selectEnemy, allEnemies, numberOfDe
 					filter={isDead ? grayscaleDead : 'none'}
 					opacity={isDead ? opacityDead : 'none'}
 					cursor={isDead ? 'not-allowed' : 'pointer'}
-					onClick={isDead ? () => ('') : (e) => selectEnemy(e)}
+					onClick={isDead ? () => ('') : (e) => (selectEnemy(e), playClick())}
 				/>
 			</Box>
 		);

@@ -11,7 +11,7 @@ export default function SelectComboCard({
 	validateAttack,
 	switchState,
 }) {
-	const { maxComboCard, maxCompanionCard, options, cardValue } = useContext(Context);
+	const { maxComboCard, maxCompanionCard, options, cardValue, playClick } = useContext(Context);
 	const { baseCard, baseCardDmg, baseCardSuit, companionSuit, comboSum, comboSuits } =
 		selectedCards;
 
@@ -81,7 +81,7 @@ export default function SelectComboCard({
 						isDisabled={isAceSuitSelected ? true : false}
 						visibility={isComboCardPicked && !removeBaseAce ? 'visible' : 'hidden'}
 						onClick={(e) => {
-							saveComboCards(e), saveCompanionCards(e);
+							saveComboCards(e), saveCompanionCards(e), playClick();
 						}}
 					>
 						<Text pointerEvents='none'>A{el.suitIcon}</Text>
@@ -116,7 +116,7 @@ export default function SelectComboCard({
 						fontSize='3xl'
 						isDisabled={isMaxAtReach && !el.isSelected ? true : false}
 						value={el.isSelected ? [-calculatedComboCard, el.suit] : [calculatedComboCard, el.suit]}
-						onClick={(e) => saveComboCards(e)}
+						onClick={(e) => {saveComboCards(e), playClick()}}
 					>
 						<Text pointerEvents='none'>{calculatedComboCard}{el.suitIcon}</Text>
 						
@@ -148,7 +148,7 @@ export default function SelectComboCard({
 			<Flex mt='8' flexWrap='wrap' gap='8'>
 
 
-			<Button flex='4 1 auto' fontSize='2xl' height='70px' mx='auto' onClick={validateAttack}>
+			<Button flex='4 1 auto' fontSize='2xl' height='70px' mx='auto' onClick={() => {playClick(), validateAttack()}}>
 				<Text>
 					Validate Attack
 					<Icon
@@ -165,7 +165,7 @@ export default function SelectComboCard({
 				mx='auto'
 		
 				value='return'
-				onClick={(e) => switchState(e)}
+				onClick={(e) => {switchState(e), playClick('return')}}
 			>
 				<Text pointerEvents='none'>
 					Cancel

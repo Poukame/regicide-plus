@@ -12,9 +12,11 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
+import { Context } from '../OptionsContext';
 
 export default function SettingsScreen({ width }) {
+	const { playClick } = useContext(Context);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = useRef();
 
@@ -26,12 +28,21 @@ export default function SettingsScreen({ width }) {
 				value='settings'
 				height='fit-content'
 				maxWidth={width}
-				onClick={() => onOpen()}
+				onClick={() => {
+					onOpen(), playClick();
+				}}
 				ref={btnRef}
 			>
 				<Icon icon='ep:setting' width='100%' inline={true} pointerEvents='none' />
 			</Button>
-			<Drawer isOpen={isOpen} placement='right' onClose={onClose} finalFocusRef={btnRef}>
+			<Drawer
+				isOpen={isOpen}
+				placement='right'
+				onClose={() => {
+					onClose(), playClick('return');
+				}}
+				finalFocusRef={btnRef}
+			>
 				<DrawerOverlay />
 				<DrawerContent>
 					<DrawerCloseButton />
@@ -39,17 +50,28 @@ export default function SettingsScreen({ width }) {
 
 					<DrawerBody alignItems='flex-start'>
 						<VStack gap='8'>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>Turn Music On</Button>
-                            <Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>Turn Sounds Effect On</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>About</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>Install</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>Credits</Button>
+							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
+								Game Options
+							</Button>
+							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
+								Turn Music On
+							</Button>
+							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
+								Turn Sounds Effect On
+							</Button>
+							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
+								About
+							</Button>
+							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
+								Install
+							</Button>
+							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
+								Credits
+							</Button>
 						</VStack>
 					</DrawerBody>
 
-					<DrawerFooter>
-
-					</DrawerFooter>
+					<DrawerFooter></DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 		</>

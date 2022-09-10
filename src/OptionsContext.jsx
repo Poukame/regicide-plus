@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import enemyData from './assets/EnemyData.cjs';
+import click_Return from './assets/sounds/click_return.mp3'
+import click_validate from './assets/sounds/click_validate.mp3'
 
 const Context = createContext();
 
@@ -108,9 +110,17 @@ function ContextProvider({ children }) {
 
 	}, [options]);
 
+	function playClick(actionType) {
+		console.log('click sound');
+		const clickReturn = new Audio(click_Return)
+		clickReturn.volume = .5
+		const clickValidate = new Audio(click_validate)
+		clickValidate.volume = .5
+		actionType === 'return' ?  clickReturn.play() : clickValidate.play()
+	}
 
 
-	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue }}>{children}</Context.Provider>;
+	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue, playClick }}>{children}</Context.Provider>;
 }
 
 export { ContextProvider, Context };
