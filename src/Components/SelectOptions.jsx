@@ -4,7 +4,8 @@ import { useContext } from 'react';
 import SettingsScreen from './SettingsScreen';
 
 export default function SelectOptions({ updateStatus }) {
-	const { handleChange, playClick } = useContext(Context);
+	const { handleChange, playClick, options } = useContext(Context);
+	const {maxHandSize, enemyHealthBoost, removeJesters, enemyAttackBoost, yieldTurn, maxAnimalCompanionLimit, maxComboLimit} = options[0]
 
 	return (
 		<>
@@ -13,7 +14,7 @@ export default function SelectOptions({ updateStatus }) {
 				<Text fontWeight='bold' fontSize='lg'>
 					Maximum Hand Size Change
 				</Text>
-				<Select size='md' variant='filled' name='maxHandSize' onChange={(e) => handleChange(e)}>
+				<Select value={maxHandSize} size='md' variant='filled' name='maxHandSize' onChange={(e) => handleChange(e)}>
 					<option value={0}>Default</option>
 					<option value={1}>+1</option>
 					<option value={2}>+2</option>
@@ -23,7 +24,7 @@ export default function SelectOptions({ updateStatus }) {
 				<Text fontWeight='bold' fontSize='lg'>
 					Remove Jesters
 				</Text>
-				<Select size='md' variant='filled' name='removeJesters' onChange={(e) => handleChange(e)}>
+				<Select value={removeJesters} size='md' variant='filled' name='removeJesters' onChange={(e) => handleChange(e)}>
 					<option value={'OFF'}>Default</option>
 					<option value={1}>-1</option>
 					<option value={2}>-2</option>
@@ -36,6 +37,7 @@ export default function SelectOptions({ updateStatus }) {
 					variant='filled'
 					name='enemyHealthBoost'
 					onChange={(e) => handleChange(e)}
+					value={enemyHealthBoost}
 				>
 					<option value={0}>Default</option>
 					<option value={5}>+5</option>
@@ -51,6 +53,7 @@ export default function SelectOptions({ updateStatus }) {
 					variant='filled'
 					name='enemyAttackBoost'
 					onChange={(e) => handleChange(e)}
+					value={enemyAttackBoost}
 				>
 					<option value={0}>Default</option>
 					<option value={2}>+2</option>
@@ -61,14 +64,14 @@ export default function SelectOptions({ updateStatus }) {
 				<Text fontWeight='bold' fontSize='lg'>
 					Yield
 				</Text>
-				<Select size='md' variant='filled' name='yieldTurn' onChange={(e) => handleChange(e)}>
+				<Select value={yieldTurn} size='md' variant='filled' name='yieldTurn' onChange={(e) => handleChange(e)}>
 					<option value={'ON'}>On (Default)</option>
 					<option value={'OFF'}>Off</option>
 				</Select>
 				<Text fontWeight='bold' fontSize='lg'>
 					Max Combo Limit
 				</Text>
-				<Select size='md' variant='filled' name='maxComboLimit' onChange={(e) => handleChange(e)}>
+				<Select value={maxComboLimit} size='md' variant='filled' name='maxComboLimit' onChange={(e) => handleChange(e)}>
 					<option value={10}>10 (Default)</option>
 					<option value={9}>9</option>
 					<option value={8}>8</option>
@@ -87,6 +90,7 @@ export default function SelectOptions({ updateStatus }) {
 					variant='filled'
 					name='maxAnimalCompanionLimit'
 					onChange={(e) => handleChange(e)}
+					value={maxAnimalCompanionLimit}
 				>
 					<option value={'K'}>Default</option>
 					<option value={'Q'}>Q</option>
@@ -103,18 +107,18 @@ export default function SelectOptions({ updateStatus }) {
 					<option value={'A'}>A</option>
 					<option value={'OFF'}>No Animal Companion</option>
 				</Select>
-			<HStack>
+			<HStack alignItems='center'>
 			<Button
-				mt='8'
+				
 				w='250px'
 				colorScheme='green'
-				alignSelf='center'
+				// alignSelf='center'
 				variant='solid'
 				onClick={() => {updateStatus(), playClick()}}
 			>
 				Start the Game
 			</Button>
-			<SettingsScreen />
+			<SettingsScreen width='70' />
 			</HStack>
 			</VStack>
 		</>

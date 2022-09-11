@@ -25,11 +25,13 @@ export default function FightScreen({
 	allEnemies,
 	numberOfDeadFigure,
 	progressPercentage,
+	restartGame,
+	gameStatus
 }) {
 	const { options, playClick, settings } = useContext(Context);
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
 	const isJokerRemoved = options[0].removeJesters === 2;
-	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true) || isJokerPlayed;
+	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true);
 
 	// Handle double tap on instaKill Button
 	let lastTap = null;
@@ -71,6 +73,8 @@ export default function FightScreen({
 							maxW={imageSize}
 							filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
 						/>
+						<HStack>
+
 						<Tooltip
 							hasArrow
 							fontSize='lg'
@@ -79,7 +83,7 @@ export default function FightScreen({
 							bgColor='#FFF'
 							maxW='25ch'
 							openDelay={800}
-						>
+							>
 							<Button
 								p='2'
 								bgColor='whiteAlpha.300'
@@ -88,16 +92,20 @@ export default function FightScreen({
 								height='fit-content'
 								maxWidth='60px'
 								onClick={(e) => handleDoubleTap(e)}
-							>
+								>
 								<Icon
 									icon='healthicons:death'
 									color='red'
 									width='100%'
 									inline={false}
 									pointerEvents='none'
-								/>
+									/>
 							</Button>
 						</Tooltip>
+						{isJokerPlayed && (
+							<Icon icon='emojione-monotone:joker' color='#DFFF00' width='60px' pointerEvents='none' />
+							)}
+							</HStack>
 					</VStack>
 				</GridItem>
 				<GridItem justifySelf='start'>
@@ -115,9 +123,7 @@ export default function FightScreen({
 
 			{settings[0].showReminders && isMsgToBeDisplayed && (
 				<HStack bgColor='whiteAlpha.300' p='4' my='4'>
-					{isJokerPlayed && (
-						<Icon icon='emojione-monotone:joker' color='#DFFF00' width='90' pointerEvents='none' />
-					)}
+	
 					<VStack>
 						{infoMessage.displayPerfectKillMsg && (
 							<HStack fontSize='xl'>
@@ -196,7 +202,7 @@ export default function FightScreen({
 						/>
 					</Button>
 				)}
-				<SettingsScreen width={maxWidthBtn} />
+				<SettingsScreen width={maxWidthBtn} restartGame={(playerChoice) => restartGame(playerChoice)} gameStatus={gameStatus} />
 			</HStack>
 		</>
 	);

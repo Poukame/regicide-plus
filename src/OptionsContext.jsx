@@ -7,6 +7,12 @@ import CelticAmbiance from './assets/sounds/celtic_ambiance.mp3'
 const Context = createContext();
 const clickReturn = new Audio(click_Return)
 const clickValidate = new Audio(click_validate)
+const vikingIntro = new Audio(VikingIntro)
+const celticAmbiance = new Audio(CelticAmbiance)
+vikingIntro.volume = .2
+vikingIntro.loop = true
+celticAmbiance.volume = .3
+celticAmbiance.loop = true
 
 
 function ContextProvider({ children }) {
@@ -38,6 +44,8 @@ function ContextProvider({ children }) {
 		});
 	}
 	
+	
+
 	const [options, setOptions] = useState([
 		{
 			maxHandSize: 0,
@@ -49,6 +57,7 @@ function ContextProvider({ children }) {
 			maxAnimalCompanionLimit: 'K',
 		},
 	]);
+	
 	const {maxHandSize, removeJesters, enemyHealthBoost, enemyAttackBoost, yieldTurn, maxComboLimit, maxAnimalCompanionLimit} = options[0]
 	
 	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit)
@@ -143,6 +152,15 @@ function ContextProvider({ children }) {
 			actionType === 'return' ?  clickReturn.play(): clickValidate.play()
 		}
 	}
+
+	useEffect(()=> {
+		if(settings[0].music) {
+			celticAmbiance.currentTime = 3
+			celticAmbiance.play()
+		} else {
+			celticAmbiance.pause()
+		}	
+	}, [settings[0].music])
 
 
 	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue, playClick, settings, updateSettings }}>{children}</Context.Provider>;
