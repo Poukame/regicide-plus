@@ -10,11 +10,22 @@ import SelectComboCard from './Components/SelectCardCombo';
 import EndGameScreen from './Components/EndGameScreen';
 import damageConversion from './assets/DamageConversion.cjs';
 
+import VikingIntro from './assets/sounds/viking_intro_loop.mp3'
+import CelticAmbiance from './assets/sounds/celtic_ambiance.mp3'
+const vikingIntro = new Audio(VikingIntro)
+const celticAmbiance = new Audio(CelticAmbiance)
+vikingIntro.volume = .2
+vikingIntro.loop = true
+celticAmbiance.volume = .3
+celticAmbiance.loop = true
+
+
 function App() {
 	const [gameStatus, setGameStatus] = useState('option');
 	// option, fight, selectEnemy, selectCard, selectCombo, endGame
-	const { jackEnemies, queenEnemies, kingEnemies, options, playClick } = useContext(Context);
+	const { jackEnemies, queenEnemies, kingEnemies, options, settings } = useContext(Context);
 	const [isJokerPlayed, setIsJokerPlayed] = useState(false);
+
 	const resetSelectedCards = {
 		baseCard: '',
 		baseCardDmg: 0,
@@ -267,6 +278,13 @@ function App() {
 		setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies])
 		playerChoice === 'retry' ? setGameStatus('selectEnemy') : setGameStatus('option')
 	}
+
+	useEffect(()=> {
+		if(settings[0].music) {
+			celticAmbiance.currentTime = 3
+			celticAmbiance.play()
+		}		
+	}, [settings[0].music])
 
 	return (
 		<Flex maxW='800px' mx='auto' flexDirection='column'>

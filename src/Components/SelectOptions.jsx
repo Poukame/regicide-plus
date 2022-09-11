@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import SettingsScreen from './SettingsScreen';
 
 export default function SelectOptions({ updateStatus }) {
-	const { handleChange } = useContext(Context);
+	const { handleChange, playClick } = useContext(Context);
 
 	return (
 		<>
@@ -110,7 +110,7 @@ export default function SelectOptions({ updateStatus }) {
 				colorScheme='green'
 				alignSelf='center'
 				variant='solid'
-				onClick={() => updateStatus()}
+				onClick={() => {updateStatus(), playClick()}}
 			>
 				Start the Game
 			</Button>

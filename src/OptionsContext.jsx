@@ -2,10 +2,15 @@ import React, { createContext, useState, useEffect } from 'react';
 import enemyData from './assets/EnemyData.cjs';
 import click_Return from './assets/sounds/click_return.mp3'
 import click_validate from './assets/sounds/click_validate.mp3'
-
+import VikingIntro from './assets/sounds/viking_intro_loop.mp3'
+import CelticAmbiance from './assets/sounds/celtic_ambiance.mp3'
 const Context = createContext();
+const clickReturn = new Audio(click_Return)
+const clickValidate = new Audio(click_validate)
+
 
 function ContextProvider({ children }) {
+	
 	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const JACK_HEALTH = 20
     const JACK_ATTACK = 10
@@ -14,6 +19,25 @@ function ContextProvider({ children }) {
     const KING_HEALTH = 40
     const KING_ATTACK = 20
 
+	const [settings, setSettings] = useState([{
+		showReminders: true,
+		music: false,
+		soundFx: false
+	}])
+
+	function updateSettings(e) {
+		const { name, value } = e.target;
+
+		setSettings((prev) => {
+			return prev.map((el) => {
+				return {
+					...el,
+					[name]: value === 'true' ? !true : !false,
+				};
+			});
+		});
+	}
+	
 	const [options, setOptions] = useState([
 		{
 			maxHandSize: 0,
@@ -110,18 +134,18 @@ function ContextProvider({ children }) {
 
 	}, [options]);
 
+
+
 	function playClick(actionType) {
-		const clickReturn = new Audio(click_Return)
 		clickReturn.volume = .5
-		const clickValidate = new Audio(click_validate)
 		clickValidate.volume = .5
-		// clickReturn.loop = true
-	
-		actionType === 'return' ?  clickReturn.play(): clickValidate.play()
+		if(settings[0].soundFx) {
+			actionType === 'return' ?  clickReturn.play(): clickValidate.play()
+		}
 	}
 
 
-	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue, playClick }}>{children}</Context.Provider>;
+	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue, playClick, settings, updateSettings }}>{children}</Context.Provider>;
 }
 
 export { ContextProvider, Context };

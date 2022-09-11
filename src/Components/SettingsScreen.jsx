@@ -16,7 +16,7 @@ import { useRef, useContext } from 'react';
 import { Context } from '../OptionsContext';
 
 export default function SettingsScreen({ width }) {
-	const { playClick } = useContext(Context);
+	const { playClick, updateSettings, settings } = useContext(Context);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = useRef();
 
@@ -51,13 +51,16 @@ export default function SettingsScreen({ width }) {
 					<DrawerBody alignItems='flex-start'>
 						<VStack gap='8'>
 							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
-								Game Options
+								Difficulty Options
 							</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
-								Turn Music On
+							<Button w='100%' name='showReminders' value={settings[0].showReminders} bgColor='#94b4b0' color='blackAlpha.700' onClick={(e) => {updateSettings(e)}}>
+								{`Show Reminders: ${settings[0].showReminders ? 'ON' : 'OFF'}`}
 							</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
-								Turn Sounds Effect On
+							<Button w='100%' name='music' value={settings[0].music} bgColor='#94b4b0' color='blackAlpha.700' onClick={(e) => {updateSettings(e)}}>
+								{`Turn Music: ${settings[0].music ? 'ON' : 'OFF'}`}
+							</Button>
+							<Button w='100%' name='soundFx' value={settings[0].soundFx} bgColor='#94b4b0' color='blackAlpha.700' onClick={(e) => {updateSettings(e)}}>
+								{`Turn Sounds Effect: ${settings[0].soundFx ? 'ON' : 'OFF'}`}
 							</Button>
 							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
 								About

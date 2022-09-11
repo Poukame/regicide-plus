@@ -26,7 +26,7 @@ export default function FightScreen({
 	numberOfDeadFigure,
 	progressPercentage,
 }) {
-	const { options, playClick } = useContext(Context);
+	const { options, playClick, settings } = useContext(Context);
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
 	const isJokerRemoved = options[0].removeJesters === 2;
 	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true) || isJokerPlayed;
@@ -113,7 +113,7 @@ export default function FightScreen({
 				</GridItem>
 			</Grid>
 
-			{isMsgToBeDisplayed && (
+			{settings[0].showReminders && isMsgToBeDisplayed && (
 				<HStack bgColor='whiteAlpha.300' p='4' my='4'>
 					{isJokerPlayed && (
 						<Icon icon='emojione-monotone:joker' color='#DFFF00' width='90' pointerEvents='none' />
