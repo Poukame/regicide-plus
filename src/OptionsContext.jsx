@@ -111,12 +111,13 @@ function ContextProvider({ children }) {
 	}, [options]);
 
 	function playClick(actionType) {
-		console.log('click sound');
 		const clickReturn = new Audio(click_Return)
 		clickReturn.volume = .5
 		const clickValidate = new Audio(click_validate)
 		clickValidate.volume = .5
-		actionType === 'return' ?  clickReturn.play() : clickValidate.play()
+		// clickReturn.loop = true
+	
+		actionType === 'return' ?  clickReturn.play(): clickValidate.play()
 	}
 
 

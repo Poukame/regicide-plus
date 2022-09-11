@@ -25,6 +25,7 @@ function App() {
 		attackSum: 0,
 	};
 	const [selectedCards, setSelectedCards] = useState(resetSelectedCards);
+	const [spadeDmgCache, setSpadeDmgCache] = useState(0)
 
 	const { baseCard, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } =
 		selectedCards;
@@ -79,7 +80,6 @@ function App() {
 	}
 
 	function switchStateToCombo(e) {
-		console.log('file: App.jsx ~ line 82 ~ e', e);
 		const value = e.target.value;
 		if (value === 'return') {
 			setGameStatus('fight');
@@ -131,12 +131,28 @@ function App() {
 		setSelectedCards({ ...selectedCards, attackSum: damageConversion[baseCard] + comboSum });
 		setGameStatus('fight');
 	}
+	
+	function spadeReduceCache() {
+		// saves spades damage to retroactively reduce attack if joker is played
+		if(currentEnemy.suits === 'spade') {
+			const isSpadePlayed = [...comboSuits, baseCardSuit].some(el => el === 'spade')
+			isSpadePlayed && setSpadeDmgCache(prev => prev + attackSum)
+		}
+	}
+	
+	useEffect(() => {
+		if (gameStatus === 'fight') {
+			isJokerPlayed ?  (currentEnemy.attack -= spadeDmgCache) : (currentEnemy.attack += spadeDmgCache)
+			setSelectedCards(resetSelectedCards);
+		}
+	}, [isJokerPlayed]);
 
 	useEffect(() => {
 		if (gameStatus === 'fight') {
 			generateAttack(currentEnemy);
 		}
 	}, [attackSum]);
+
 
 	function generateAttack(currentEnemy) {
 		let allSuitsCards;
@@ -150,6 +166,14 @@ function App() {
 				isJokerPlayed ? el : el !== currentEnemy.suits
 			);
 		}
+
+		calculateDamage(allSuitsCards)
+		spadeReduceCache()
+		setSelectedCards(resetSelectedCards);
+		isEnemyDead(currentEnemy);
+	}
+
+	function calculateDamage(allSuitsCards) {
 
 		if (allSuitsCards.some((el) => el === 'club')) {
 			currentEnemy.health -= attackSum * 2;
@@ -174,9 +198,6 @@ function App() {
 				displayDiamondMsg: true,
 			}));
 		}
-
-		setSelectedCards(resetSelectedCards);
-		isEnemyDead(currentEnemy);
 	}
 
 	function isEnemyDead(currentEnemy, instaKill) {
@@ -188,10 +209,12 @@ function App() {
 			}));
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
+			setSpadeDmgCache(0)
 			isGameEnded();
 		} else if (currentEnemy.health < 0 || instaKill) {
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
+			setSpadeDmgCache(0)
 			isGameEnded();
 		}
 	}

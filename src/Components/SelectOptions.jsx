@@ -1,6 +1,7 @@
-import { Text, Select, VStack, Button, Heading } from '@chakra-ui/react';
+import { Text, Select, VStack, HStack, Button, Heading } from '@chakra-ui/react';
 import { Context } from '../OptionsContext';
 import { useContext } from 'react';
+import SettingsScreen from './SettingsScreen';
 
 export default function SelectOptions({ updateStatus }) {
 	const { handleChange } = useContext(Context);
@@ -102,7 +103,7 @@ export default function SelectOptions({ updateStatus }) {
 					<option value={'A'}>A</option>
 					<option value={'OFF'}>No Animal Companion</option>
 				</Select>
-			</VStack>
+			<HStack>
 			<Button
 				mt='8'
 				w='250px'
@@ -113,6 +114,9 @@ export default function SelectOptions({ updateStatus }) {
 			>
 				Start the Game
 			</Button>
+			<SettingsScreen />
+			</HStack>
+			</VStack>
 		</>
 	);
 }
