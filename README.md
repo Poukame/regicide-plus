@@ -1,20 +1,21 @@
 # Regicide Companion Plus
 
 An app to assist you during your Regicide boardgame plays. This is not the official app but it includes more options and quality of life improvements.
-Try it online: [Regicide Companion Plus](https://jamyourneck.netlify.app/)
+Try it online: [Regicide Companion Plus](regicide-plus.netlify.app)
 
 ## Why this app?
 
-Hi, I'm Guillaume. I created this app because I love playing Regicide with my friends or online.
+Hi, I'm Guillaume aka Poukame. I created this app because I love playing Regicide with my friends or online.
 In the online version on BGA, there are some interesting options to increase or decrease the difficulty of the game.
 
 I found them interesting and was disappointed by the official app not proposing them. So I decided to create one that would include options for more challenging plays and some quality of life improvements.
 
 ## Screenshot and GIF
 
-![Screenshot](./src/assets/media/screenshot.webp)
-![GIF](./src/assets/media/animated.webp)
-
+![Screenshot 1](./src/assets/images/screenshot_1.webp)
+![Screenshot 2](./src/assets/images/screenshot_2.webp)
+![Screenshot 3](./src/assets/images/screenshot_3.webp)
+![Screenshot 4](./src/assets/images/screenshot_4.webp)
 ## Features
 
 Everything from the official companion app plus:

@@ -1,4 +1,4 @@
-import { Box, Flex, Button, Grid, Text } from '@chakra-ui/react';
+import { Flex, Button, Grid, Text } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Icon } from '@iconify/react';
 import { Context } from '../OptionsContext';
@@ -49,7 +49,7 @@ export default function SelectComboCard({
 	let comboCardsHTML;
 	let companionHTML;
 	const calculatedComboCard =
-		cardValue.indexOf(baseCard) >= maxComboCard + 1 || baseCard === 'A' ? 0 : baseCard;
+		cardValue.indexOf(baseCard) >= maxComboCard || baseCard === 'A' ? 0 : baseCard;
 
 	// Animal Companion HTML
 	const isCompanionPicked = companionSuit.length > 0;
