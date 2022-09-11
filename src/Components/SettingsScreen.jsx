@@ -79,7 +79,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
-									updateSettings(e);
+									updateSettings(e), playClick()
 								}}
 							>
 								{`Show Reminders: ${settings[0].showReminders ? 'ON' : 'OFF'}`}
@@ -91,7 +91,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
-									updateSettings(e);
+									updateSettings(e), playClick()
 								}}
 							>
 								{`Music: ${settings[0].music ? 'ON' : 'OFF'}`}
@@ -103,7 +103,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
-									updateSettings(e);
+									updateSettings(e), playClick()
 								}}
 							>
 								{`Sounds Effect: ${settings[0].soundFx ? 'ON' : 'OFF'}`}
