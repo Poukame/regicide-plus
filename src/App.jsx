@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import './App.css';
 import { Context } from './OptionsContext';
 import SelectOptions from './Components/SelectOptions';

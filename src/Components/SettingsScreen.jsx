@@ -14,6 +14,7 @@ import {
 import { Icon } from '@iconify/react';
 import { useRef, useContext } from 'react';
 import { Context } from '../OptionsContext';
+import CreditsModal from './CreditsModal';
 
 export default function SettingsScreen({ width, restartGame, gameStatus }) {
 	const isOption = gameStatus === 'option' || gameStatus === undefined;
@@ -55,16 +56,16 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								<>
 									<Button
 										w='100%'
-										bgColor='#94b4b0'
-										color='blackAlpha.700'
+										bgColor={bgColor}
+										color={color}
 										onClick={() => (restartGame('retry'), playClick())}
 									>
 										Restart Game
 									</Button>
 									<Button
 										w='100%'
-										bgColor='#94b4b0'
-										color='blackAlpha.700'
+										bgColor={bgColor}
+										color={color}
 										onClick={() => (restartGame('newOptions'), playClick('return'))}
 									>
 										Difficulty Options
@@ -75,8 +76,8 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								w='100%'
 								name='showReminders'
 								value={settings[0].showReminders}
-								bgColor='#94b4b0'
-								color='blackAlpha.700'
+								bgColor={bgColor}
+								color={color}
 								onClick={(e) => {
 									updateSettings(e);
 								}}
@@ -87,8 +88,8 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								w='100%'
 								name='music'
 								value={settings[0].music}
-								bgColor='#94b4b0'
-								color='blackAlpha.700'
+								bgColor={bgColor}
+								color={color}
 								onClick={(e) => {
 									updateSettings(e);
 								}}
@@ -99,23 +100,18 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								w='100%'
 								name='soundFx'
 								value={settings[0].soundFx}
-								bgColor='#94b4b0'
-								color='blackAlpha.700'
+								bgColor={bgColor}
+								color={color}
 								onClick={(e) => {
 									updateSettings(e);
 								}}
 							>
 								{`Sounds Effect: ${settings[0].soundFx ? 'ON' : 'OFF'}`}
 							</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
-								About
-							</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
+							<Button w='100%' bgColor={bgColor} color={color}>
 								Install
 							</Button>
-							<Button w='100%' bgColor='#94b4b0' color='blackAlpha.700'>
-								Credits
-							</Button>
+							<CreditsModal width='100%' bgColor='#94b4b0' color={color} />
 						</VStack>
 					</DrawerBody>
 
@@ -125,3 +121,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 		</>
 	);
 }
+
+//STYLING
+const bgColor = '#94b4b0';
+const color = 'blackAlpha.700';
