@@ -26,7 +26,7 @@ export default function FightScreen({
 	numberOfDeadFigure,
 	progressPercentage,
 	restartGame,
-	gameStatus
+	gameStatus,
 }) {
 	const { options, playClick, settings } = useContext(Context);
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
@@ -53,12 +53,12 @@ export default function FightScreen({
 				templateColumns={templateColumns}
 				templateRows={templateRows}
 				justifyItems='center'
+				textShadow='2px 2px 2px #cadad8'
 			>
 				<GridItem colSpan={[2, 1, 1]} rowStart={[2, 1, 1]}>
 					<Box fontSize={fontSizeValue} color='red.700' height='min-content'>
 						<VStack>
 							<Box fontSize='3xl'>Health</Box>
-
 							<Box fontWeight='700'>{isDead ? '0' : health}</Box>
 						</VStack>
 					</Box>
@@ -74,38 +74,42 @@ export default function FightScreen({
 							filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
 						/>
 						<HStack>
-
-						<Tooltip
-							hasArrow
-							fontSize='lg'
-							placement='top'
-							label={`Double Click to Use Instant Kill`}
-							bgColor='#FFF'
-							maxW='25ch'
-							openDelay={800}
+							<Tooltip
+								hasArrow
+								fontSize='lg'
+								placement='top'
+								label={`Double Click to Use Instant Kill`}
+								bgColor='#FFF'
+								maxW='25ch'
+								openDelay={800}
 							>
-							<Button
-								p='2'
-								bgColor='whiteAlpha.300'
-								value='instaKill'
-								border='dashed white 1px'
-								height='fit-content'
-								maxWidth='60px'
-								onClick={(e) => handleDoubleTap(e)}
+								<Button
+									p='2'
+									bgColor='whiteAlpha.300'
+									value='instaKill'
+									border='dashed #cadad8 2px'
+									height='fit-content'
+									maxWidth='60px'
+									onClick={(e) => handleDoubleTap(e)}
 								>
-								<Icon
-									icon='healthicons:death'
-									color='red'
-									width='100%'
-									inline={false}
-									pointerEvents='none'
+									<Icon
+										icon='healthicons:death'
+										color='red'
+										width='100%'
+										inline={false}
+										pointerEvents='none'
 									/>
-							</Button>
-						</Tooltip>
-						{isJokerPlayed && (
-							<Icon icon='emojione-monotone:joker' color='#DFFF00' width='60px' pointerEvents='none' />
+								</Button>
+							</Tooltip>
+							{isJokerPlayed && (
+								<Icon
+									icon='emojione-monotone:joker'
+									color='#DFFF00'
+									width='60px'
+									pointerEvents='none'
+								/>
 							)}
-							</HStack>
+						</HStack>
 					</VStack>
 				</GridItem>
 				<GridItem justifySelf='start'>
@@ -123,7 +127,6 @@ export default function FightScreen({
 
 			{settings[0].showReminders && isMsgToBeDisplayed && (
 				<HStack bgColor='whiteAlpha.300' p='4' my='4'>
-	
 					<VStack>
 						{infoMessage.displayPerfectKillMsg && (
 							<HStack fontSize='xl'>
@@ -193,7 +196,7 @@ export default function FightScreen({
 						onClick={(e) => (switchState(e), playClick())}
 						height='fit-content'
 						maxWidth={maxWidthBtn}
-						>
+					>
 						<Icon
 							icon='emojione-monotone:joker'
 							color='#DFFF00'
@@ -202,7 +205,11 @@ export default function FightScreen({
 						/>
 					</Button>
 				)}
-				<SettingsScreen width={maxWidthBtn} restartGame={(playerChoice) => restartGame(playerChoice)} gameStatus={gameStatus} />
+				<SettingsScreen
+					width={maxWidthBtn}
+					restartGame={(playerChoice) => restartGame(playerChoice)}
+					gameStatus={gameStatus}
+				/>
 			</HStack>
 		</>
 	);

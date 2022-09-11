@@ -16,7 +16,7 @@ import { useRef, useContext } from 'react';
 import { Context } from '../OptionsContext';
 import CreditsModal from './CreditsModal';
 
-export default function SettingsScreen({ width, restartGame, gameStatus }) {
+export default function SettingsScreen({ width, restartGame, gameStatus, boxShadow }) {
 	const isOption = gameStatus === 'option' || gameStatus === undefined;
 	const { playClick, updateSettings, settings } = useContext(Context);
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,6 +34,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 					onOpen(), playClick();
 				}}
 				ref={btnRef}
+				boxShadow={boxShadow}
 			>
 				<Icon icon='ep:setting' width='100%' inline={true} pointerEvents='none' />
 			</Button>
@@ -79,7 +80,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
-									updateSettings(e), playClick()
+									updateSettings(e), playClick();
 								}}
 							>
 								{`Show Reminders: ${settings[0].showReminders ? 'ON' : 'OFF'}`}
@@ -91,7 +92,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
-									updateSettings(e), playClick()
+									updateSettings(e), playClick();
 								}}
 							>
 								{`Music: ${settings[0].music ? 'ON' : 'OFF'}`}
@@ -103,7 +104,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }) {
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
-									updateSettings(e), playClick()
+									updateSettings(e), playClick();
 								}}
 							>
 								{`Sounds Effect: ${settings[0].soundFx ? 'ON' : 'OFF'}`}

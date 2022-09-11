@@ -271,7 +271,7 @@ function App() {
 
 
 	return (
-		<Flex maxW='800px' mx='auto' flexDirection='column'>
+		<Flex maxW='800px' mx='auto' flexDirection='column' boxShadow='0px 0px 5px 3px #cadad8' py='8' borderRadius='4'>
 			{gameStatus === 'option' && (
 				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')}/>
 			)}

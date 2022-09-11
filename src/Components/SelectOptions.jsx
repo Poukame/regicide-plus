@@ -9,7 +9,7 @@ export default function SelectOptions({ updateStatus }) {
 
 	return (
 		<>
-			<VStack maxW='600px' mx='auto' alignItems='flex-start'>
+			<VStack maxW='600px' mx='auto' alignItems='flex-start' textShadow='2px 2px 2px #cadad8'>
 				<Heading textAlign='center'>Select Your Options</Heading>
 				<Text fontWeight='bold' fontSize='lg'>
 					Maximum Hand Size Change

@@ -33,7 +33,7 @@ export default function OptionsReminder({ progressPercentage }) {
 					placement='left'
 					label={`ON = you can yield. OFF = you can not yield.`}
 					bgColor='#FFF'
-					maxW='20ch'
+					maxW='15ch'
 				>
 					<HStack>
 						<Icon icon='ci:user-close' width='30' />
@@ -76,7 +76,7 @@ export default function OptionsReminder({ progressPercentage }) {
 				>
 					<HStack>
                     <Icon icon="akar-icons:trophy" width="30" />
-						<Text>{progressPercentage}%</Text>
+						<Text letterSpacing='2px'>{progressPercentage}%</Text>
 					</HStack>
 				</Tooltip>
                 

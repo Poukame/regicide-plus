@@ -44,7 +44,6 @@ function ContextProvider({ children }) {
 		});
 	}
 	
-	
 
 	const [options, setOptions] = useState([
 		{
@@ -57,7 +56,7 @@ function ContextProvider({ children }) {
 			maxAnimalCompanionLimit: 'K',
 		},
 	]);
-	
+
 	const {maxHandSize, removeJesters, enemyHealthBoost, enemyAttackBoost, yieldTurn, maxComboLimit, maxAnimalCompanionLimit} = options[0]
 	
 	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit)
