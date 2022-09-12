@@ -80,6 +80,7 @@ export default function FightScreen({
 								placement='top'
 								label={`Double Click to Use Instant Kill`}
 								bgColor='#FFF'
+								color='gray.800'
 								maxW='25ch'
 								openDelay={800}
 							>
