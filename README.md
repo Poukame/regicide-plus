@@ -1,7 +1,7 @@
 # Regicide Companion Plus
 
 An app to assist you during your Regicide boardgame plays. This is not the official app but it includes more options and quality of life improvements.
-Try it online: [Regicide Companion Plus](regicide-plus.netlify.app)
+Try it online: [Regicide Companion Plus](https://regicide-plus.netlify.app)
 
 ## Why this app?
 
@@ -20,8 +20,8 @@ I found them interesting and was disappointed by the official app not proposing 
 
 Everything from the official companion app plus:
 
-- Choose from advance options: enemies health, enemy attack, max combo card, max animal companion card...
-- Progress percentage that allows you to compare you score in the most challenging battles,
+- Choose from advanced options: enemies health, enemy attack, max combo card, max animal companion card...
+- Progress percentage that allows you to compare your score in the most challenging battles,
 - Actions reminders (heal, draw cards, perfect kill...) so you don't forget or need to calculate things,
 - Use the app in landscape or portrait mode,
 - Install the app on your computer or phone and acts like a native app with OFFLINE mode
@@ -58,3 +58,6 @@ Sound effects obtained from [www.zapsplat.com](www.zapsplat.com)
 ### Playing Cards
 
 Generated thanks to [www.me.uk/cards/makeadeck.cgi](www.me.uk/cards/makeadeck.cgi)
+
+### Icon
+[jester png from pngtree.com](https://pngtree.com/so/jester)
