@@ -20,6 +20,7 @@ export default function OptionsReminder({ progressPercentage }) {
 					label={`Modifier for the maximum number of cards in hand`}
 					bgColor='#FFF'
 					maxW='25ch'
+					color='gray.800'
 				>
 					<HStack>
 						<Icon icon='fluent:playing-cards-20-regular' width='30' />
@@ -34,6 +35,7 @@ export default function OptionsReminder({ progressPercentage }) {
 					label={`ON = you can yield. OFF = you can not yield.`}
 					bgColor='#FFF'
 					maxW='15ch'
+					color='gray.800'
 				>
 					<HStack>
 						<Icon icon='ci:user-close' width='30' />
@@ -47,6 +49,7 @@ export default function OptionsReminder({ progressPercentage }) {
 					label={`The highest card you can use an animal companion with.`}
 					bgColor='#FFF'
 					maxW='25ch'
+					color='gray.800'
 				>
 					<HStack>
 						<Icon icon='map:pet-store' width='30' />
@@ -60,6 +63,7 @@ export default function OptionsReminder({ progressPercentage }) {
 					label={`The highest sum you can reach with your cards combo`}
 					bgColor='#FFF'
 					maxW='25ch'
+					color='gray.800'
 				>
 					<HStack>
 						<Icon icon='carbon:document-add' width='30' />
@@ -73,6 +77,7 @@ export default function OptionsReminder({ progressPercentage }) {
 					label={`Your progress towards victory. This can be used to compare your performance between plays.`}
 					bgColor='#FFF'
 					maxW='25ch'
+					color='gray.800'
 				>
 					<HStack>
                     <Icon icon="akar-icons:trophy" width="30" />
