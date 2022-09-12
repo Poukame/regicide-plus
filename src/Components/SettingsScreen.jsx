@@ -18,7 +18,7 @@ import CreditsModal from './CreditsModal';
 
 export default function SettingsScreen({ width, restartGame, gameStatus, boxShadow }) {
 	const isOption = gameStatus === 'option' || gameStatus === undefined;
-	const { playClick, updateSettings, settings } = useContext(Context);
+	const { playClick, updateSettings, settings, installApp } = useContext(Context);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = useRef();
 
@@ -109,8 +109,8 @@ export default function SettingsScreen({ width, restartGame, gameStatus, boxShad
 							>
 								{`Sounds Effect: ${settings[0].soundFx ? 'ON' : 'OFF'}`}
 							</Button>
-							<Button w='100%' bgColor={bgColor} color={color}>
-								Install
+							<Button w='100%' bgColor={bgColor} color={color} onClick={() => {installApp(), playClick()}}>
+								Install App
 							</Button>
 							<CreditsModal width='100%' bgColor='#94b4b0' color={color} />
 						</VStack>

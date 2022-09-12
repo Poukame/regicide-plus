@@ -16,6 +16,23 @@ celticAmbiance.loop = true
 
 
 function ContextProvider({ children }) {
+	/// PWA install listener
+	let deferredPrompt;
+
+	window.addEventListener('beforeinstallprompt', (e) => {
+		deferredPrompt = e;
+	});
+
+	async function installApp() {
+		if (deferredPrompt !== null) {
+			deferredPrompt.prompt();
+			const { outcome } = await deferredPrompt.userChoice;
+			if (outcome === 'accepted') {
+				deferredPrompt = null;
+			}
+		}
+	}
+	/////
 	
 	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const JACK_HEALTH = 20
@@ -162,7 +179,7 @@ function ContextProvider({ children }) {
 	}, [settings[0].music])
 
 
-	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue, playClick, settings, updateSettings }}>{children}</Context.Provider>;
+	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue, playClick, settings, updateSettings, installApp }}>{children}</Context.Provider>;
 }
 
 export { ContextProvider, Context };
