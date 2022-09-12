@@ -112,7 +112,6 @@ export default function SelectOptions({ updateStatus }) {
 				
 				w='250px'
 				colorScheme='green'
-				// alignSelf='center'
 				variant='solid'
 				onClick={() => {updateStatus(), playClick()}}
 			>
