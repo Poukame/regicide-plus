@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
 import './App.css';
 import { Context } from './OptionsContext';
 import SelectOptions from './Components/SelectOptions';
@@ -15,6 +15,9 @@ function App() {
 	// option, fight, selectEnemy, selectCard, selectCombo, endGame
 	const { jackEnemies, queenEnemies, kingEnemies, options, settings } = useContext(Context);
 	const [isJokerPlayed, setIsJokerPlayed] = useState(false);
+	const [savedGame, setSavedGame] = useState([])
+	const [, setRefresh] = useState(false)
+	console.log('file: App.jsx ~ line 19 ~ savedGame', savedGame);
 
 	const resetSelectedCards = {
 		baseCard: '',
@@ -32,7 +35,8 @@ function App() {
 		selectedCards;
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
-	const currentEnemy = allEnemies.find((el) => el.isSelected);
+	console.log('file: App.jsx ~ line 37 ~ allEnemies', allEnemies);
+	let currentEnemy = allEnemies.find((el) => el.isSelected);
 	const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (cur.isDead ? (acc += 1) : acc), 0);
 
 	const resetInfoMessage = {
@@ -126,9 +130,35 @@ function App() {
 		});
 	}
 
+	function saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache) {
+		let count = savedGame.length
+
+		const enemiesArr = Object.assign({}, currentEnemy)
+		setSavedGame(prev => {
+			return [...prev, {currentEnemy: enemiesArr, joker: isJokerPlayed, spade: spadeDmgCache}]
+		})
+	}
+
+
+	function loadProgress() {
+		currentEnemy = Object.assign({}, savedGame[0].currentEnemy)
+
+		setEnemies(prev => {
+			const index = prev.findIndex(el => el.id === currentEnemy.id)
+			prev[index] = currentEnemy
+			return prev
+		})
+		setIsJokerPlayed(savedGame[0].joker)
+		setSpadeDmgCache(savedGame[0].spade)
+		setRefresh(prev => !prev)
+
+		// correct status of selected after instakill
+	}
+
+
 	function validateAttack() {
 		// save state to local storage here
-
+		saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache)
 		setSelectedCards({ ...selectedCards, attackSum: damageConversion[baseCard] + comboSum });
 		setGameStatus('fight');
 	}
@@ -213,6 +243,8 @@ function App() {
 			setSpadeDmgCache(0)
 			isGameEnded();
 		} else if (currentEnemy.health < 0 || instaKill) {
+		instaKill && saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache)
+		  
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
 			setSpadeDmgCache(0)
@@ -318,6 +350,7 @@ function App() {
 			)}
 
 			{gameStatus === 'endGame' && <EndGameScreen restartGame={(playerChoice) => restartGame(playerChoice)} />}
+			<Button onClick={loadProgress}>Load</Button>
 		</Flex>
 	);
 }
