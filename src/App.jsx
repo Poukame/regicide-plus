@@ -16,7 +16,6 @@ function App() {
 	const { jackEnemies, queenEnemies, kingEnemies, options, settings } = useContext(Context);
 	const [isJokerPlayed, setIsJokerPlayed] = useState(false);
 	const [savedGame, setSavedGame] = useState([])
-	const [, setRefresh] = useState(false)
 	console.log('file: App.jsx ~ line 19 ~ savedGame', savedGame);
 
 	const resetSelectedCards = {
@@ -130,29 +129,36 @@ function App() {
 		});
 	}
 
-	function saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache) {
-		let count = savedGame.length
+	let saveCount = savedGame.length
+	const [loadCount, setLoadCount] = useState(0)
+	console.log('file: App.jsx ~ line 135 ~ loadCount', loadCount);
 
+	function saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache) {
+		// limit number of save to 3
+		setLoadCount(0)
 		const enemiesArr = Object.assign({}, currentEnemy)
 		setSavedGame(prev => {
 			return [...prev, {currentEnemy: enemiesArr, joker: isJokerPlayed, spade: spadeDmgCache}]
 		})
 	}
 
-
 	function loadProgress() {
-		currentEnemy = Object.assign({}, savedGame[0].currentEnemy)
+
+		const previousSave = savedGame[saveCount - 1 - loadCount]
+
+		currentEnemy = Object.assign({}, previousSave.currentEnemy)
 
 		setEnemies(prev => {
+			const indexNewlySelectedEnemyToReset = prev.findIndex(el => el.isSelected === true)
 			const index = prev.findIndex(el => el.id === currentEnemy.id)
+			prev[indexNewlySelectedEnemyToReset].isSelected = false 
 			prev[index] = currentEnemy
 			return prev
 		})
-		setIsJokerPlayed(savedGame[0].joker)
-		setSpadeDmgCache(savedGame[0].spade)
-		setRefresh(prev => !prev)
-
-		// correct status of selected after instakill
+		
+		setIsJokerPlayed(previousSave.joker)
+		setSpadeDmgCache(previousSave.spade)
+		setLoadCount(prev => prev + 1 )
 	}
 
 
