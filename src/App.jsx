@@ -45,6 +45,8 @@ function App() {
 	};
 
 	const [infoMessage, setInfoMessage] = useState(resetInfoMessage);
+	const [_, setRefreshHealth] = useState(false)
+	const [, setRefreshAttack] = useState(false)
 
 	useEffect(() => setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies]), [jackEnemies]);
 
@@ -136,7 +138,7 @@ function App() {
 	function spadeReduceCache() {
 		// saves spades damage to retroactively reduce attack if joker is played
 		if(currentEnemy.suits === 'spade') {
-			const isSpadePlayed = [...comboSuits, baseCardSuit].some(el => el === 'spade')
+			const isSpadePlayed = [...comboSuits, baseCardSuit].includes('spade')
 			isSpadePlayed && setSpadeDmgCache(prev => prev + attackSum)
 		}
 	}
@@ -174,25 +176,52 @@ function App() {
 		isEnemyDead(currentEnemy);
 	}
 
+	function animateHealthCounter(current, target){
+		const counter = setInterval(() => {
+			if(target < current) {
+				current = current - 1
+				currentEnemy.health = current
+				setRefreshHealth(prev => !prev)
+			} else {
+				clearInterval(counter);
+			}
+		}, 1000 / (current - target) )
+		return () => clearInterval(counter)
+	}
+
+	function animateAttackCounter(current, target){
+		const counter2 = setInterval(() => {
+			if(target < current) {
+				current = current - 1
+				currentEnemy.attack = current
+				setRefreshAttack(prev => !prev)
+			} else {
+				clearInterval(counter2);
+			}
+		}, 1000 / (current - target) )
+		return () => clearInterval(counter2)
+	}
+	
+
 	function calculateDamage(allSuitsCards) {
 
-		if (allSuitsCards.some((el) => el === 'club')) {
-			currentEnemy.health -= attackSum * 2;
+		if (allSuitsCards.includes('club')) {
+			animateHealthCounter(currentEnemy.health, currentEnemy.health - attackSum * 2 )
 		} else {
-			currentEnemy.health -= attackSum;
+			animateHealthCounter(currentEnemy.health, currentEnemy.health - attackSum )
 		}
 
-		if (allSuitsCards.some((el) => el === 'spade')) {
-			currentEnemy.attack -= attackSum;
+		if (allSuitsCards.includes('spade')) {
+			animateAttackCounter(currentEnemy.attack, currentEnemy.attack - attackSum )
 		}
-		if (allSuitsCards.some((el) => el === 'heart')) {
+		if (allSuitsCards.includes('heart')) {
 			setInfoMessage((prev) => ({
 				...prev,
 				heartMsg: `❤️‍🩹 Heal ${attackSum} Cards`,
 				displayHeartMsg: true,
 			}));
 		}
-		if (allSuitsCards.some((el) => el === 'diamond')) {
+		if (allSuitsCards.includes('diamond')) {
 			setInfoMessage((prev) => ({
 				...prev,
 				diamondMsg: `🤏 Draw ${attackSum} Cards`,
