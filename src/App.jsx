@@ -15,6 +15,7 @@ function App() {
 	// option, fight, selectEnemy, selectCard, selectCombo, endGame
 	const { jackEnemies, queenEnemies, kingEnemies, options, settings } = useContext(Context);
 	const [isJokerPlayed, setIsJokerPlayed] = useState(false);
+	const [savedGame, setSavedGame] = useState([])
 
 	const resetSelectedCards = {
 		baseCard: '',
@@ -31,7 +32,7 @@ function App() {
 	const { baseCard, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } = selectedCards;
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
-	const currentEnemy = allEnemies.find((el) => el.isSelected);
+	let currentEnemy = allEnemies.find((el) => el.isSelected);
 	const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (cur.isDead ? (acc += 1) : acc), 0);
 
 	const resetInfoMessage = {
@@ -127,9 +128,55 @@ function App() {
 		});
 	}
 
-	function validateAttack() {
-		// save state to local storage here
+	let saveCount = savedGame.length
+	const [loadCount, setLoadCount] = useState(0)
 
+	function saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache) {
+		setLoadCount(0)
+		const enemiesArr = Object.assign({}, currentEnemy)
+		setSavedGame(prev => {
+			return [...prev, {currentEnemy: enemiesArr, joker: isJokerPlayed, spade: spadeDmgCache}]
+		})
+	}
+
+	function loadProgress() {
+		setInfoMessage(resetInfoMessage)
+		let saveIndex
+		
+		if(saveCount - 1 - loadCount <= 0) {
+			saveIndex = 0
+			setSavedGame([])
+		} else {
+			saveIndex = saveCount - 1 - loadCount
+		}
+
+		const previousSave = savedGame[saveIndex]
+
+		currentEnemy = Object.assign({}, previousSave.currentEnemy)
+
+		setEnemies(prev => {
+			const index = prev.findIndex(el => el.id === currentEnemy.id)
+			prev[index] = currentEnemy
+			
+			// ensure there are no 2 enemies with isSelected === true
+			const update = prev.map(el => {
+				if(el.id !== currentEnemy.id) {
+						return ({...el, isSelected: el.isSelected && false})
+				} else {
+					return ({...el})
+				}
+			})
+			return update
+		})
+		
+		setIsJokerPlayed(previousSave.joker)
+		setSpadeDmgCache(previousSave.spade)
+		setLoadCount(prev => prev + 1 )
+	}
+
+
+	function validateAttack() {
+		saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache)
 		setSelectedCards({ ...selectedCards, attackSum: damageConversion[baseCard] + comboSum });
 		setGameStatus('fight');
 	}
@@ -238,6 +285,8 @@ function App() {
 			setSpadeDmgCache(0);
 			isGameEnded();
 		} else if (currentEnemy.health < 0 || instaKill) {
+		instaKill && saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache)
+		  
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
 			setSpadeDmgCache(0);
@@ -288,10 +337,11 @@ function App() {
 	}
 
 	function restartGame(playerChoice) {
-		setInfoMessage(resetInfoMessage);
-		setSelectedCards(resetSelectedCards);
-		setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies]);
-		playerChoice === 'retry' ? setGameStatus('selectEnemy') : setGameStatus('option');
+		setSavedGame([])
+		setInfoMessage(resetInfoMessage)
+		setSelectedCards(resetSelectedCards)
+		setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies])
+		playerChoice === 'retry' ? setGameStatus('selectEnemy') : setGameStatus('option')
 	}
 
 	return (
@@ -327,6 +377,8 @@ function App() {
 					numberOfDeadFigure={numberOfDeadFigure}
 					progressPercentage={progressPercentage()}
 					restartGame={(playerChoice) => restartGame(playerChoice)}
+					loadProgress={() => loadProgress()}
+					isReturnPossible={savedGame.length > 0 ? true : false}
 				/>
 			)}
 
