@@ -34,7 +34,6 @@ function App() {
 		selectedCards;
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
-	console.log('file: App.jsx ~ line 37 ~ allEnemies', allEnemies);
 	let currentEnemy = allEnemies.find((el) => el.isSelected);
 	const numberOfDeadFigure = allEnemies.reduce((acc, cur) => (cur.isDead ? (acc += 1) : acc), 0);
 
@@ -134,7 +133,6 @@ function App() {
 	console.log('file: App.jsx ~ line 135 ~ loadCount', loadCount);
 
 	function saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache) {
-		// limit number of save to 3
 		setLoadCount(0)
 		const enemiesArr = Object.assign({}, currentEnemy)
 		setSavedGame(prev => {
@@ -143,17 +141,25 @@ function App() {
 	}
 
 	function loadProgress() {
-
-		const previousSave = savedGame[saveCount - 1 - loadCount]
+		setInfoMessage(resetInfoMessage)
+		const saveIndex = saveCount - 1 - loadCount <= 0 ? 0 : saveCount - 1 - loadCount
+		const previousSave = savedGame[saveIndex]
 
 		currentEnemy = Object.assign({}, previousSave.currentEnemy)
 
 		setEnemies(prev => {
-			const indexNewlySelectedEnemyToReset = prev.findIndex(el => el.isSelected === true)
 			const index = prev.findIndex(el => el.id === currentEnemy.id)
-			prev[indexNewlySelectedEnemyToReset].isSelected = false 
 			prev[index] = currentEnemy
-			return prev
+			
+			// ensure there are no 2 enemies with isSelected === true
+			const update = prev.map(el => {
+				if(el.id !== currentEnemy.id) {
+						return ({...el, isSelected: el.isSelected && false})
+				} else {
+					return ({...el})
+				}
+			})
+			return update
 		})
 		
 		setIsJokerPlayed(previousSave.joker)
@@ -163,7 +169,6 @@ function App() {
 
 
 	function validateAttack() {
-		// save state to local storage here
 		saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache)
 		setSelectedCards({ ...selectedCards, attackSum: damageConversion[baseCard] + comboSum });
 		setGameStatus('fight');
