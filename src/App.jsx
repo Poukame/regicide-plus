@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { Button, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import './App.css';
 import { Context } from './OptionsContext';
 import SelectOptions from './Components/SelectOptions';
@@ -16,7 +16,6 @@ function App() {
 	const { jackEnemies, queenEnemies, kingEnemies, options, settings } = useContext(Context);
 	const [isJokerPlayed, setIsJokerPlayed] = useState(false);
 	const [savedGame, setSavedGame] = useState([])
-	console.log('file: App.jsx ~ line 19 ~ savedGame', savedGame);
 
 	const resetSelectedCards = {
 		baseCard: '',
@@ -130,7 +129,6 @@ function App() {
 
 	let saveCount = savedGame.length
 	const [loadCount, setLoadCount] = useState(0)
-	console.log('file: App.jsx ~ line 135 ~ loadCount', loadCount);
 
 	function saveProgress(currentEnemy, isJokerPlayed,spadeDmgCache) {
 		setLoadCount(0)
@@ -142,7 +140,15 @@ function App() {
 
 	function loadProgress() {
 		setInfoMessage(resetInfoMessage)
-		const saveIndex = saveCount - 1 - loadCount <= 0 ? 0 : saveCount - 1 - loadCount
+		let saveIndex
+		
+		if(saveCount - 1 - loadCount <= 0) {
+			saveIndex = 0
+			setSavedGame([])
+		} else {
+			saveIndex = saveCount - 1 - loadCount
+		}
+
 		const previousSave = savedGame[saveIndex]
 
 		currentEnemy = Object.assign({}, previousSave.currentEnemy)
@@ -306,6 +312,7 @@ function App() {
 	}
 
 	function restartGame(playerChoice) {
+		setSavedGame([])
 		setInfoMessage(resetInfoMessage)
 		setSelectedCards(resetSelectedCards)
 		setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies])
@@ -339,6 +346,8 @@ function App() {
 					numberOfDeadFigure={numberOfDeadFigure}
 					progressPercentage={progressPercentage()}
 					restartGame={(playerChoice) => restartGame(playerChoice)}
+					loadProgress={() => loadProgress()}
+					isReturnPossible={savedGame.length > 0 ? true : false}
 				/>
 			)}
 
@@ -361,7 +370,6 @@ function App() {
 			)}
 
 			{gameStatus === 'endGame' && <EndGameScreen restartGame={(playerChoice) => restartGame(playerChoice)} />}
-			<Button onClick={loadProgress}>Load</Button>
 		</Flex>
 	);
 }

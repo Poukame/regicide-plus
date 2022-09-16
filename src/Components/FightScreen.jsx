@@ -27,6 +27,8 @@ export default function FightScreen({
 	progressPercentage,
 	restartGame,
 	gameStatus,
+	loadProgress,
+	isReturnPossible
 }) {
 	const { options, playClick, settings } = useContext(Context);
 	const { health, attack, imgPath, isDead } = currentEnemy[0];
@@ -68,11 +70,16 @@ export default function FightScreen({
 				</GridItem>
 				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[2, 3, 3]} rowStart={[1, 1, 1]}>
 					<VStack>
+						<Box
+						border={isJokerPlayed ? 'outset 5px #DFFF00' : 'none'}
+						>
 						<Image
 							src={imgPath}
 							maxW={imageSize}
 							filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
 						/>
+
+						</Box>
 						<HStack>
 							<Tooltip
 								hasArrow
@@ -101,15 +108,20 @@ export default function FightScreen({
 										pointerEvents='none'
 									/>
 								</Button>
+								
 							</Tooltip>
-							{isJokerPlayed && (
-								<Icon
-									icon='emojione-monotone:joker'
-									color='#DFFF00'
-									width='60px'
-									pointerEvents='none'
-								/>
-							)}
+							<Button
+									p='2'
+									bgColor='whiteAlpha.300'
+									border='dashed #cadad8 2px'
+									height='fit-content'
+									maxWidth='60px'
+									onClick={() => loadProgress()}
+									isDisabled={isReturnPossible ? false : true}
+								>
+							<Icon icon="akar-icons:arrow-back" width='100%'/>
+
+							</Button>
 						</HStack>
 					</VStack>
 				</GridItem>
@@ -211,6 +223,7 @@ export default function FightScreen({
 					restartGame={(playerChoice) => restartGame(playerChoice)}
 					gameStatus={gameStatus}
 				/>
+				
 			</HStack>
 		</>
 	);
