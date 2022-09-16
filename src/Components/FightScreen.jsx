@@ -61,7 +61,7 @@ export default function FightScreen({
 					<Box fontSize={fontSizeValue} color='red.700' height='min-content'>
 						<VStack>
 							<Box fontSize='3xl'>Health</Box>
-							<Box fontWeight='700'>{isDead ? '0' : health}</Box>
+							<Box fontWeight='700'>{health <= 0 ? '0' : health}</Box>
 						</VStack>
 					</Box>
 				</GridItem>
