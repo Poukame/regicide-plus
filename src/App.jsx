@@ -26,10 +26,9 @@ function App() {
 		attackSum: 0,
 	};
 	const [selectedCards, setSelectedCards] = useState(resetSelectedCards);
-	const [spadeDmgCache, setSpadeDmgCache] = useState(0)
+	const [spadeDmgCache, setSpadeDmgCache] = useState(0);
 
-	const { baseCard, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } =
-		selectedCards;
+	const { baseCard, baseCardSuit, companionSuit, comboSum, comboSuits, attackSum } = selectedCards;
 
 	const [allEnemies, setEnemies] = useState([...jackEnemies, ...queenEnemies, ...kingEnemies]);
 	const currentEnemy = allEnemies.find((el) => el.isSelected);
@@ -45,8 +44,8 @@ function App() {
 	};
 
 	const [infoMessage, setInfoMessage] = useState(resetInfoMessage);
-	const [_, setRefreshHealth] = useState(false)
-	const [, setRefreshAttack] = useState(false)
+	const [_, setRefreshHealth] = useState(false);
+	const [, setRefreshAttack] = useState(false);
 
 	useEffect(() => setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies]), [jackEnemies]);
 
@@ -134,18 +133,20 @@ function App() {
 		setSelectedCards({ ...selectedCards, attackSum: damageConversion[baseCard] + comboSum });
 		setGameStatus('fight');
 	}
-	
+
 	function spadeReduceCache() {
 		// saves spades damage to retroactively reduce attack if joker is played
-		if(currentEnemy.suits === 'spade') {
-			const isSpadePlayed = [...comboSuits, baseCardSuit].includes('spade')
-			isSpadePlayed && setSpadeDmgCache(prev => prev + attackSum)
+		if (currentEnemy.suits === 'spade') {
+			const isSpadePlayed = [...comboSuits, baseCardSuit].includes('spade');
+			isSpadePlayed && setSpadeDmgCache((prev) => prev + attackSum);
 		}
 	}
-	
+
 	useEffect(() => {
 		if (gameStatus === 'fight') {
-			isJokerPlayed ?  (currentEnemy.attack -= spadeDmgCache) : (currentEnemy.attack += spadeDmgCache)
+			isJokerPlayed
+				? (currentEnemy.attack -= spadeDmgCache)
+				: (currentEnemy.attack += spadeDmgCache);
 			setSelectedCards(resetSelectedCards);
 		}
 	}, [isJokerPlayed]);
@@ -155,7 +156,6 @@ function App() {
 			generateAttack(currentEnemy);
 		}
 	}, [attackSum]);
-
 
 	function generateAttack(currentEnemy) {
 		let allSuitsCards;
@@ -170,49 +170,20 @@ function App() {
 			);
 		}
 
-		calculateDamage(allSuitsCards)
-		spadeReduceCache()
+		calculateDamage(allSuitsCards);
+		spadeReduceCache();
 		setSelectedCards(resetSelectedCards);
-		isEnemyDead(currentEnemy);
 	}
-
-	function animateHealthCounter(current, target){
-		const counter = setInterval(() => {
-			if(target < current) {
-				current = current - 1
-				currentEnemy.health = current
-				setRefreshHealth(prev => !prev)
-			} else {
-				clearInterval(counter);
-			}
-		}, 1000 / (current - target) )
-		return () => clearInterval(counter)
-	}
-
-	function animateAttackCounter(current, target){
-		const counter2 = setInterval(() => {
-			if(target < current) {
-				current = current - 1
-				currentEnemy.attack = current
-				setRefreshAttack(prev => !prev)
-			} else {
-				clearInterval(counter2);
-			}
-		}, 1000 / (current - target) )
-		return () => clearInterval(counter2)
-	}
-	
 
 	function calculateDamage(allSuitsCards) {
-
 		if (allSuitsCards.includes('club')) {
-			animateHealthCounter(currentEnemy.health, currentEnemy.health - attackSum * 2 )
+			animateHealthCounter(currentEnemy.health, currentEnemy.health - attackSum * 2);
 		} else {
-			animateHealthCounter(currentEnemy.health, currentEnemy.health - attackSum )
+			animateHealthCounter(currentEnemy.health, currentEnemy.health - attackSum);
 		}
 
 		if (allSuitsCards.includes('spade')) {
-			animateAttackCounter(currentEnemy.attack, currentEnemy.attack - attackSum )
+			animateAttackCounter(currentEnemy.attack, currentEnemy.attack - attackSum);
 		}
 		if (allSuitsCards.includes('heart')) {
 			setInfoMessage((prev) => ({
@@ -230,6 +201,31 @@ function App() {
 		}
 	}
 
+	function animateHealthCounter(current, target) {
+		const counter = setInterval(() => {
+			if (target < current) {
+				current = current - 1;
+				currentEnemy.health = current;
+				setRefreshHealth((prev) => !prev);
+			} else {
+				clearInterval(counter);
+				isEnemyDead(currentEnemy);
+			}
+		}, 1000 / (current - target));
+	}
+
+	function animateAttackCounter(current, target) {
+		const counter2 = setInterval(() => {
+			if (target < current) {
+				current = current - 1;
+				currentEnemy.attack = current;
+				setRefreshAttack((prev) => !prev);
+			} else {
+				clearInterval(counter2);
+			}
+		}, 1000 / (current - target));
+	}
+
 	function isEnemyDead(currentEnemy, instaKill) {
 		if (currentEnemy.health === 0) {
 			setInfoMessage((prev) => ({
@@ -239,12 +235,12 @@ function App() {
 			}));
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
-			setSpadeDmgCache(0)
+			setSpadeDmgCache(0);
 			isGameEnded();
 		} else if (currentEnemy.health < 0 || instaKill) {
 			currentEnemy.isDead = true;
 			setIsJokerPlayed(false);
-			setSpadeDmgCache(0)
+			setSpadeDmgCache(0);
 			isGameEnded();
 		}
 	}
@@ -292,17 +288,23 @@ function App() {
 	}
 
 	function restartGame(playerChoice) {
-		setInfoMessage(resetInfoMessage)
-		setSelectedCards(resetSelectedCards)
-		setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies])
-		playerChoice === 'retry' ? setGameStatus('selectEnemy') : setGameStatus('option')
+		setInfoMessage(resetInfoMessage);
+		setSelectedCards(resetSelectedCards);
+		setEnemies([...jackEnemies, ...queenEnemies, ...kingEnemies]);
+		playerChoice === 'retry' ? setGameStatus('selectEnemy') : setGameStatus('option');
 	}
 
-
 	return (
-		<Flex maxW='800px' mx='auto' flexDirection='column' boxShadow='0px 0px 5px 3px #cadad8' py='8' borderRadius='4'>
+		<Flex
+			maxW='800px'
+			mx='auto'
+			flexDirection='column'
+			boxShadow='0px 0px 5px 3px #cadad8'
+			py='8'
+			borderRadius='4'
+		>
 			{gameStatus === 'option' && (
-				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')}/>
+				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')} />
 			)}
 
 			{gameStatus === 'selectEnemy' && (
@@ -346,7 +348,9 @@ function App() {
 				/>
 			)}
 
-			{gameStatus === 'endGame' && <EndGameScreen restartGame={(playerChoice) => restartGame(playerChoice)} />}
+			{gameStatus === 'endGame' && (
+				<EndGameScreen restartGame={(playerChoice) => restartGame(playerChoice)} />
+			)}
 		</Flex>
 	);
 }
