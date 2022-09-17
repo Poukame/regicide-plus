@@ -1,6 +1,5 @@
 import {
 	Button,
-	Text,
 	Drawer,
 	DrawerBody,
 	DrawerFooter,

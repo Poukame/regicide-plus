@@ -1,4 +1,4 @@
-import { Box, Image, HStack, VStack, Heading, Button } from '@chakra-ui/react';
+import { Image, VStack, Heading, Button } from '@chakra-ui/react';
 import trollface from '../assets/images/trollface.webp'
 import { Context } from '../OptionsContext';
 import { useContext } from 'react';

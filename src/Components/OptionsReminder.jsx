@@ -1,5 +1,5 @@
 import { VStack, Text, HStack, Tooltip } from '@chakra-ui/react';
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { Context } from '../OptionsContext';
 import { Icon } from '@iconify/react';
 

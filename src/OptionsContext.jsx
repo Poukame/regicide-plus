@@ -1,19 +1,18 @@
 import React, { createContext, useState, useEffect } from 'react';
 import enemyData from './assets/EnemyData.cjs';
-import click_Return from './assets/sounds/click_return.mp3'
-import click_validate from './assets/sounds/click_validate.mp3'
-import VikingIntro from './assets/sounds/viking_intro_loop.mp3'
-import CelticAmbiance from './assets/sounds/celtic_ambiance.mp3'
+import click_Return from './assets/sounds/click_return.mp3';
+import click_validate from './assets/sounds/click_validate.mp3';
+import VikingIntro from './assets/sounds/viking_intro_loop.mp3';
+import CelticAmbiance from './assets/sounds/celtic_ambiance.mp3';
 const Context = createContext();
-const clickReturn = new Audio(click_Return)
-const clickValidate = new Audio(click_validate)
-const vikingIntro = new Audio(VikingIntro)
-const celticAmbiance = new Audio(CelticAmbiance)
-vikingIntro.volume = .2
-vikingIntro.loop = true
-celticAmbiance.volume = .3
-celticAmbiance.loop = true
-
+const clickReturn = new Audio(click_Return);
+const clickValidate = new Audio(click_validate);
+const vikingIntro = new Audio(VikingIntro);
+const celticAmbiance = new Audio(CelticAmbiance);
+vikingIntro.volume = 0.2;
+vikingIntro.loop = true;
+celticAmbiance.volume = 0.3;
+celticAmbiance.loop = true;
 
 function ContextProvider({ children }) {
 	/// PWA install listener
@@ -33,20 +32,22 @@ function ContextProvider({ children }) {
 		}
 	}
 	/////
-	
-	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-	const JACK_HEALTH = 20
-    const JACK_ATTACK = 10
-    const QUEEN_HEALTH = 30
-    const QUEEN_ATTACK = 15
-    const KING_HEALTH = 40
-    const KING_ATTACK = 20
 
-	const [settings, setSettings] = useState([{
-		showReminders: true,
-		music: false,
-		soundFx: false
-	}])
+	const cardValue = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+	const JACK_HEALTH = 20;
+	const JACK_ATTACK = 10;
+	const QUEEN_HEALTH = 30;
+	const QUEEN_ATTACK = 15;
+	const KING_HEALTH = 40;
+	const KING_ATTACK = 20;
+
+	const [settings, setSettings] = useState([
+		{
+			showReminders: true,
+			music: false,
+			soundFx: false,
+		},
+	]);
 
 	function updateSettings(e) {
 		const { name, value } = e.target;
@@ -60,7 +61,6 @@ function ContextProvider({ children }) {
 			});
 		});
 	}
-	
 
 	const [options, setOptions] = useState([
 		{
@@ -74,10 +74,10 @@ function ContextProvider({ children }) {
 		},
 	]);
 
-	const {maxHandSize, removeJesters, enemyHealthBoost, enemyAttackBoost, yieldTurn, maxComboLimit, maxAnimalCompanionLimit} = options[0]
-	
-	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit)
-	const [maxCompanionCard, setMaxCompanionCard] = useState(maxAnimalCompanionLimit)
+	const { enemyHealthBoost, enemyAttackBoost, maxComboLimit, maxAnimalCompanionLimit } = options[0];
+
+	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit);
+	const [maxCompanionCard, setMaxCompanionCard] = useState(maxAnimalCompanionLimit);
 
 	function handleChange(e) {
 		const { name, value } = e.target;
@@ -92,38 +92,43 @@ function ContextProvider({ children }) {
 		});
 	}
 
-	const [jackEnemies, setJackEnemies] = useState(enemyData.filter(el => el.rank === 'jack').map(enemyDB => {
-		return (
-			{
-				...enemyDB,
-				health: JACK_HEALTH,
-	 			attack: JACK_ATTACK,
-			}
-		)
-	}));
+	const [jackEnemies, setJackEnemies] = useState(
+		enemyData
+			.filter((el) => el.rank === 'jack')
+			.map((enemyDB) => {
+				return {
+					...enemyDB,
+					health: JACK_HEALTH,
+					attack: JACK_ATTACK,
+				};
+			})
+	);
 
-	const [queenEnemies, setQueenEnemies] = useState(enemyData.filter(el => el.rank === 'queen').map(enemyDB => {
-		return (
-			{
-				...enemyDB,
-				health: QUEEN_HEALTH,
-	 			attack: QUEEN_ATTACK,
-			}
-		)
-	}));
+	const [queenEnemies, setQueenEnemies] = useState(
+		enemyData
+			.filter((el) => el.rank === 'queen')
+			.map((enemyDB) => {
+				return {
+					...enemyDB,
+					health: QUEEN_HEALTH,
+					attack: QUEEN_ATTACK,
+				};
+			})
+	);
 
-	const [kingEnemies, setKingEnemies] = useState(enemyData.filter(el => el.rank === 'king').map(enemyDB => {
-		return (
-			{
-				...enemyDB,
-				health: KING_HEALTH,
-	 			attack: KING_ATTACK,
-			}
-		)
-	}));
+	const [kingEnemies, setKingEnemies] = useState(
+		enemyData
+			.filter((el) => el.rank === 'king')
+			.map((enemyDB) => {
+				return {
+					...enemyDB,
+					health: KING_HEALTH,
+					attack: KING_ATTACK,
+				};
+			})
+	);
 
 	useEffect(() => {
-
 		setJackEnemies((prev) => {
 			return prev.map((prev) => {
 				return {
@@ -154,32 +159,49 @@ function ContextProvider({ children }) {
 			});
 		});
 
-		setMaxComboCard(maxComboLimit === 'OFF' ? 0 : Math.floor(maxComboLimit / 2))
-		setMaxCompanionCard(maxAnimalCompanionLimit === 'OFF' ? 'OFF' : maxAnimalCompanionLimit.toString())
-
+		setMaxComboCard(maxComboLimit === 'OFF' ? 0 : Math.floor(maxComboLimit / 2));
+		setMaxCompanionCard(
+			maxAnimalCompanionLimit === 'OFF' ? 'OFF' : maxAnimalCompanionLimit.toString()
+		);
 	}, [options]);
 
-
-
 	function playClick(actionType) {
-		clickReturn.volume = .5
-		clickValidate.volume = .5
-		if(settings[0].soundFx) {
-			actionType === 'return' ?  clickReturn.play(): clickValidate.play()
+		clickReturn.volume = 0.5;
+		clickValidate.volume = 0.5;
+		if (settings[0].soundFx) {
+			actionType === 'return' ? clickReturn.play() : clickValidate.play();
 		}
 	}
 
-	useEffect(()=> {
-		if(settings[0].music) {
-			celticAmbiance.currentTime = 3
-			celticAmbiance.play()
+	useEffect(() => {
+		if (settings[0].music) {
+			celticAmbiance.currentTime = 3;
+			celticAmbiance.play();
 		} else {
-			celticAmbiance.pause()
-		}	
-	}, [settings[0].music])
+			celticAmbiance.pause();
+		}
+	}, [settings[0].music]);
 
-
-	return <Context.Provider value={{ handleChange, options, jackEnemies, queenEnemies, kingEnemies, maxComboCard, maxCompanionCard, cardValue, playClick, settings, updateSettings, installApp }}>{children}</Context.Provider>;
+	return (
+		<Context.Provider
+			value={{
+				handleChange,
+				options,
+				jackEnemies,
+				queenEnemies,
+				kingEnemies,
+				maxComboCard,
+				maxCompanionCard,
+				cardValue,
+				playClick,
+				settings,
+				updateSettings,
+				installApp,
+			}}
+		>
+			{children}
+		</Context.Provider>
+	);
 }
 
 export { ContextProvider, Context };

@@ -14,6 +14,10 @@ const fonts = {
 	},
 };
 
+const breakpoints = {
+	sm: '38em'
+}
+
 const body = {
 	styles: {
 	  global: {
@@ -31,10 +35,8 @@ const body = {
 	},
   }
 
-// #94b4b0 green regicide
-
 
 // // 3. extend the theme
-const theme = extendTheme({ config }, fonts, body);
+const theme = extendTheme({ config, breakpoints }, fonts, body);
 
 export default theme;

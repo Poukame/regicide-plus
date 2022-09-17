@@ -1,4 +1,4 @@
-import { Box, Flex, Button, Text, HStack } from '@chakra-ui/react';
+import { Flex, Button, Text } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 import { useState, useEffect, useContext } from 'react';
 import { Context } from '../OptionsContext';
