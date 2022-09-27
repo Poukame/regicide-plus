@@ -55,12 +55,13 @@ function ContextProvider({ children }: WithChildren) {
 
 	function updateSettings(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		const { name, value } = e.currentTarget;
+		const isBool:boolean = (value === 'true') ? false : true
 
 		setSettings((prev) => {
 			return prev.map((el) => {
 				return {
 					...el,
-					[name]: value === 'true' ? !true : !false,
+					[name]: isBool,
 				};
 			});
 		});
@@ -77,7 +78,6 @@ function ContextProvider({ children }: WithChildren) {
 			maxAnimalCompanionLimit: 'K',
 		},
 	]);
-	console.log('file: OptionsContext.tsx ~ line 146 ~ options', options);
 
 	const { enemyHealthBoost, enemyAttackBoost, maxComboLimit, maxAnimalCompanionLimit } = options[0];
 
