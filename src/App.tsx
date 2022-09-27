@@ -113,7 +113,7 @@ function App() {
 	};
 
 	const saveCompanionCards: TMouseClkonBtn = (e) => {
-		const value = e.currentTarget.value.split(',');
+		const value:any = e.currentTarget.value.split(',');
 
 		const isInArray = companionSuit.some((el) => el === value[1]);
 
