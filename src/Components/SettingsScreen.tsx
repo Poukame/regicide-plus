@@ -21,7 +21,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }: IProp
 	const isOption = gameStatus === 'option' || gameStatus === undefined;
 	const { playClick, updateSettings, settings, installApp } = useContext(Context);
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const btnRef = useRef();
+	const btnRef:any = useRef();
 
 	return (
 		<>
@@ -35,6 +35,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }: IProp
 					onOpen(), playClick();
 				}}
 				ref={btnRef}
+				tabIndex={-1}
 			>
 				<Icon icon='ep:setting' width='100%' inline={true} pointerEvents='none' />
 			</Button>

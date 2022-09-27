@@ -128,7 +128,7 @@ function App() {
 	};
 
 	const saveComboCards: TMouseClkonBtn = (e): void => {
-		const value = e.currentTarget.value.split(',');
+		const value:any = e.currentTarget.value.split(',');
 		const isInArray = comboSuits.some((el) => el === value[1]);
 
 		setSelectedCards((prev) => {
