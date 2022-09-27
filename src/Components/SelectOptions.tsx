@@ -2,8 +2,10 @@ import { Text, Select, VStack, HStack, Button, Heading } from '@chakra-ui/react'
 import { Context } from '../OptionsContext';
 import { useContext } from 'react';
 import SettingsScreen from './SettingsScreen';
+import {ISelectOptions} from '../Types'
 
-export default function SelectOptions({ updateStatus }) {
+export default function SelectOptions({ updateStatus }:ISelectOptions) {
+	
 	const { handleChange, playClick, options } = useContext(Context);
 	const {maxHandSize, enemyHealthBoost, removeJesters, enemyAttackBoost, yieldTurn, maxAnimalCompanionLimit, maxComboLimit} = options[0]
 
@@ -117,7 +119,7 @@ export default function SelectOptions({ updateStatus }) {
 			>
 				Start the Game
 			</Button>
-			<SettingsScreen width='70' />
+			<SettingsScreen width='70' restartGame={(value) => ''}/>
 			</HStack>
 			</VStack>
 		</>

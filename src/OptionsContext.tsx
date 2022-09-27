@@ -1,10 +1,12 @@
 import React, { createContext, useState, useEffect } from 'react';
-import enemyData from './assets/EnemyData.cjs';
+import enemyData from './assets/EnemyData';
 import click_Return from './assets/sounds/click_return.mp3';
 import click_validate from './assets/sounds/click_validate.mp3';
 import VikingIntro from './assets/sounds/viking_intro_loop.mp3';
 import CelticAmbiance from './assets/sounds/celtic_ambiance.mp3';
-const Context = createContext();
+import initialValues from './assets/ContextInitalValues';
+import { WithChildren, TPlayClick, IOptions } from './Types';
+
 const clickReturn = new Audio(click_Return);
 const clickValidate = new Audio(click_validate);
 const vikingIntro = new Audio(VikingIntro);
@@ -14,9 +16,11 @@ vikingIntro.loop = true;
 celticAmbiance.volume = 0.3;
 celticAmbiance.loop = true;
 
-function ContextProvider({ children }) {
+const Context = createContext(initialValues);
+
+function ContextProvider({ children }: WithChildren) {
 	/// PWA install listener
-	let deferredPrompt;
+	let deferredPrompt: any;
 
 	window.addEventListener('beforeinstallprompt', (e) => {
 		deferredPrompt = e;
@@ -49,8 +53,8 @@ function ContextProvider({ children }) {
 		},
 	]);
 
-	function updateSettings(e) {
-		const { name, value } = e.target;
+	function updateSettings(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		const { name, value } = e.currentTarget;
 
 		setSettings((prev) => {
 			return prev.map((el) => {
@@ -62,7 +66,7 @@ function ContextProvider({ children }) {
 		});
 	}
 
-	const [options, setOptions] = useState([
+	const [options, setOptions] = useState<IOptions[]>([
 		{
 			maxHandSize: 0,
 			removeJesters: 'OFF',
@@ -73,24 +77,25 @@ function ContextProvider({ children }) {
 			maxAnimalCompanionLimit: 'K',
 		},
 	]);
+	console.log('file: OptionsContext.tsx ~ line 146 ~ options', options);
 
 	const { enemyHealthBoost, enemyAttackBoost, maxComboLimit, maxAnimalCompanionLimit } = options[0];
 
 	const [maxComboCard, setMaxComboCard] = useState(maxComboLimit);
 	const [maxCompanionCard, setMaxCompanionCard] = useState(maxAnimalCompanionLimit);
 
-	function handleChange(e) {
-		const { name, value } = e.target;
+	const handleChange = function (e: React.ChangeEvent<HTMLSelectElement>) {
+		const { name, value }: { name: string; value: string | number } = e.target;
 
 		setOptions((prev) => {
 			return prev.map((el) => {
 				return {
 					...el,
-					[name]: isNaN(value) ? value : +value,
+					[name]: isNaN(+value) ? value : +value,
 				};
 			});
 		});
-	}
+	};
 
 	const [jackEnemies, setJackEnemies] = useState(
 		enemyData
@@ -159,13 +164,11 @@ function ContextProvider({ children }) {
 			});
 		});
 
-		setMaxComboCard(maxComboLimit === 'OFF' ? 0 : Math.floor(maxComboLimit / 2));
-		setMaxCompanionCard(
-			maxAnimalCompanionLimit === 'OFF' ? 'OFF' : maxAnimalCompanionLimit.toString()
-		);
+		setMaxComboCard(maxComboLimit.toString() === 'OFF' ? 0 : Math.floor(maxComboLimit / 2));
+		setMaxCompanionCard(maxAnimalCompanionLimit === 'OFF' ? 'OFF' : maxAnimalCompanionLimit);
 	}, [options]);
 
-	function playClick(actionType) {
+	function playClick(actionType: TPlayClick): void {
 		clickReturn.volume = 0.5;
 		clickValidate.volume = 0.5;
 		if (settings[0].soundFx) {

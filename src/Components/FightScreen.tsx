@@ -15,6 +15,7 @@ import { Context } from '../OptionsContext';
 import EnemiesToCome from './EnemiesToCome';
 import OptionsReminder from './OptionsReminder';
 import SettingsScreen from './SettingsScreen';
+import { IPropsFightScreen } from '../Types';
 
 export default function FightScreen({
 	currentEnemy,
@@ -28,15 +29,18 @@ export default function FightScreen({
 	restartGame,
 	gameStatus,
 	loadProgress,
-	isReturnPossible
-}) {
+	isReturnPossible,
+}: IPropsFightScreen) {
 	const { options, playClick, settings } = useContext(Context);
-	const { health, attack, imgPath, isDead } = currentEnemy[0];
+
+	const { health, attack, imgPath } = currentEnemy[0];
+
 	const isJokerRemoved = options[0].removeJesters === 2;
+
 	const isMsgToBeDisplayed = Object.values(infoMessage).some((el) => el === true);
 
 	// Handle double tap on instaKill Button
-	let lastTap = null;
+	let lastTap: null | number = null;
 
 	function handleDoubleTap() {
 		const now = Date.now();
@@ -70,15 +74,12 @@ export default function FightScreen({
 				</GridItem>
 				<GridItem colSpan={[2, 1, 1]} gridColumnStart={[2, 3, 3]} rowStart={[1, 1, 1]}>
 					<VStack>
-						<Box
-						border={isJokerPlayed ? 'outset 5px #DFFF00' : 'none'}
-						>
-						<Image
-							src={imgPath}
-							maxW={imageSize}
-							filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
-						/>
-
+						<Box border={isJokerPlayed ? 'outset 5px #DFFF00' : 'none'}>
+							<Image
+								src={imgPath}
+								maxW={imageSize}
+								filter={isJokerPlayed ? 'grayscale(100%)' : 'none'}
+							/>
 						</Box>
 						<HStack>
 							<Tooltip
@@ -98,7 +99,7 @@ export default function FightScreen({
 									border='dashed #cadad8 2px'
 									height='fit-content'
 									maxWidth='60px'
-									onClick={(e) => handleDoubleTap(e)}
+									onClick={() => handleDoubleTap()}
 								>
 									<Icon
 										icon='healthicons:death'
@@ -108,19 +109,17 @@ export default function FightScreen({
 										pointerEvents='none'
 									/>
 								</Button>
-								
 							</Tooltip>
 							<Button
-									p='2'
-									bgColor='whiteAlpha.300'
-									border='dashed #cadad8 2px'
-									height='fit-content'
-									maxWidth='60px'
-									onClick={() => loadProgress()}
-									isDisabled={isReturnPossible ? false : true}
-								>
-							<Icon icon="akar-icons:arrow-back" width='100%'/>
-
+								p='2'
+								bgColor='whiteAlpha.300'
+								border='dashed #cadad8 2px'
+								height='fit-content'
+								maxWidth='60px'
+								onClick={() => loadProgress()}
+								isDisabled={isReturnPossible ? false : true}
+							>
+								<Icon icon='akar-icons:arrow-back' width='100%' />
 							</Button>
 						</HStack>
 					</VStack>
@@ -223,7 +222,6 @@ export default function FightScreen({
 					restartGame={(playerChoice) => restartGame(playerChoice)}
 					gameStatus={gameStatus}
 				/>
-				
 			</HStack>
 		</>
 	);

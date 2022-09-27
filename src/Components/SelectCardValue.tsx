@@ -2,8 +2,10 @@ import { Flex, Button, Text } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 import { useState, useEffect, useContext } from 'react';
 import { Context } from '../OptionsContext';
+import {IPropsSelectCardValue} from '../Types'
 
-export default function SelectCardValue({ switchState, selectedCards, allEnemies }) {
+
+export default function SelectCardValue({ switchState, selectedCards, allEnemies }:IPropsSelectCardValue) {
 	
 	const {cardValue, playClick} = useContext(Context)
 	

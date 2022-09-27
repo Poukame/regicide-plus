@@ -2,8 +2,10 @@ import { VStack, Text, HStack, Tooltip } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Context } from '../OptionsContext';
 import { Icon } from '@iconify/react';
+import {IPropsOptionsReminder} from '../Types'
 
-export default function OptionsReminder({ progressPercentage }) {
+
+export default function OptionsReminder({ progressPercentage }:IPropsOptionsReminder) {
 
 	const { options } = useContext(Context);
 	const { maxHandSize, yieldTurn, maxComboLimit, maxAnimalCompanionLimit } =
