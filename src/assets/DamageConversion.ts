@@ -1,4 +1,4 @@
-const damageConversion = {
+const damageConversion:{[key: string]:number} = {
     'A': 1,
     '2': 2,
     '3': 3,

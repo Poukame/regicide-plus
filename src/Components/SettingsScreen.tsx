@@ -14,12 +14,14 @@ import { Icon } from '@iconify/react';
 import { useRef, useContext } from 'react';
 import { Context } from '../OptionsContext';
 import CreditsModal from './CreditsModal';
+import { IPropsSettingsScreen } from '../Types';
 
-export default function SettingsScreen({ width, restartGame, gameStatus, boxShadow }) {
+export default function SettingsScreen({ width, restartGame, gameStatus }: IPropsSettingsScreen) {
+
 	const isOption = gameStatus === 'option' || gameStatus === undefined;
 	const { playClick, updateSettings, settings, installApp } = useContext(Context);
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const btnRef = useRef();
+	const btnRef:any = useRef();
 
 	return (
 		<>
@@ -33,7 +35,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus, boxShad
 					onOpen(), playClick();
 				}}
 				ref={btnRef}
-				boxShadow={boxShadow}
+				tabIndex={-1}
 			>
 				<Icon icon='ep:setting' width='100%' inline={true} pointerEvents='none' />
 			</Button>
@@ -108,7 +110,14 @@ export default function SettingsScreen({ width, restartGame, gameStatus, boxShad
 							>
 								{`Sounds Effect: ${settings[0].soundFx ? 'ON' : 'OFF'}`}
 							</Button>
-							<Button w='100%' bgColor={bgColor} color={color} onClick={() => {installApp(), playClick()}}>
+							<Button
+								w='100%'
+								bgColor={bgColor}
+								color={color}
+								onClick={() => {
+									installApp(), playClick();
+								}}
+							>
 								Install App
 							</Button>
 							<CreditsModal width='100%' bgColor='#94b4b0' color={color} />

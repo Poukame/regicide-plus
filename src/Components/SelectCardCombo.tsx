@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { Icon } from '@iconify/react';
 import { Context } from '../OptionsContext';
 import { nanoid } from 'nanoid';
+import { ISelectComboCard } from '../Types';
 
 export default function SelectComboCard({
 	selectedCards,
@@ -10,35 +11,49 @@ export default function SelectComboCard({
 	saveComboCards,
 	validateAttack,
 	switchState,
-}) {
+}: ISelectComboCard) {
 	const { maxComboCard, maxCompanionCard, options, cardValue, playClick } = useContext(Context);
+
 	const { baseCard, baseCardDmg, baseCardSuit, companionSuit, comboSum, comboSuits } =
 		selectedCards;
 
 	const suitsData = [
 		{
-			suitIcon: <Icon icon='emojione-v1:heart-suit' inline={true} style={iconMargin} pointerEvents='none' />,
+			suitIcon: (
+				<Icon icon='emojione-v1:heart-suit' inline={true} style={iconMargin} pointerEvents='none' />
+			),
 			suit: 'heart',
 			color: 'red.700',
 			isSelected: comboSuits.includes('heart'),
 			isCompanionSelected: companionSuit.includes('heart'),
 		},
 		{
-			suitIcon: <Icon icon='emojione-v1:diamond-suit'  inline={true} style={iconMargin} pointerEvents='none' />,
+			suitIcon: (
+				<Icon
+					icon='emojione-v1:diamond-suit'
+					inline={true}
+					style={iconMargin}
+					pointerEvents='none'
+				/>
+			),
 			suit: 'diamond',
 			color: 'red.700',
 			isSelected: comboSuits.includes('diamond'),
 			isCompanionSelected: companionSuit.includes('diamond'),
 		},
 		{
-			suitIcon: <Icon icon='emojione-v1:club-suit'  inline={true} style={iconMargin} pointerEvents='none' />,
+			suitIcon: (
+				<Icon icon='emojione-v1:club-suit' inline={true} style={iconMargin} pointerEvents='none' />
+			),
 			suit: 'club',
 			color: 'black',
 			isSelected: comboSuits.includes('club'),
 			isCompanionSelected: companionSuit.includes('club'),
 		},
 		{
-			suitIcon: <Icon icon='emojione-v1:spade-suit'  inline={true} style={iconMargin} pointerEvents='none' />,
+			suitIcon: (
+				<Icon icon='emojione-v1:spade-suit' inline={true} style={iconMargin} pointerEvents='none' />
+			),
 			suit: 'spade',
 			color: 'black',
 			isSelected: comboSuits.includes('spade'),
@@ -48,18 +63,18 @@ export default function SelectComboCard({
 
 	let comboCardsHTML;
 	let companionHTML;
+	
 	const calculatedComboCard =
-		cardValue.indexOf(baseCard) >= maxComboCard || baseCard === 'A' ? 0 : baseCard;
+		cardValue.indexOf(baseCard) >= +maxComboCard || baseCard === 'A' ? 0 : baseCard;
 
 	// Animal Companion HTML
 	const isCompanionPicked = companionSuit.length > 0;
 	const isComboCardPicked = companionSuit.length >= comboSuits.length;
 
 	if (
-		cardValue.indexOf(baseCard) > cardValue.indexOf(maxCompanionCard) ||
-		maxCompanionCard === 'OFF'
-	) {
-		companionHTML = <></>;
+		cardValue.indexOf(baseCard) > cardValue.indexOf(maxCompanionCard.toString())
+		) {
+			companionHTML = <></>;
 	} else {
 		companionHTML = suitsData.map((el) => {
 			const isAceSuitSelected = baseCard !== 'A' && companionSuit.length >= 1;
@@ -116,10 +131,14 @@ export default function SelectComboCard({
 						fontSize='3xl'
 						isDisabled={isMaxAtReach && !el.isSelected ? true : false}
 						value={el.isSelected ? [-calculatedComboCard, el.suit] : [calculatedComboCard, el.suit]}
-						onClick={(e) => {saveComboCards(e), playClick()}}
+						onClick={(e) => {
+							saveComboCards(e), playClick();
+						}}
 					>
-						<Text pointerEvents='none'>{calculatedComboCard}{el.suitIcon}</Text>
-						
+						<Text pointerEvents='none'>
+							{calculatedComboCard}
+							{el.suitIcon}
+						</Text>
 					</Button>
 				</>
 			);
@@ -146,36 +165,43 @@ export default function SelectComboCard({
 				{comboCardsHTML}
 			</Grid>
 			<Flex mt='8' flexWrap='wrap' gap='8'>
-
-
-			<Button flex='4 1 auto' fontSize='2xl' height='70px' mx='auto' onClick={() => {playClick(), validateAttack()}}>
-				<Text>
-					Validate Attack
-					<Icon
-						icon='akar-icons:check'
-						style={{ display: 'inline', marginLeft: '8px' }}
-						inline={true}
-					/>
-				</Text>
-			</Button>
-			<Button
-				flex='auto'
-				fontSize='2xl'
-				height='70px'
-				mx='auto'
-		
-				value='return'
-				onClick={(e) => {switchState(e), playClick('return')}}
-			>
-				<Text pointerEvents='none'>
-					Cancel
-					<Icon
-						icon='icon-park:return'
-						style={{ display: 'inline', marginLeft: '8px' }}
-						inline={true}
-					/>
-				</Text>
-			</Button>
+				<Button
+					flex='4 1 auto'
+					fontSize='2xl'
+					height='70px'
+					mx='auto'
+					onClick={() => {
+						playClick(), validateAttack();
+					}}
+				>
+					<Text>
+						Validate Attack
+						<Icon
+							icon='akar-icons:check'
+							style={{ display: 'inline', marginLeft: '8px' }}
+							inline={true}
+						/>
+					</Text>
+				</Button>
+				<Button
+					flex='auto'
+					fontSize='2xl'
+					height='70px'
+					mx='auto'
+					value='return'
+					onClick={(e) => {
+						switchState(e), playClick('return');
+					}}
+				>
+					<Text pointerEvents='none'>
+						Cancel
+						<Icon
+							icon='icon-park:return'
+							style={{ display: 'inline', marginLeft: '8px' }}
+							inline={true}
+						/>
+					</Text>
+				</Button>
 			</Flex>
 		</>
 	);

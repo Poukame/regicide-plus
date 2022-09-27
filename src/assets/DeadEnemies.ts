@@ -1,4 +1,4 @@
-export function sliceIndex(increment, numberOfDeadFigure) {
+export function sliceIndex(increment:number, numberOfDeadFigure:number):number {
    
     let cardIndexToSlice
     

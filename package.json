@@ -1,11 +1,11 @@
 {
-  "name": "regicide-plus",
+  "name": "regicide-ts",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -22,8 +22,9 @@
     "@iconify/react": "^3.2.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react": "^2.0.1",
-    "vite": "^3.0.7",
+    "@vitejs/plugin-react": "^2.1.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0",
     "vite-plugin-pwa": "^0.12.7"
   }
 }

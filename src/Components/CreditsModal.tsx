@@ -14,8 +14,9 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
+import { IPropsCreditsModal } from '../Types';
 
-export default function CreditsModal({ width, bgColor, color }) {
+export default function CreditsModal({ width, bgColor, color }: IPropsCreditsModal) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
@@ -32,7 +33,9 @@ export default function CreditsModal({ width, bgColor, color }) {
 					<ModalBody>
 						<VStack alignItems='flex-start' gap='4' fontSize='lg'>
 							<Box>
-								<Text fontWeight='700' mb='2'>ABOUT:</Text>
+								<Text fontWeight='700' mb='2'>
+									ABOUT:
+								</Text>
 								<Text>App developped by Poukame</Text>
 								<Text>
 									<Link isExternal href='https://github.com/Poukame/regicide-plus'>
@@ -54,19 +57,24 @@ export default function CreditsModal({ width, bgColor, color }) {
 										isExternal
 									>
 										Link to the rulebook{' '}
-										<Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} /> 
-									</Link> (because there is always this moment where we have a doubt 😉)
+										<Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
+									</Link>{' '}
+									(because there is always this moment where we have a doubt 😉)
 								</Text>
 							</Box>
 							<Box>
-								<Text fontWeight='700' mb='2'>FONTS:</Text>
+								<Text fontWeight='700' mb='2'>
+									FONTS:
+								</Text>
 								<Link isExternal href='https://www.fontspace.com/vecna-font-f20510'>
 									Vecna by fontspace.com{' '}
 									<Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
 								</Link>
 							</Box>
 							<Box>
-								<Text fontWeight='700' mb='2'>MUSICS:</Text>
+								<Text fontWeight='700' mb='2'>
+									MUSICS:
+								</Text>
 								<Text>
 									"Viking Intro" and "Celtic Ambiance" by Alexander Nakarada (
 									<Link isExternal href='https://www.serpentsoundstudios.com/'>
@@ -78,7 +86,9 @@ export default function CreditsModal({ width, bgColor, color }) {
 								</Text>
 							</Box>
 							<Box>
-								<Text fontWeight='700' mb='2'>SOUND FX:</Text>
+								<Text fontWeight='700' mb='2'>
+									SOUND FX:
+								</Text>
 								<Text>
 									Sound effects obtained from{' '}
 									<Link isExternal href='https://www.zapsplat.com'>
@@ -88,7 +98,9 @@ export default function CreditsModal({ width, bgColor, color }) {
 								</Text>
 							</Box>
 							<Box>
-								<Text fontWeight='700' mb='2'>PLAYING CARDS:</Text>
+								<Text fontWeight='700' mb='2'>
+									PLAYING CARDS:
+								</Text>
 								<Text>
 									Generated thanks to{' '}
 									<Link isExternal href='https://www.me.uk/cards/makeadeck.cgi'>
