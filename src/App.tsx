@@ -370,7 +370,7 @@ function App() {
 			mx='auto'
 			flexDirection='column'
 			boxShadow='0px 0px 5px 3px #cadad8'
-			py='8'
+			py='4'
 			borderRadius='4'
 		>
 			{gameStatus === 'option' && (
