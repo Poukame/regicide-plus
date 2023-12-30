@@ -9,9 +9,15 @@ import SelectCardValue from './Components/SelectCardValue';
 import SelectComboCard from './Components/SelectCardCombo';
 import EndGameScreen from './Components/EndGameScreen';
 import damageConversion from './assets/DamageConversion';
+import {requestWakeLock, handleVisibilityChange} from './assets/pwaPreventScreenLock'
 import { TRestartGame, ISelectedCard, TMouseClkonBtn, IAllEnemies, IInfoMsg } from './Types';
 
 function App() {
+	// Request a screen wake lock…
+	requestWakeLock();
+	document.addEventListener('visibilitychange', handleVisibilityChange);
+	// END OF PWA CODE
+
 	const [gameStatus, setGameStatus] = useState('option');
 	// option, fight, selectEnemy, selectCard, selectCombo, endGame
 
@@ -113,7 +119,7 @@ function App() {
 	};
 
 	const saveCompanionCards: TMouseClkonBtn = (e) => {
-		const value:any = e.currentTarget.value.split(',');
+		const value: any = e.currentTarget.value.split(',');
 
 		const isInArray = companionSuit.some((el) => el === value[1]);
 
@@ -128,16 +134,14 @@ function App() {
 	};
 
 	const saveComboCards: TMouseClkonBtn = (e): void => {
-		const value:any = e.currentTarget.value.split(',');
+		const value: any = e.currentTarget.value.split(',');
 		const isInArray = comboSuits.some((el) => el === value[1]);
 
 		setSelectedCards((prev) => {
 			return {
 				...prev,
 				comboSum: prev.comboSum + +value[0],
-				comboSuits: isInArray
-					? prev.comboSuits.filter((el) => el != value[1])
-					: [...prev.comboSuits, value[1]],
+				comboSuits: isInArray ? prev.comboSuits.filter((el) => el != value[1]) : [...prev.comboSuits, value[1]],
 			};
 		});
 	};
@@ -145,11 +149,7 @@ function App() {
 	let saveCount = savedGame.length;
 	const [loadCount, setLoadCount] = useState(0);
 
-	const saveProgress = function (
-		currentEnemy: IAllEnemies,
-		isJokerPlayed: boolean,
-		spadeDmgCache: number
-	) {
+	const saveProgress = function (currentEnemy: IAllEnemies, isJokerPlayed: boolean, spadeDmgCache: number) {
 		setLoadCount(0);
 		const enemiesArr = Object.assign({}, currentEnemy);
 		setSavedGame((prev) => {
@@ -208,9 +208,7 @@ function App() {
 
 	useEffect(() => {
 		if (gameStatus === 'fight') {
-			isJokerPlayed
-				? (currentEnemy.attack -= spadeDmgCache)
-				: (currentEnemy.attack += spadeDmgCache);
+			isJokerPlayed ? (currentEnemy.attack -= spadeDmgCache) : (currentEnemy.attack += spadeDmgCache);
 			setSelectedCards(resetSelectedCards);
 		}
 	}, [isJokerPlayed]);
@@ -225,13 +223,9 @@ function App() {
 		let allSuitsCards: string[];
 
 		if (companionSuit.length === 0 && comboSuits.length === 0) {
-			allSuitsCards = [baseCardSuit].filter((el) =>
-				isJokerPlayed ? el : el !== currentEnemy.suits
-			);
+			allSuitsCards = [baseCardSuit].filter((el) => (isJokerPlayed ? el : el !== currentEnemy.suits));
 		} else {
-			allSuitsCards = [...comboSuits, baseCardSuit].filter((el) =>
-				isJokerPlayed ? el : el !== currentEnemy.suits
-			);
+			allSuitsCards = [...comboSuits, baseCardSuit].filter((el) => (isJokerPlayed ? el : el !== currentEnemy.suits));
 		}
 
 		calculateDamage(allSuitsCards);
@@ -365,17 +359,8 @@ function App() {
 	};
 
 	return (
-		<Flex
-			maxW='800px'
-			mx='auto'
-			flexDirection='column'
-			boxShadow='0px 0px 5px 3px #cadad8'
-			py='4'
-			borderRadius='4'
-		>
-			{gameStatus === 'option' && (
-				<SelectOptions updateStatus={() => setGameStatus('selectEnemy')} />
-			)}
+		<Flex maxW='800px' mx='auto' flexDirection='column' boxShadow='0px 0px 5px 3px #cadad8' py='4' borderRadius='4' mt='2'>
+			{gameStatus === 'option' && <SelectOptions updateStatus={() => setGameStatus('selectEnemy')} />}
 
 			{gameStatus === 'selectEnemy' && (
 				<SelectCurrentEnemy

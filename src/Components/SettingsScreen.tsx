@@ -77,7 +77,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }: IProp
 							<Button
 								w='100%'
 								name='showReminders'
-								value={settings[0].showReminders}
+								value={settings[0].showReminders ? 'true' : 'false'}
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
@@ -89,7 +89,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }: IProp
 							<Button
 								w='100%'
 								name='music'
-								value={settings[0].music}
+								value={settings[0].music ? 'true' : 'false'}
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {
@@ -101,7 +101,7 @@ export default function SettingsScreen({ width, restartGame, gameStatus }: IProp
 							<Button
 								w='100%'
 								name='soundFx'
-								value={settings[0].soundFx}
+								value={settings[0].soundFx ? 'true' : 'false'}
 								bgColor={bgColor}
 								color={color}
 								onClick={(e) => {

@@ -52,14 +52,19 @@ export default function CreditsModal({ width, bgColor, color }: IPropsCreditsMod
 									which is an awesome game.
 								</Text>
 								<Text mt='2'>
-									<Link
-										href='https://www.badgersfrommars.com/assets/RegicideRulesA4.pdf'
-										isExternal
-									>
-										Link to the rulebook{' '}
-										<Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
+									<Link href='https://www.badgersfrommars.com/assets/RegicideRulesA4.pdf' isExternal>
+										Link to the rulebook <Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
 									</Link>{' '}
 									(because there is always this moment where we have a doubt 😉)
+								</Text>
+							</Box>
+							<Box>
+								<Text fontWeight='700' mb='2' color='red'>
+									LAST UPDATE (30-Dec-23):
+								</Text>
+								<Text>
+									The app will prevent your phone or computer to lock screen or turn on the screensaver as long as the
+									app is in focus.
 								</Text>
 							</Box>
 							<Box>
@@ -67,8 +72,7 @@ export default function CreditsModal({ width, bgColor, color }: IPropsCreditsMod
 									FONTS:
 								</Text>
 								<Link isExternal href='https://www.fontspace.com/vecna-font-f20510'>
-									Vecna by fontspace.com{' '}
-									<Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
+									Vecna by fontspace.com <Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
 								</Link>
 							</Box>
 							<Box>
@@ -92,8 +96,7 @@ export default function CreditsModal({ width, bgColor, color }: IPropsCreditsMod
 								<Text>
 									Sound effects obtained from{' '}
 									<Link isExternal href='https://www.zapsplat.com'>
-										www.zapsplat.com{' '}
-										<Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
+										www.zapsplat.com <Icon icon='charm:link-external' style={{ display: 'inline' }} inline={true} />
 									</Link>
 								</Text>
 							</Box>
